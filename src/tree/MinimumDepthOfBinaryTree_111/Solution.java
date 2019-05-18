@@ -19,16 +19,13 @@ package tree.MinimumDepthOfBinaryTree_111;
  */
 class Solution {
     int minDepth(TreeNode root) {
-        return depth(root);
-    }
-
-    private int depth(TreeNode tn) {
-        if (tn == null) {
+        if (root == null) {
             return 0;
         }
-        int dl = depth(tn.left);
-        int dr = depth(tn.right);
-        return hasNoChildren(tn) ? 1 : dl > 0 && dr > 0 ? Math.min(dl, dr) + 1 : Math.max(dl, dr) + 1;
+        int dl = minDepth(root.left);
+        int dr = minDepth(root.right);
+        return hasNoChildren(root) ? 1 : dl > 0 && dr > 0 ? Math.min(dl, dr) + 1 : Math.max(dl, dr) + 1;
+        // Math.max(dl, dr) is the same as dl + dr since dl or dr equals to 0
     }
 
     private boolean hasNoChildren(TreeNode tn) {
@@ -42,6 +39,6 @@ class Solution {
         int r = minDepth1(root.right);
         // (l==0 || r==0) - if node has 0 or 1 child - return child depth+1;
         // !(l==0 || r==0) - node has two children, return min from them +1.
-        return (l==0 || r==0) ? l+r+1 : Math.min(l,r) + 1;
+        return (l == 0 || r == 0) ? l + r + 1 : Math.min(l, r) + 1;
     }
 }

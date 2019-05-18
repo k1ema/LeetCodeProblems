@@ -20,15 +20,11 @@ package tree.MaximumDepthOfBinaryTree_104;
 
 class Solution {
     int maxDepth(TreeNode root) {
-        return depth(root);
-    }
-
-    private int depth(TreeNode tn) {
-        if (tn == null) {
+        if (root == null) {
             return 0;
         }
-        int dl = depth(tn.left);
-        int dr = depth(tn.right);
+        int dl = maxDepth(root.left);
+        int dr = maxDepth(root.right);
         return Math.max(dl, dr) + 1;
     }
 }
