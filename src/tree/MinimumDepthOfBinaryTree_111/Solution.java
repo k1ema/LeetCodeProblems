@@ -22,23 +22,8 @@ class Solution {
         if (root == null) {
             return 0;
         }
-        int dl = minDepth(root.left);
-        int dr = minDepth(root.right);
-        return hasNoChildren(root) ? 1 : dl > 0 && dr > 0 ? Math.min(dl, dr) + 1 : Math.max(dl, dr) + 1;
-        // Math.max(dl, dr) is the same as dl + dr since dl or dr equals to 0
-    }
-
-    private boolean hasNoChildren(TreeNode tn) {
-        return tn != null && tn.left == null && tn.right == null;
-    }
-
-    // https://discuss.leetcode.com/topic/8723/my-4-line-java-solution
-    public int minDepth1(TreeNode root) {
-        if (root == null) return 0;
-        int l = minDepth1(root.left);
-        int r = minDepth1(root.right);
-        // (l==0 || r==0) - if node has 0 or 1 child - return child depth+1;
-        // !(l==0 || r==0) - node has two children, return min from them +1.
+        int l = minDepth(root.left);
+        int r = minDepth(root.right);
         return (l == 0 || r == 0) ? l + r + 1 : Math.min(l, r) + 1;
     }
 }

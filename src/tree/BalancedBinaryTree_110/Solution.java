@@ -47,11 +47,11 @@ class Solution {
         if (tn == null) {
             return 0;
         }
-        int dl = depth(tn.left);
-        int dr = depth(tn.right);
-        if (Math.abs(dl - dr) > 1) {
+        int l = depth(tn.left);
+        int r = depth(tn.right);
+        if (Math.abs(l - r) > 1) {
             isBalanced = false;
         }
-        return Math.max(dl, dr) + 1;
+        return Math.max(l, r) + 1;
     }
 }
