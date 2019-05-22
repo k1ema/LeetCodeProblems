@@ -37,4 +37,23 @@ public class Solution {
         }
         return l.isEmpty();
     }
+
+    boolean isAnagram1(String s, String t) {
+        if (s == null || t == null || s.length() != t.length()) {
+            return false;
+        }
+        int[] a = new int[26];
+        char[] ss = s.toCharArray();
+        char[] tt = t.toCharArray();
+        for (int i = 0; i < ss.length; i++) {
+            a[ss[i] - 'a']++;
+            a[tt[i] - 'a']--;
+        }
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
