@@ -26,11 +26,17 @@ package math.PowerOfThree_326;
  * Could you do it without using any loop / recursion?
  */
 public class Solution {
+    // tc Unknown, sc O(1)
     boolean isPowerOfThree(int n) {
         if (n <= 0) {
             return false;
         }
         double x = Math.log(Math.abs(n)) / Math.log(3);
         return Math.abs(x - Math.round(x)) < Math.pow(10, -14);
+    }
+
+    // tc O(log3(n)), sc O(1)
+    boolean isPowerOfThree1(int n) {
+        return Integer.toString(n, 3).matches("^10*$");
     }
 }
