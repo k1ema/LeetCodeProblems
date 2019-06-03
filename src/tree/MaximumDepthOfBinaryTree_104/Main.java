@@ -2,7 +2,7 @@ package tree.MaximumDepthOfBinaryTree_104;
 
 import java.util.stream.Stream;
 
-import tree.utils.TreeNode;
+import tree.utils.Parser;
 
 public class Main {
     private static final Integer[][] DATA = {
@@ -15,27 +15,6 @@ public class Main {
 
     public static void main(String[] args) {
         Solution s = new Solution();
-        Stream.of(DATA).map(Main::parseData).map(s::maxDepth).forEach(System.out::println);
-    }
-
-    @SuppressWarnings("Duplicates")
-    private static TreeNode parseData(Integer[] data) {
-        TreeNode[] nodes = new TreeNode[data.length];
-        for (int i = data.length - 1; i >= 0; i--) {
-            if (data[i] == null) {
-                continue;
-            }
-            nodes[i] = new TreeNode(data[i]);
-            int leftInd = 2 * i + 1;
-            int rightInd = 2 * i + 2;
-            if (leftInd < data.length) {
-                nodes[i].left = nodes[leftInd];
-            }
-            if (rightInd < data.length) {
-                nodes[i].right = nodes[rightInd];
-            }
-        }
-
-        return nodes.length > 0 ? nodes[0] : null;
+        Stream.of(DATA).map(Parser::parseData).map(s::maxDepth).forEach(System.out::println);
     }
 }
