@@ -1,5 +1,7 @@
 package tree.BalancedBinaryTree_110;
 
+import tree.utils.TreeNode;
+
 /**
  * 110. Balanced Binary Tree
  * https://leetcode.com/problems/balanced-binary-tree/

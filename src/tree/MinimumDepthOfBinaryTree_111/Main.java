@@ -2,6 +2,8 @@ package tree.MinimumDepthOfBinaryTree_111;
 
 import java.util.stream.Stream;
 
+import tree.utils.TreeNode;
+
 public class Main {
     private static final Integer[][] DATA = {
             {}, // 0

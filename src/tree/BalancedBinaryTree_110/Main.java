@@ -2,6 +2,8 @@ package tree.BalancedBinaryTree_110;
 
 import java.util.stream.Stream;
 
+import tree.utils.TreeNode;
+
 public class Main {
     private static final Integer[][] DATA = {
             {3, 9, 20, null, null, 15, 7}, // true

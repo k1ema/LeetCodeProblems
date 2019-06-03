@@ -1,5 +1,7 @@
 package tree.MaximumDepthOfBinaryTree_104;
 
+import tree.utils.TreeNode;
+
 /**
  * 104. Maximum Depth of Binary Tree
  * https://leetcode.com/problems/maximum-depth-of-binary-tree/
