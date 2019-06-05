@@ -10,10 +10,10 @@ public class SolutionTest {
     @Test
     public void test() {
         Solution s = new Solution();
-        TreeNode tree = Parser.parseData(new Integer[] {1, 2, 2, 3, 4, 4, 3, 5, 6, 7, 8, 8, 7, 6, 5});
+        TreeNode tree = Parser.stringToTreeNode("[1, 2, 2, 3, 4, 4, 3, 5, 6, 7, 8, 8, 7, 6, 5]");
         Assert.assertTrue(s.isSymmetric(tree));
 
-        tree = Parser.parseData(new Integer[] {1,2,2,null,3,null,3});
+        tree = Parser.stringToTreeNode("[1,2,2,null,3,null,3]");
         System.out.println(tree);
         Assert.assertFalse(s.isSymmetric(tree));
     }
