@@ -1,5 +1,7 @@
 package linkedList.ReverseLinkedList_206;
 
+import linkedList.utils.ListNode;
+
 /**
  * 206. Reverse Linked List
  * https://leetcode.com/problems/reverse-linked-list/
@@ -14,9 +16,35 @@ package linkedList.ReverseLinkedList_206;
  * A linked list can be reversed either iteratively or recursively. Could you implement both?
  */
 public class Solution {
+    // from leetcode recursive solution
+    // tc O(n), sc O(n)
+    ListNode reverseList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode node = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return node;
+    }
+
+    // iterate, time complexity O(n), space O(1)
+    ListNode reverseList1(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+
+        while (curr != null) {
+            ListNode tmp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = tmp;
+        }
+        return prev;
+    }
+
     // recursive, time complexity: O(n), space: O(n)
     private ListNode result;
-    ListNode reverseList1(ListNode head) {
+    ListNode reverseList2(ListNode head) {
         if (head == null) {
             return null;
         }
@@ -33,30 +61,5 @@ public class Solution {
             result = head;
         }
         return result;
-    }
-
-    // iterate, time complexity O(n), space O(1)
-    ListNode reverseList2(ListNode head) {
-        ListNode prev = null;
-        ListNode curr = head;
-
-        while (curr != null) {
-            ListNode tmp = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = tmp;
-        }
-        return prev;
-    }
-
-    // from leetcode recursive solution
-    ListNode reverseListLeetCode(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
-        }
-        ListNode node = reverseListLeetCode(head.next);
-        head.next.next = head;
-        head.next = null;
-        return node;
     }
 }
