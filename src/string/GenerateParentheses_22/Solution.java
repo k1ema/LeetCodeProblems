@@ -19,7 +19,7 @@ import java.util.List;
  * ]
  */
 public class Solution {
-    // tc
+    // tc O(4^n/sqrt(n)), sc O(n)
     List<String> generateParenthesis(int n) {
         List<String> list = new ArrayList<>();
         backtrack(list, "", 0, 0, n);
