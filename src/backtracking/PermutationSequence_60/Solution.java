@@ -33,6 +33,7 @@ import java.util.Stack;
  */
 public class Solution {
     // https://leetcode.com/problems/permutation-sequence/discuss/22507/%22Explain-like-I'm-five%22-Java-Solution-in-O(n)
+    // tc O(n^2), sc O(n)
     String getPermutation(int n, int k) {
         int[] factorials = new int[n + 1];
         List<Integer> numbers = new ArrayList<>();
