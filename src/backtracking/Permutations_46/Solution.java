@@ -22,6 +22,7 @@ import java.util.List;
  * ]
  */
 public class Solution {
+    // tc O(n^2*n!), sc O(n)
     List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> list = new ArrayList<>();
         backtrack(list, new ArrayList<>(), nums);
@@ -29,6 +30,9 @@ public class Solution {
     }
 
     private void backtrack(List<List<Integer>> list, List<Integer> temp, int[] nums) {
+//        indent(temp.size());
+//        System.out.println(temp);
+
         if (temp.size() == nums.length) {
             list.add(new ArrayList<>(temp));
             return;
@@ -40,6 +44,12 @@ public class Solution {
             temp.add(nums[i]);
             backtrack(list, temp, nums);
             temp.remove(temp.size() - 1);
+        }
+    }
+
+    private void indent(int n) {
+        for (int i = 0; i < n; i++) {
+            System.out.print("    ");
         }
     }
 }
