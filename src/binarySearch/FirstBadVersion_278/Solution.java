@@ -24,10 +24,8 @@ package binarySearch.FirstBadVersion_278;
  * Then 4 is the first bad version.
  */
 public class Solution extends VersionControl {
+    // tc O(logn), sc O(1)
     int firstBadVersion(int n) {
-        if (n == 1) {
-            return isBadVersion(n) ? n : 0;
-        }
         int left = 1, right = n;
         while (left < right) {
             int mid = left + (right - left) / 2;

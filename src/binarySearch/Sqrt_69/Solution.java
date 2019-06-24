@@ -40,6 +40,7 @@ public class Solution {
     // binary search
     // https://discuss.leetcode.com/topic/19698/my-clean-c-code-8ms
     // https://discuss.leetcode.com/topic/8680/a-binary-search-solution
+    // tc O(logn), sc O(1)
     int mySqrt(int x) {
         if (x < 2) {
             return x;
@@ -56,7 +57,6 @@ public class Solution {
                 }
                 lo = mid + 1;
             }
-
         }
     }
 }
