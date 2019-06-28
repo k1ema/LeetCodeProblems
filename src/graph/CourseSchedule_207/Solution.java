@@ -57,7 +57,7 @@ public class Solution {
     // DFS
     // tc O(V + E)
     // sc O(V + E): O(V + E) - build graph, O(V) - booleans, O(E) - max for recursion stack: O(2E + 3V) = O(E + V)
-    boolean canFinish1(int numCourses, int[][] prerequisites) {
+    boolean canFinish2(int numCourses, int[][] prerequisites) {
         if (numCourses == 0 || prerequisites == null) return false;
 
         boolean[] visited = new boolean[numCourses];
@@ -96,27 +96,27 @@ public class Solution {
     // https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
     // tc O(V + E), sc O(V + E): O(V + E) for building grpah, O(V) for indegrees, O(V) for queue => O(3V + E) => O(V + E)
     boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<Integer>[] adj = buildGraph(numCourses, prerequisites);
         int[] indegrees = getIndegrees(numCourses, prerequisites);
-        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
 
-        Queue<Integer> q = new LinkedList<>();
+        Queue<Integer> queue = new LinkedList<>();
         int count = 0; // counter of visited vertices.
 
         for (int i = 0; i < indegrees.length; i++) {
             if (indegrees[i] == 0) {
-                q.add(i);
-                indegrees[i] = -1; // mark vertices as visited.
+                indegrees[i] = -1; // mark as viewed
+                queue.add(i);
                 count++;
             }
         }
 
-        while (!q.isEmpty()) {
-            int v = q.poll();
-            for (int vertex : graph[v]) {
-                indegrees[vertex]--;
-                if (indegrees[vertex] == 0) {
-                    q.add(vertex);
+        while (!queue.isEmpty()) {
+            int u = queue.poll();
+            for (int v : adj[u]) {
+                indegrees[v]--;
+                if (indegrees[v] == 0) {
                     count++;
+                    queue.add(v);
                 }
             }
         }
