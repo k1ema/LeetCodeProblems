@@ -81,8 +81,6 @@ public class Solution {
         recStack[ind] = true;
 
         for (Integer i : graph[ind]) {
-            if (recStack[i]) return true;
-            if (visited[i]) continue;
             if (isCycle(graph, visited, recStack, i)) {
                 return true;
             }

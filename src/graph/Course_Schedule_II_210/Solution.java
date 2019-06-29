@@ -43,7 +43,7 @@ import java.util.Stack;
 public class Solution {
     // DFS
     // tc O(V + E), sc O(V + E)
-    int[] findOrder1(int numCourses, int[][] prerequisites) {
+    int[] findOrder(int numCourses, int[][] prerequisites) {
         if (numCourses == 0 || prerequisites == null) return new int[] {};
         if (numCourses == 1) return new int[] {0};
 
@@ -74,9 +74,6 @@ public class Solution {
         visited[u] = true;
 
         for (int v : adj[u]) {
-            if (recStack[v]) return true;
-            if (visited[v]) continue;
-
             if (isCycle(adj, v, visited, recStack, queue)) {
                 return true;
             }
@@ -89,7 +86,7 @@ public class Solution {
 
     // BFS
     // tc O(V + E), sc O(V + E)
-    int[] findOrder(int numCourses, int[][] prerequisites) {
+    int[] findOrder2(int numCourses, int[][] prerequisites) {
         if (numCourses == 0 || prerequisites == null) return new int[] {};
         if (numCourses == 1) return new int[] {0};
 
