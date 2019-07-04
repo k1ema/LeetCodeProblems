@@ -23,14 +23,43 @@ import javafx.util.Pair;
  * s = "2[abc]3[cd]ef", return "abcabccdcdcdef".
  */
 public class Solution {
+    private int pos = 0;
     // tc O(n), sc O(n)
+    // https://leetcode.com/problems/decode-string/discuss/87615/Simple-Java-DFS-Solution
     String decodeString(String s) {
+        String num = "";
+        StringBuilder sb = new StringBuilder();
+        for (int i = pos; i < s.length(); i++) {
+            if (Character.isDigit(s.charAt(i))) {
+                num += s.charAt(i);
+            } else if (s.charAt(i) == '[') {
+                pos = i + 1;
+                String sub = decodeString(s);
+                int v = Integer.parseInt(num);
+                for (int j = 0; j < v; j++) {
+                    sb.append(sub);
+                }
+                i = pos;
+                num = "";
+            } else if (s.charAt(i) == ']') {
+                pos = i;
+                return sb.toString();
+            } else {
+                sb.append(s.charAt(i));
+            }
+        }
+        pos = 0; // for next test
+        return sb.toString();
+    }
+
+    // tc O(n), sc O(n)
+    String decodeString1(String s) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) >= '0' && s.charAt(i) <= '9') {
-                Pair<String, Integer> res = decodeBracket(i, s);
-                sb.append(res.getKey());
-                i = res.getValue();
+            if (Character.isDigit(s.charAt(i))) {
+                Pair<String, Integer> pair = decodeBracket(i, s);
+                sb.append(pair.getKey());
+                i = pair.getValue();
             } else {
                 sb.append(s.charAt(i));
             }
@@ -56,7 +85,7 @@ public class Solution {
                 }
                 return new Pair<>(sb.toString(), i);
             }
-            if (s.charAt(i) >= '0' && s.charAt(i) <= '9') {
+            if (Character.isDigit(s.charAt(i))) {
                 Pair<String, Integer> pair = decodeBracket(i, s);
                 sb.append(pair.getKey());
                 i = pair.getValue();
