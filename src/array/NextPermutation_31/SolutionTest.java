@@ -16,6 +16,10 @@ public class SolutionTest {
         s.nextPermutation(nums);
         assertArrayEquals(new int[] {1, 2, 3}, nums);
 
+        nums = new int[] {4, 3, 2, 1};
+        s.nextPermutation(nums);
+        assertArrayEquals(new int[] {1, 2, 3, 4}, nums);
+
         nums = new int[] {1, 1, 5};
         s.nextPermutation(nums);
         assertArrayEquals(new int[] {1, 5, 1}, nums);

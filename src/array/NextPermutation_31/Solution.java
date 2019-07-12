@@ -36,7 +36,13 @@ public class Solution {
         }
         // if pivot didn't find -> we have the last permutation
         if (pivotInd == -1) {
-            Arrays.sort(nums);
+            // reverse or just Arrays.sort(nums)
+            int middle = nums.length / 2;
+            for (int i = 0; i < middle; i++) {
+                int temp = nums[i];
+                nums[i] = nums[nums.length - 1 - i];
+                nums[nums.length - 1 - i] = temp;
+            }
             return;
         }
 
