@@ -1,7 +1,5 @@
 package array.NextPermutation_31;
 
-import java.util.Arrays;
-
 /**
  * 31. Next Permutation
  * https://leetcode.com/problems/next-permutation/
@@ -37,12 +35,7 @@ public class Solution {
         // if pivot didn't find -> we have the last permutation
         if (pivotInd == -1) {
             // reverse or just Arrays.sort(nums)
-            int middle = nums.length / 2;
-            for (int i = 0; i < middle; i++) {
-                int temp = nums[i];
-                nums[i] = nums[nums.length - 1 - i];
-                nums[nums.length - 1 - i] = temp;
-            }
+            reverse(nums, 0, nums.length - 1);
             return;
         }
 
@@ -58,17 +51,21 @@ public class Solution {
         // and than swap them: nums[pivotInd] and nums[swapInd]
         swap(nums, pivotInd, swapInd);
 
-        // reverse nums[pivotInd+1..]
-        int middle = (nums.length - 1 - pivotInd) / 2;
-        for (int i = pivotInd + 1; i < pivotInd + 1 + middle; i++) {
-            int i2 = nums.length - 1 - (i - pivotInd - 1);
-            swap(nums, i, i2);
-        }
+        // and reverse nums[pivotInd+1..]
+        reverse(nums, pivotInd + 1, nums.length - 1);
     }
 
     private void swap(int[] nums, int i1, int i2) {
         int temp = nums[i1];
         nums[i1] = nums[i2];
         nums[i2] = temp;
+    }
+
+    private void reverse(int[] nums, int from, int to) {
+        while (from < to) {
+            swap(nums, from, to);
+            from++;
+            to--;
+        }
     }
 }
