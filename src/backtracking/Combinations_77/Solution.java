@@ -1,6 +1,8 @@
 package backtracking.Combinations_77;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -22,6 +24,7 @@ import java.util.List;
  * ]
  */
 public class Solution {
+    // tc O(C(n,k)), sc O(C(n,k)) ?
     List<List<Integer>> combine(int n, int k) {
         List<List<Integer>> result = new ArrayList<>();
         backtrack(result, new ArrayList<>(), 1, n, k);
@@ -34,7 +37,7 @@ public class Solution {
             return;
         }
 
-        for (int i = start; i <= n; i++) {
+        for (int i = start; i <= n-k+1; i++) {
             temp.add(i);
             backtrack(combs, temp, i + 1, n, k - 1);
             temp.remove(temp.size() - 1);
