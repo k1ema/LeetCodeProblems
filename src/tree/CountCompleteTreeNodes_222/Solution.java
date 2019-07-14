@@ -9,19 +9,18 @@ import tree.utils.TreeNode;
  * Given a complete binary tree, count the number of nodes.
  *
  * Note:
- *
  * Definition of a complete binary tree from Wikipedia:
- * In a complete binary tree every level, except possibly the last, is completely filled, and all nodes in the last level are as far left as possible. It can have between 1 and 2h nodes inclusive at the last level h.
+ * In a complete binary tree every level, except possibly the last, is completely filled,
+ * and all nodes in the last level are as far left as possible. It can have between 1 and 2h
+ * nodes inclusive at the last level h.
  *
  * Example:
- *
  * Input:
  *     1
  *    / \
  *   2   3
  *  / \  /
  * 4  5 6
- *
  * Output: 6
  */
 public class Solution {
@@ -35,7 +34,7 @@ public class Solution {
             if (height(root.right) == h - 1) {
                 return (1 << h) + countNodes(root.right);
             } else {
-                return (1 << h - 1) + countNodes(root.left);
+                return (1 << (h - 1)) + countNodes(root.left);
             }
         }
     }
@@ -50,7 +49,7 @@ public class Solution {
                 nodes += 1 << h;
                 root = root.right;
             } else {
-                nodes += 1 << h - 1;
+                nodes += 1 << (h - 1);
                 root = root.left;
             }
             h--;
