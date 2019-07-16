@@ -24,27 +24,29 @@ import java.util.List;
  * number of rows in the triangle.
  */
 public class Solution {
+    // https://leetcode.com/problems/triangle/discuss/38724/7-lines-neat-Java-Solution
+    int minimumTotal(List<List<Integer>> triangle) {
+        int[] a = new int[triangle.size() + 1];
+        for (int i = triangle.size() - 1; i >= 0; i--) {
+            for (int j = 0; j <= i; j++) {
+                a[j] = Math.min(a[j], a[j + 1]) + triangle.get(i).get(j);
+            }
+        }
+        return a[0];
+    }
+
+    // good explanation
+    // https://leetcode.com/problems/triangle/discuss/38730/DP-Solution-for-Triangle
     int minimumTotal1(List<List<Integer>> triangle) {
         List<Integer> rowPath = new ArrayList<>(triangle.get(triangle.size() - 1));
         for (int i = triangle.size() - 2; i >= 0; i--) {
             List<Integer> currentRow = triangle.get(i);
-            for (int j = 0; j < currentRow.size(); j++) {
+            for (int j = 0; j <= i; j++) {
                 int sum = Math.min(rowPath.get(j), rowPath.get(j + 1)) + currentRow.get(j);
                 rowPath.set(j, sum);
             }
 //            rowPath.remove(rowPath.size() - 1);
         }
         return rowPath.get(0);
-    }
-
-    // https://leetcode.com/problems/triangle/discuss/38724/7-lines-neat-Java-Solution
-    int minimumTotal(List<List<Integer>> triangle) {
-        int[] a = new int[triangle.size() + 1];
-        for (int i = triangle.size() - 1; i >= 0; i--) {
-            for (int j = 0; j < triangle.get(i).size(); j++) {
-                a[j] = Math.min(a[j], a[j + 1]) + triangle.get(i).get(j);
-            }
-        }
-        return a[0];
     }
 }
