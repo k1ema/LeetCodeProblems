@@ -1,12 +1,16 @@
 package backtracking.LetterCasePermutation_784;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * 784. Letter Case Permutation
+ * https://leetcode.com/problems/letter-case-permutation/
  *
- * Given a string S, we can transform every letter individually to be lowercase or uppercase to create another string.  Return a list of all possible strings we could create.
+ * Given a string S, we can transform every letter individually to be lowercase or
+ * uppercase to create another string. Return a list of all possible strings we could create.
  *
  * Examples:
  *
@@ -33,7 +37,7 @@ public class Solution {
     }
 
     private void backtrack(char[] str, List<String> list, int i) {
-        while (i < str.length && str[i] >= '0' && str[i] <= '9') {
+        while (i < str.length && Character.isDigit(str[i])) {
             i++;
         }
         if (i == str.length) {
@@ -45,4 +49,63 @@ public class Solution {
         str[i] = Character.toUpperCase(str[i]);
         backtrack(str, list, i + 1);
     }
+
+    // BFS
+    // https://leetcode.com/problems/letter-case-permutation/discuss/115485/Java-Easy-BFS-DFS-solution-with-explanation
+    List<String> letterCasePermutation1(String s) {
+        if (s == null || s.isEmpty()) {
+            return new LinkedList<>();
+        }
+
+        Queue<String> queue = new LinkedList<>();
+        queue.add(s);
+
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isDigit(s.charAt(i))) {
+                continue;
+            }
+            int size = queue.size();
+            for (int j = 0; j < size; j++) {
+                char[] chars = queue.poll().toCharArray();
+                chars[i] = Character.toLowerCase(chars[i]);
+                queue.add(String.valueOf(chars));
+                chars[i] = Character.toUpperCase(chars[i]);
+                queue.add(String.valueOf(chars));
+            }
+        }
+        return new LinkedList<>(queue);
+    }
+
+    // BFS, my solution
+    // tc O(2^n), sc O(2^n)
+    List<String> letterCasePermutation2(String s) {
+        if (s == null || s.isEmpty()) {
+            return new LinkedList<>();
+        }
+
+        char[] chars = s.toCharArray();
+        Queue<String> queue = new LinkedList<>();
+        if (Character.isDigit(chars[0])) {
+            queue.add("" + chars[0]);
+        } else {
+            queue.add("" + Character.toLowerCase(chars[0]));
+            queue.add("" + Character.toUpperCase(chars[0]));
+        }
+        while (!queue.isEmpty()) {
+            if (queue.peek().length() == chars.length) {
+                break;
+            }
+            String poll = queue.poll();
+            char c = chars[poll.length()];
+            if (Character.isDigit(c)) {
+                queue.add(poll + c);
+            } else {
+                queue.add(poll + Character.toLowerCase(c));
+                queue.add(poll + Character.toUpperCase(c));
+            }
+        }
+
+        return new LinkedList<>(queue);
+    }
+
 }
