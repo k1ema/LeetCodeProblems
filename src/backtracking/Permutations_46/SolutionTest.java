@@ -18,7 +18,7 @@ public class SolutionTest {
         assertEquals(24, permute.size());
         System.out.println(permute);
 
-        permute = s.permute(new int[] {1, 2, 3, 4,5});
+        permute = s.permute(new int[] {1, 2, 3, 4, 5});
         assertEquals(120, permute.size());
         System.out.println(permute);
     }
