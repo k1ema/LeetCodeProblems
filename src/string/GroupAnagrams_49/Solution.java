@@ -28,7 +28,9 @@ import java.util.Map;
  */
 public class Solution {
     // https://leetcode.com/problems/group-anagrams/discuss/19176/Share-my-short-JAVA-solution
-    // tc O(strs.len * nlogn), sc O(n)
+    // n - strs length, m - max word length
+    // tc O(n*m*logm), sc O(n*m + n*m) -> O(n*m); first n*m - map with List<String>,
+    // second - keys (String key = String.valueOf(chars);)
     List<List<String>> groupAnagrams(String[] strs) {
         if (strs == null || strs.length == 0) {
             return new ArrayList<>();
@@ -73,7 +75,7 @@ public class Solution {
         return new ArrayList<>(map.values());
     }
 
-    // tc O(), sc O(n), my solution, time limit exceeded
+    // tc O(n*n*m), sc O(n*m), my solution, time limit exceeded
     List<List<String>> groupAnagrams1(String[] strs) {
         Map<String, List<String>> map = new HashMap<>();
         for (String str : strs) {
