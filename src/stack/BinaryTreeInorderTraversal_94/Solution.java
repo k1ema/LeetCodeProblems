@@ -1,5 +1,6 @@
 package stack.BinaryTreeInorderTraversal_94;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -57,10 +58,29 @@ public class Solution {
         }
     }
 
+    // https://leetcode.com/problems/binary-tree-inorder-traversal/discuss/31213/Iterative-solution-in-Java-simple-and-readable
+    public List<Integer> inorderTraversal1(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode cur = root;
+
+        while (cur != null || !stack.empty()) {
+            while (cur != null) {
+                stack.add(cur);
+                cur = cur.left;
+            }
+            cur = stack.pop();
+            list.add(cur.val);
+            cur = cur.right;
+        }
+
+        return list;
+    }
 
     // recursive
     // tc O(n), sc O(n)
-    List<Integer> inorderTraversal1(TreeNode root) {
+    List<Integer> inorderTraversal2(TreeNode root) {
         List<Integer> result = new LinkedList<>();
         dfs(root, result);
         return result;
