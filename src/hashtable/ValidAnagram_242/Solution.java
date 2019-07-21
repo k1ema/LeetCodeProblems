@@ -1,6 +1,5 @@
 package hashtable.ValidAnagram_242;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,20 +24,8 @@ import java.util.List;
  * What if the inputs contain unicode characters? How would you adapt your solution to such case?
  */
 public class Solution {
-    // tc O(n+m), sc O(n)
+    // tc O(n), sc O(n)
     boolean isAnagram(String s, String t) {
-        if (s == null || t == null || s.length() != t.length()) {
-            return false;
-        }
-        List<String> l = new LinkedList<>(Arrays.asList(s.split("")));
-        String[] tt = t.split("");
-        for (int i = 0; i < tt.length; i++) {
-            l.remove(tt[i]);
-        }
-        return l.isEmpty();
-    }
-
-    boolean isAnagram1(String s, String t) {
         if (s == null || t == null || s.length() != t.length()) {
             return false;
         }
@@ -55,5 +42,18 @@ public class Solution {
             }
         }
         return true;
+    }
+
+    // tc O(n+m), sc O(n)
+    boolean isAnagram1(String s, String t) {
+        if (s == null || t == null || s.length() != t.length()) {
+            return false;
+        }
+        List<String> l = new LinkedList<>(Arrays.asList(s.split("")));
+        String[] tt = t.split("");
+        for (int i = 0; i < tt.length; i++) {
+            l.remove(tt[i]);
+        }
+        return l.isEmpty();
     }
 }
