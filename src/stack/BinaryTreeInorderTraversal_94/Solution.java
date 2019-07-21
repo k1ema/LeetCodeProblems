@@ -26,7 +26,7 @@ import tree.utils.TreeNode;
  * Follow up: Recursive solution is trivial, could you do it iteratively?
  */
 public class Solution {
-    // tc O(n), sc O(n)
+    // tc O(n), sc O(n), my solution
     List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> result = new LinkedList<>();
         if (root == null) {
@@ -57,6 +57,31 @@ public class Solution {
             root = root.left;
         }
     }
+
+    // most effective solution: Morris Traversal, Approach 3 in solutions
+    // tc O(n), sc O(n)
+    List<Integer> inorderTraversal3(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        TreeNode curr = root;
+        TreeNode pre;
+        while (curr != null) {
+            if (curr.left == null) {
+                res.add(curr.val);
+                curr = curr.right; // move to next right node
+            } else { // has a left subtree
+                pre = curr.left;
+                while (pre.right != null) { // find rightmost
+                    pre = pre.right;
+                }
+                pre.right = curr; // put cur after the pre node
+                TreeNode temp = curr; // store cur node
+                curr = curr.left; // move cur to the top of the new tree
+                temp.left = null; // original cur left be null, avoid infinite loops
+            }
+        }
+        return res;
+    }
+
 
     // https://leetcode.com/problems/binary-tree-inorder-traversal/discuss/31213/Iterative-solution-in-Java-simple-and-readable
     public List<Integer> inorderTraversal1(TreeNode root) {
