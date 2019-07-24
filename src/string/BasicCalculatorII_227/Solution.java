@@ -1,5 +1,7 @@
 package string.BasicCalculatorII_227;
 
+import java.util.Stack;
+
 /**
  * 227. Basic Calculator II
  * https://leetcode.com/problems/basic-calculator-ii/
@@ -26,8 +28,49 @@ package string.BasicCalculatorII_227;
  * Do not use the eval built-in library function.
  */
 public class Solution {
-    // tc O(n), sc O(1)
+    // tc O(n), sc O(n)
     int calculate(String s) {
+        int len;
+        if (s == null || (len = s.length()) == 0) {
+            return 0;
+        }
+        Stack<Integer> stack = new Stack<>();
+        int num = 0;
+        char sign = '+';
+        for (int i = 0; i < len; i++) {
+            if (Character.isDigit(s.charAt(i))) {
+                num = num * 10 + s.charAt(i) - '0';
+            }
+            if (!Character.isDigit(s.charAt(i)) && ' ' != s.charAt(i) || i == len - 1) {
+                switch (sign) {
+                    case '+':
+                        stack.push(num);
+                        break;
+                    case '-':
+                        stack.push(-num);
+                        break;
+                    case '*':
+                        stack.push(stack.pop() * num);
+                        break;
+                    case '/':
+                        stack.push(stack.pop() / num);
+                        break;
+                }
+                num = 0;
+                sign = s.charAt(i);
+            }
+        }
+
+        int res = 0;
+        while (!stack.isEmpty()) {
+            res += stack.pop();
+        }
+        return res;
+    }
+
+    // without stack
+    // tc O(n), sc O(1)
+    int calculate1(String s) {
         int len;
         if (s == null || (len = s.length()) == 0) {
             return 0;
