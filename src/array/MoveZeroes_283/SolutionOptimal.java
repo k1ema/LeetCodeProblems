@@ -2,8 +2,6 @@ package array.MoveZeroes_283;
 
 /**
  * Time complexity: O(n)
- *
- * @author klema
  */
 public class SolutionOptimal {
     void moveZeroes(int[] nums) {

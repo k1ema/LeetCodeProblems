@@ -8,11 +8,10 @@ import java.util.List;
 /**
  * 118. Pascal's Triangle
  * https://leetcode.com/problems/pascals-triangle/
- * <p>
+ *
  * Given a non-negative integer numRows, generate the first numRows of Pascal's triangle.
- * <p>
  * In Pascal's triangle, each number is the sum of the two numbers directly above it.
- * <p>
+ *
  * Example:
  * Input: 5
  * Output:

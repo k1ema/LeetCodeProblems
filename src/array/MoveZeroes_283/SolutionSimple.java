@@ -2,8 +2,6 @@ package array.MoveZeroes_283;
 
 /**
  * Time complexity: O(n^(2+n))
- *
- * @author klema
  */
 class SolutionSimple {
     void moveZeroes(int[] nums) {
