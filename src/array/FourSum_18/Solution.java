@@ -25,7 +25,7 @@ import java.util.List;
  * ]
  */
 public class Solution {
-    // tc O(n!), sc O(n)
+    // tc O(n^3), sc O(n)
     List<List<Integer>> fourSum(int[] nums, int target) {
         int len;
         List<List<Integer>> result = new ArrayList<>();
