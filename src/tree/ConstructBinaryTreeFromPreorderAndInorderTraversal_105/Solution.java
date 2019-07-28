@@ -2,7 +2,6 @@ package tree.ConstructBinaryTreeFromPreorderAndInorderTraversal_105;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import tree.utils.TreeNode;
 
@@ -28,6 +27,11 @@ import tree.utils.TreeNode;
  */
 public class Solution {
     // tc O(n), sc O(n)
+    // https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
+    // explanation https://www.techiedelight.com/construct-binary-tree-from-inorder-preorder-traversal/
+    // The the basic idea is to take the first element in preorder array as the root, find the position
+    // of the root in the inorder array; then locate the range for left sub-tree and right sub-tree and
+    // do recursion. Use a HashMap to record the index of root in the inorder array.
     TreeNode buildTree(int[] preorder, int[] inorder) {
         if (preorder == null || inorder == null
                 || inorder.length == 0 || preorder.length != inorder.length) {
@@ -39,18 +43,19 @@ public class Solution {
             inorderIndexes.put(inorder[i], i);
         }
 
-        return buildTree(0, inorder.length - 1, inorderIndexes, new AtomicInteger(0), preorder);
+        return buildTree(0, inorder.length - 1, inorderIndexes, 0, preorder);
     }
 
-    private TreeNode buildTree(int start, int end, Map<Integer, Integer> inorderIndexes, AtomicInteger pIndex, int[] preorder) {
+    private TreeNode buildTree(int start, int end, Map<Integer, Integer> inorderIndexes, int pIndex, int[] preorder) {
         if (start > end) {
             return null;
         }
-        int rootVal = preorder[pIndex.getAndIncrement()];
+        int rootVal = preorder[pIndex];
         TreeNode root = new TreeNode(rootVal);
         int index = inorderIndexes.get(rootVal);
-        root.left = buildTree(start,  index - 1, inorderIndexes, pIndex, preorder);
-        root.right = buildTree(index + 1, end, inorderIndexes, pIndex, preorder);
+        int leftLength = index - start;
+        root.left = buildTree(start,  index - 1, inorderIndexes, pIndex + 1, preorder);
+        root.right = buildTree(index + 1, end, inorderIndexes, pIndex + 1 + leftLength, preorder);
         return root;
     }
 }
