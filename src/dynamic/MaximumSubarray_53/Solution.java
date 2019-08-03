@@ -21,7 +21,8 @@ public class Solution {
     // 1. You should build the next iteration using the data from the previous iteration.
     // 2. Think about input array as infinity-length array. In any item in array you should be able to define the result.
     // The idea is next. In every step you should make a decision: use previous subsequence + current element,
-    //  or just current element.
+    // or just current element.
+    // it's a Kadane’s algorithm
     int maxSubArray(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
