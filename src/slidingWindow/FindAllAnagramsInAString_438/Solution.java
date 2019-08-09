@@ -39,10 +39,48 @@ import java.util.Map;
  * The substring with start index = 2 is "ab", which is an anagram of "ab".
  */
 public class Solution {
-    // https://www.geeksforgeeks.org/anagram-substring-search-search-permutations/
     // tc O(n), n = s.length()
     // 12 ms
     List<Integer> findAnagrams(String s, String p) {
+        if (s == null || s.length() < p.length()) {
+            return new ArrayList<>();
+        }
+
+        int[] count = new int[26];
+        for (int i = 0; i < p.length(); i++) {
+            count[s.charAt(i) - 'a']++;
+            count[p.charAt(i) - 'a']--;
+        }
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = p.length(); i <= s.length(); i++) {
+            if (allZero(count)) {
+                result.add(i - p.length());
+            }
+
+
+            count[s.charAt(i - p.length()) - 'a']--;
+            if (i < s.length()) {
+                count[s.charAt(i) - 'a']++;
+            }
+        }
+
+        return result;
+    }
+
+    private boolean allZero(int[] count) {
+        for (int i = 0; i < count.length; i++) {
+            if (count[i] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // https://www.geeksforgeeks.org/anagram-substring-search-search-permutations/
+    // tc O(n), n = s.length()
+    // 12 ms
+    List<Integer> findAnagrams3(String s, String p) {
         if (s == null || s.length() < p.length()) {
             return new ArrayList<>();
         }
