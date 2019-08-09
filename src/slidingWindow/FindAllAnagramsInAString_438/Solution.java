@@ -1,4 +1,4 @@
-package hashtable.FindAllAnagramsInAString_438;
+package slidingWindow.FindAllAnagramsInAString_438;
 
 import java.util.ArrayList;
 import java.util.Arrays;
