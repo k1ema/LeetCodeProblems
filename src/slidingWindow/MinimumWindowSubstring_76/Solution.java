@@ -21,6 +21,7 @@ import java.util.Map;
  */
 public class Solution {
     // tc O(|s| + |t|)
+    // https://leetcode.com/problems/minimum-window-substring/discuss/26810/Java-solution.-using-two-pointers-%2B-HashMap
     String minWindow(String s, String t) {
         if (s == null || t == null || s.isEmpty() || s.length() < t.length()) {
             return "";
@@ -67,7 +68,6 @@ public class Solution {
                     }
                 }
                 left++;
-//                System.out.println(s.substring(minLeft, minLeft+minLen));
             }
         }
 
