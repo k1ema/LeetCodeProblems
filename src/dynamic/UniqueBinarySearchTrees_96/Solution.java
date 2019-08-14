@@ -37,6 +37,9 @@ public class Solution {
     }
 
     // time limit exceeded
+    // tc O(n * (n-1)^2 * (n-2)^4 * ... * (n-n+1)^(2^(n-1)))) =
+    // = O(n^(1 + 2^1 + 2^2 + ... + 2^(n-1))) = O(n^((2^(n-1)))), (?)
+    // sc O(n)
     int numTrees1(int n) {
         if (n == 0) {
             return 1;

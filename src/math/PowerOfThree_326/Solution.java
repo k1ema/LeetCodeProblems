@@ -28,11 +28,10 @@ package math.PowerOfThree_326;
 public class Solution {
     // tc Unknown, sc O(1)
     boolean isPowerOfThree(int n) {
-        if (n <= 0) {
-            return false;
-        }
-        double x = Math.log(Math.abs(n)) / Math.log(3);
-        return Math.abs(x - Math.round(x)) < Math.pow(10, -14);
+        if (n <= 0) return false;
+        if (n == 1) return true;
+        double x = Math.log10(n) / Math.log10(3);
+        return (x % (int) x) == 0;
     }
 
     // tc O(log3(n)), sc O(1)
