@@ -18,13 +18,15 @@ import java.util.Map.Entry;
  * Input: [3,2,3]
  * Output: 3
  *
- *  Example 2:
+ * Example 2:
  * Input: [2,2,1,1,1,2,2]
  * Output: 2
  */
 public class Solution {
     // Boyer-Moore majority vote algorithm.
     // tc O(n), sc O(1)
+    // https://discuss.leetcode.com/topic/28601/java-solutions-sorting-hashmap-moore-voting-bit-manipulation
+    // https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_majority_vote_algorithm - Boyer–Moore majority vote algorithm
     int majorityElement(int[] nums) {
         int candidate = nums[0];
         int count = 0;
@@ -32,7 +34,7 @@ public class Solution {
             if (count == 0) {
                 candidate = nums[i];
             }
-            count = nums[i] == candidate ? count + 1 : count - 1;
+            count = (nums[i] == candidate) ? count + 1 : count - 1;
         }
         return candidate;
     }
