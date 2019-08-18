@@ -26,7 +26,11 @@ import java.util.List;
  * ]
  */
 public class Solution {
-    // tc O(n * 2^n), sc O(2^n)
+    // tc O(n * 2^n),
+    // having each number we have two choices:
+    // to include the number or to exclude it. so, we have 2*2*2...*2 (n times) = 2^n
+    // and n - is the time of copying n-size of subset to the result list
+    // sc O(2^n)
     List<List<Integer>> subsetsWithDup(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
         if (nums == null) return result;
