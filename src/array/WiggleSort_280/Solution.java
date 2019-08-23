@@ -8,7 +8,32 @@ package array.WiggleSort_280;
  */
 public class Solution {
     // tc O(n), sc O(1)
+    // TODO check it!
     void wiggleSort(int[] nums) {
+        int n;
+        if (nums == null || (n = nums.length) < 2) return;
+
+        for (int i = 1; i < nums.length; i++) {
+            if ((i & 1) == 1) {
+                if (nums[i] < nums[i - 1]) {
+                    swap(nums, i, i - 1);
+                }
+            } else {
+                if (nums[i] > nums[i - 1]) {
+                    swap(nums, i, i - 1);
+                }
+            }
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+
+    // tc O(n), sc O(1)
+    void wiggleSort2(int[] nums) {
         if (nums == null || nums.length < 2) {
             return;
         }
@@ -21,11 +46,5 @@ public class Solution {
                 swap(nums, i, i - 1);
             }
         }
-    }
-
-    private void swap(int[] nums, int ind1, int ind2) {
-        int t = nums[ind1];
-        nums[ind1] = nums[ind2];
-        nums[ind2] = t;
     }
 }
