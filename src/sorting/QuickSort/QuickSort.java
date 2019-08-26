@@ -1,5 +1,7 @@
 package sorting.QuickSort;
 
+import java.util.Random;
+
 public class QuickSort {
     public void sort(int[] nums) {
         sort(nums, 0, nums.length - 1);
@@ -14,15 +16,19 @@ public class QuickSort {
         sort(nums, pivotIndex + 1, hi);
     }
 
-    int partition(int[] nums, int lo, int hi) {
-        int pivot = nums[lo];
+    private Random rnd = new Random();
+    private int partition(int[] nums, int lo, int hi) {
+        int pivotInd = lo + rnd.nextInt(hi - lo + 1);
+        int pivot = nums[pivotInd];
+        swap(nums, lo, pivotInd);
+
         int i = lo;
         int j = hi;
         while (i < j) {
             while (i <= j && nums[i] <= pivot) {
                 i++;
             }
-            while (j >= i && nums[j] > pivot) {
+            while (j >= i && nums[j] >= pivot) {
                 j--;
             }
             if (i < j) {

@@ -71,7 +71,7 @@ public class Solution {
             while (i <= j && nums[i] <= pivot) {
                 i++;
             }
-            while (i <= j && nums[j] > pivot) {
+            while (i <= j && nums[j] >= pivot) {
                 j--;
             }
             if (i < j) {
@@ -113,14 +113,14 @@ public class Solution {
     private int partition(int[] nums, int lo, int hi, int pivotInd) {
         int pivot = nums[pivotInd];
         swap(nums, pivotInd, hi);
-        int lesserItemsInd = lo;
+        int storeInd = lo;
         for (int i = lo; i < hi; i++) {
             if (nums[i] < pivot) {
-                swap(nums, lesserItemsInd++, i);
+                swap(nums, storeInd++, i);
             }
         }
-        swap(nums, hi, lesserItemsInd);
-        return lesserItemsInd;
+        swap(nums, hi, storeInd);
+        return storeInd;
     }
 
     // tc O(nlogn), sc O(1); 2ms
