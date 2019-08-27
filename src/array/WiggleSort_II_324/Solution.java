@@ -30,7 +30,8 @@ public class Solution {
         int median = findKthSmallest(nums, nums.length / 2);
         int n = nums.length;
 
-        // use dutch flag algorithm
+        // use dutch national flag algorithm
+        // https://en.wikipedia.org/wiki/Dutch_national_flag_problem
         int left = 0, right = n - 1, curr = 0;
         while (curr <= right) {
             if (nums[ind(curr, n)] > median) {
