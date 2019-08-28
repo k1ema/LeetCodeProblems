@@ -18,7 +18,9 @@ import linkedList.utils.ListNode;
  *
  */
 class Solution {
-    // tc O(nlogn), sc O(1)
+    // tc O(nlogn), sc O(1); bottom-to-up solution
+    // 5 ms, faster than 30.xx%; 39.3 MB, less than 100.00%
+    // https://leetcode.com/problems/sort-list/discuss/46712/Bottom-to-up(not-recurring)-with-o(1)-space-complextity-and-o(nlgn)-time-complextity
     ListNode sortList(ListNode head) {
         if (head == null || head.next == null) {
             return head;
@@ -61,42 +63,48 @@ class Solution {
     }
 
     private ListNode merge(ListNode left, ListNode right, ListNode prev) {
-        ListNode cur = prev;
         while (left != null && right != null) {
             if (left.val < right.val) {
-                cur.next = left;
+                prev.next = left;
                 left = left.next;
             } else {
-                cur.next = right;
+                prev.next = right;
                 right = right.next;
             }
-            cur = cur.next;
+            prev = prev.next;
         }
         if (left != null) {
-            cur.next = left;
+            prev.next = left;
         } else if (right != null) {
-            cur.next = right;
+            prev.next = right;
         }
-        while (cur.next != null) {
-            cur = cur.next;
+        while (prev.next != null) {
+            prev = prev.next;
         }
 
-        return cur;
+        return prev;
     }
 
-    // tc O(n^n)??, sc O(1); Time Limit Exceeded
+    // recursive up-to-bottom solution; 3 ms, faster than 97.59%; 39.8 MB, less than 100.00%
+    // https://leetcode.com/problems/sort-list/discuss/46714/Java-merge-sort-solution
     ListNode sortList1(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
+        if (head == null || head.next == null) return head;
+
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode slow = dummy;
+        ListNode fast = dummy;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
         }
-        do {
-            if (head.val > head.next.val) {
-                int tmp = head.val;
-                head.val = head.next.val;
-                head.next.val = tmp;
-            }
-            sortList(head.next);
-        } while (head.next != null && head.val > head.next.val);
-        return head;
+
+        ListNode right = sortList(slow.next);
+        slow.next = null;
+        ListNode left = sortList(dummy.next);
+        merge(left, right, dummy);
+
+        return dummy.next;
     }
 }

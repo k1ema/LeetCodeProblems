@@ -26,6 +26,7 @@ import java.util.Arrays;
 public class Solution {
     // Dutch national flag problem
     // https://en.wikipedia.org/wiki/Dutch_national_flag_problem
+    // https://www.geeksforgeeks.org/sort-an-array-of-0s-1s-and-2s/
     // tc O(n), one pass; sc O(1)
     void sortColors(int[] nums) {
         if (nums == null || nums.length < 2) return;
