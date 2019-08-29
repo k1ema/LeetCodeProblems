@@ -45,18 +45,19 @@ public class Solution {
 
     // tc O(n); 1 ms, faster than 99.49%; 36.5 MB, less than 90.67%
     int findKthLargest2(int[] nums, int k) {
-        return findKthLargest(nums, k, 0, nums.length - 1);
+        int n = nums.length;
+        k = n - k;
+        return findKthLargest(nums, k, 0, n - 1);
     }
 
     private int findKthLargest(int[] nums, int k, int lo, int hi) {
         int pInd = partition(nums, lo, hi);
-        int resInd = hi + 1 - k;
-        if (resInd < pInd) {
-            return findKthLargest(nums, pInd - resInd, lo, pInd - 1);
-        } else if (resInd > pInd) {
+        if (k < pInd) {
+            return findKthLargest(nums, k, lo, pInd - 1);
+        } else if (k > pInd) {
             return findKthLargest(nums, k, pInd + 1, hi);
         } else {
-            return nums[resInd];
+            return nums[k];
         }
     }
 
