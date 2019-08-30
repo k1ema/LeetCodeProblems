@@ -40,5 +40,9 @@ public class SolutionTest {
         nums = new int[] {1, 3, 2, 2, 2, 1, 1, 3, 1, 1, 2};
         s.wiggleSort(nums);
         assertArrayEquals(new int[] {2, 3, 1, 3, 1, 2, 1, 2, 1, 2, 1}, nums);
+
+        nums = new int[] {1, 1, 2, 1, 2, 2, 1};
+        s.wiggleSort(nums);
+        assertArrayEquals(new int[] {1, 2, 1, 2, 1, 2, 1}, nums);
     }
 }

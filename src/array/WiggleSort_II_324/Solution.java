@@ -25,24 +25,24 @@ import java.util.Random;
  */
 public class Solution {
     void wiggleSort(int[] nums) {
-        if (nums == null || nums.length < 2) return;
+        int len;
+        if (nums == null || (len = nums.length) < 2) return;
 
-        int median = findKthSmallest(nums, nums.length / 2);
-        int n = nums.length;
+        int median = findKthSmallest(nums, len >> 1);
 
         // use dutch national flag algorithm
         // https://en.wikipedia.org/wiki/Dutch_national_flag_problem
-        int left = 0, right = n - 1, curr = 0;
-        while (curr <= right) {
-            if (nums[ind(curr, n)] > median) {
-                swap(nums, ind(curr, n), ind(left, n));
-                left++;
-                curr++;
-            } else if (nums[ind(curr, n)] < median) {
-                swap(nums, ind(curr, n), ind(right, n));
-                right--;
+        int i = 0, j = 0, n = len - 1;
+        while (j <= n) {
+            if (nums[ind(j, len)] > median) {
+                swap(nums, ind(j, len), ind(i, len));
+                i++;
+                j++;
+            } else if (nums[ind(j, len)] < median) {
+                swap(nums, ind(j, len), ind(n, len));
+                n--;
             } else {
-                curr++;
+                j++;
             }
         }
         System.out.println(Arrays.toString(nums));
