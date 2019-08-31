@@ -53,7 +53,7 @@ public class Solution {
 
     // tc O(n), sc O(n)
     // 43 ms, faster than 40.71%; 41.7 MB, less than 14.65%
-    List<Integer> topKFrequent2(int[] nums, int k) {
+    List<Integer> topKFrequent1(int[] nums, int k) {
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
             map.merge(nums[i], 1, Integer::sum);
@@ -113,5 +113,25 @@ public class Solution {
         int tmp = nums[i];
         nums[i] = nums[j];
         nums[j] = tmp;
+    }
+
+    // tc O(nlogn), sc O(n)
+    // 47 ms, faster than 17.49%; 41.5 MB, less than 19.83%
+    List<Integer> topKFrequent2(int[] nums, int k) {
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        for (int n : nums) {
+            frequencyMap.merge(n, 1, Integer::sum);
+        }
+
+        Comparator<Integer> comparator = Comparator.comparingInt(frequencyMap::get);
+        PriorityQueue<Integer> heap = new PriorityQueue<>(comparator);
+        for (int n : frequencyMap.keySet()) {
+            heap.add(n);
+            if (heap.size() > k) {
+                heap.poll();
+            }
+        }
+
+        return new ArrayList<>(heap);
     }
 }
