@@ -15,6 +15,8 @@ public class FileSystem2 implements IFileSystem {
         root = new File();
     }
 
+    // tc O(m + n + k*logk), m - path length, n - depth of last dir level,
+    // k - the number of entries(files + subdirectories) in the last level directory
     public List<String> ls(String path) {
         File t = root;
         List<String> files = new ArrayList<>();
@@ -33,6 +35,7 @@ public class FileSystem2 implements IFileSystem {
         return res_files;
     }
 
+    // tc O(m + n)
     public void mkdir(String path) {
         File t = root;
         String[] d = path.split("/");
@@ -44,6 +47,7 @@ public class FileSystem2 implements IFileSystem {
         }
     }
 
+    // tc O(m + n)
     public void addContentToFile(String filePath, String content) {
         File t = root;
         String[] d = filePath.split("/");
@@ -58,6 +62,7 @@ public class FileSystem2 implements IFileSystem {
         t.content += content;
     }
 
+    // tc O(m + n)
     public String readContentFromFile(String filePath) {
         File t = root;
         String[] d = filePath.split("/");
