@@ -42,6 +42,13 @@ public class Solution {
         boolean[] dp = new boolean[sum + 1];
         dp[0] = true;
 
+        // why did we go from the right instead of left?
+        // answer1: if we go from left to right, the dp[i - num] has been updated with current iteration and the status from last iteration is lost.
+        //
+        // answer2: In 2D array our current row is updated with the values from the previous row. When we use a boolean array only,
+        // if we traverse from left to right, the leftmost value gets updated and its previous value gets replaced. For the elements
+        // on the right, we need the old values of the leftmost elements not the updated ones. When we traverse from right to left,
+        // we are using the old values to update our boolean array.
         for (int num : nums) {
             for (int i = sum; i >= num; i--) {
                 dp[i] = dp[i] || dp[i - num];
@@ -82,7 +89,7 @@ public class Solution {
             for (int j = 1; j < sum + 1; j++) {
                 dp[i][j] = dp[i - 1][j];
                 if (j >= nums[i - 1]) {
-                    dp[i][j] = (dp[i][j] || dp[i - 1][j - nums[i - 1]]);
+                    dp[i][j] = dp[i][j] || dp[i - 1][j - nums[i - 1]];
                 }
             }
         }
