@@ -1,10 +1,6 @@
 package graph.Course_Schedule_II_210;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * 210. Course Schedule II
@@ -42,6 +38,8 @@ import java.util.Stack;
  */
 public class Solution {
     // DFS
+    // https://www.geeksforgeeks.org/topological-sorting/
+    // https://www.geeksforgeeks.org/detect-cycle-in-a-graph/
     // tc O(V + E), sc O(V + E)
     int[] findOrder(int numCourses, int[][] prerequisites) {
         if (numCourses == 0 || prerequisites == null) return new int[] {};

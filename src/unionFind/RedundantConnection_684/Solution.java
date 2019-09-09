@@ -49,6 +49,7 @@ public class Solution {
     // https://www.youtube.com/watch?v=wU6udHRIkcc
     // https://en.wikipedia.org/wiki/Disjoint-set_data_structure
     // https://leetcode.com/problems/redundant-connection/discuss/123819/Union-Find-with-Explanations-(Java-Python)
+    // https://www.geeksforgeeks.org/union-find/
     // see comments, short variant without ranks, just union two trees to the 2nd one, works faster
     // tc O(n), sc O(n)
     int[] findRedundantConnection(int[][] edges) {
@@ -68,7 +69,8 @@ public class Solution {
     }
 
     // https://leetcode.com/problems/redundant-connection/discuss/123819/Union-Find-with-Explanations-(Java-Python)
-    // classic solution with ranks
+    // https://www.youtube.com/watch?v=ID00PMy0-vE
+    // classic solution with ranks, rank means the depth of tree
     // tc O(n), sc O(n)
     int[] findRedundantConnection1(int[][] edges) {
         int[] parent = new int[edges.length + 1];
@@ -79,6 +81,7 @@ public class Solution {
             if (rootU == rootV) return edge;
             if (rank[rootU] <= rank[rootV]) {
                 parent[rootU] = rootV;
+                // we change parent's rank only if two ranks are equal, otherwise rank does not change
                 if (rank[rootU] == rank[rootV]) {
                     rank[rootV]++;
                 }
