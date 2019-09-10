@@ -33,7 +33,7 @@ public class Solution {
     // https://leetcode.com/problems/number-of-islands/discuss/56359/Very-concise-Java-AC-solution
     // dfs, tc O(n * m), sc O(n * m)
     // 1 ms, faster than 100.00%, 41.3 MB, less than 58.61%
-    int numIslands1(char[][] grid) {
+    int numIslands(char[][] grid) {
         int n;
         if (grid == null || (n = grid.length) == 0) return 0;
         int count = 0;
@@ -66,7 +66,7 @@ public class Solution {
     // sc O(n * m)
     private int[] id;
     private int[] sz; // for weighted union-find
-    int numIslands(char[][] grid) {
+    int numIslands1(char[][] grid) {
         int n;
         if (grid == null || (n = grid.length) == 0) return 0;
 
