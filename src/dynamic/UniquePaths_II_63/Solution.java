@@ -31,10 +31,50 @@ package dynamic.UniquePaths_II_63;
  * 2. Down -> Down -> Right -> Right
  */
 public class Solution {
-    //
+    // my solution
+    // tc O(m * n), sc O(1)
+    // 0 ms, faster than 100.00%; 40.5 MB, less than 35.38%
+    int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        if (obstacleGrid == null || obstacleGrid[0][0] == 1) return 0;
+
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+
+        // let's count the num of ways in negative sector
+        // and positive 1 leave for obstacles
+        // filling up first column
+        for (int i = 0; i < m; i++) {
+            // leave the bottom part equals to zero since we met an obstacle
+            if (obstacleGrid[i][0] == 1) {
+                break;
+            } else {
+                obstacleGrid[i][0] = -1;
+            }
+        }
+        // filling up first row
+        for (int i = 0; i < n; i++) {
+            // leave the right part equals to zero since we met an obstacle
+            if (obstacleGrid[0][i] == 1) {
+                break;
+            } else {
+                obstacleGrid[0][i] = -1;
+            }
+        }
+
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (obstacleGrid[i][j] == 1) continue;
+                obstacleGrid[i][j] += Math.min(0, obstacleGrid[i - 1][j]) + Math.min(0, obstacleGrid[i][j - 1]);
+            }
+        }
+
+        return Math.max(-1 * obstacleGrid[m - 1][n - 1], 0);
+    }
+
+    // https://leetcode.com/problems/unique-paths-ii/solution/
     // tc O(m * n), sc O(1)
     // 0 ms, faster than 100.00%; 40.5 MB, less than 30.77%
-    int uniquePathsWithObstacles(int[][] obstacleGrid) {
+    int uniquePathsWithObstacles1(int[][] obstacleGrid) {
         // If the starting cell has an obstacle, then simply return as there would be
         // no paths to the destination.
         if (obstacleGrid[0][0] == 1) return 0;
@@ -72,47 +112,5 @@ public class Solution {
         }
 
         return obstacleGrid[m - 1][n - 1];
-    }
-
-    // my solution
-    // tc O(m * n), sc O(1)
-    // 1 ms, faster than 23.36%; 38.9 MB, less than 70.77%
-    int uniquePathsWithObstacles1(int[][] obstacleGrid) {
-        if (obstacleGrid == null || obstacleGrid[0][0] == 1) return 0;
-
-        int m = obstacleGrid.length;
-        int n = obstacleGrid[0].length;
-
-        // let's count the num of ways in negative sector
-        // and positive 1 leave for obstacles
-        // filling up first column
-        for (int i = 0; i < m; i++) {
-            // leave the bottom part equals to zero since we met an obstacle
-            if (obstacleGrid[i][0] == 1) {
-                break;
-            } else {
-                obstacleGrid[i][0] = -1;
-            }
-        }
-        // filling up first row
-        for (int i = 0; i < n; i++) {
-            // leave the right part equals to zero since we met an obstacle
-            if (obstacleGrid[0][i] == 1) {
-                break;
-            } else {
-                obstacleGrid[0][i] = -1;
-            }
-        }
-
-        for (int i = 1; i < m; i++) {
-            for (int j = 1; j < n; j++) {
-                if (obstacleGrid[i][j] == 1) continue;
-                int prev1 = obstacleGrid[i - 1][j] == 1 ? 0 : obstacleGrid[i - 1][j];
-                int prev2 = obstacleGrid[i][j - 1] == 1 ? 0 : obstacleGrid[i][j - 1];
-                obstacleGrid[i][j] += prev1 + prev2;
-            }
-        }
-
-        return Math.max(-1 * obstacleGrid[m - 1][n - 1], 0);
     }
 }
