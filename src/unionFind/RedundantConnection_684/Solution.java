@@ -28,6 +28,7 @@ import java.util.Set;
  *   1
  *  / \
  * 2 - 3
+ *
  * Example 2:
  * Input: [[1,2], [2,3], [3,4], [1,4], [1,5]]
  * Output: [1,4]
@@ -35,6 +36,7 @@ import java.util.Set;
  * 5 - 1 - 2
  *     |   |
  *     4 - 3
+ *
  * Note:
  * The size of the input 2D-array will be between 3 and 1000.
  * Every integer represented in the 2D-array will be between 1 and N, where N is
@@ -64,8 +66,8 @@ public class Solution {
     }
 
     private int find(int[] parent, int x) {
-        if (parent[x] == 0) return x;
-        return parent[x] = find(parent, parent[x]); // Path compression by halving.
+        while (parent[x] != 0) x = parent[x]; // Path compression by halving.
+        return x;
     }
 
     // https://leetcode.com/problems/redundant-connection/discuss/123819/Union-Find-with-Explanations-(Java-Python)
