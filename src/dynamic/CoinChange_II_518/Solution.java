@@ -27,11 +27,11 @@ package dynamic.CoinChange_II_518;
  * Output: 1
  */
 public class Solution {
-    // tc O(amount * coins.len); sc O(amount)
+    // tc O(m * n), sc O(m), where m = amount, n = coins.length
     // 3 ms, faster than 49.82%; 34.5 MB, less than 100.00%
     int change(int amount, int[] coins) {
-        if (amount == 0) return 1;
         int[] dp = new int[amount + 1];
+        dp[0] = 1;
         for (int i = 0; i < coins.length; i++) {
             for (int j = 1; j <= amount; j++) {
                 if (j - coins[i] == 0) {
