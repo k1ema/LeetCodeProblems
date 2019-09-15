@@ -48,6 +48,7 @@ public class Trie {
     }
 
     /** Inserts a word into the trie. */
+    // tc O(word.len)
     public void insert(String word) {
         int i = 0;
         TrieNode node = root;
@@ -63,6 +64,7 @@ public class Trie {
     }
 
     /** Returns if the word is in the trie. */
+    // tc O(word.len)
     public boolean search(String word) {
         int i = 0;
         TrieNode node = root;
@@ -79,6 +81,7 @@ public class Trie {
     }
 
     /** Returns if there is any word in the trie that starts with the given prefix. */
+    // tc O(prefix.len)
     public boolean startsWith(String prefix) {
         int i = 0;
         TrieNode node = root;
