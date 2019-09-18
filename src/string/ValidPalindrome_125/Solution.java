@@ -19,6 +19,7 @@ package string.ValidPalindrome_125;
  */
 public class Solution {
     // tc O(n), sc O(1)
+    // 4 ms, faster than 81.21%; 37.6 MB, less than 100.00%
     boolean isPalindrome(String s) {
         if (s == null) return false;
         if (s.isEmpty()) return true;
@@ -26,7 +27,7 @@ public class Solution {
         int len = s.length();
         int p1 = 0;
         int p2 = len - 1;
-        while (p1 < len && p2 >= 0) {
+        while (p1 <= p2) {
             char c1 = s.charAt(p1);
             if (!Character.isLetterOrDigit(c1)) {
                 p1++;
