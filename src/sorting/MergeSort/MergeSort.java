@@ -40,7 +40,6 @@ public class MergeSort {
     public void sort(int[] nums) {
         int n;
         if (nums == null || (n = nums.length) < 2) return;
-        n = nums.length;
         aux = new int[n];
         for (int sz = 1; sz < n; sz = sz + sz) {
             for (int lo = 0; lo < n - sz; lo += sz + sz) {
