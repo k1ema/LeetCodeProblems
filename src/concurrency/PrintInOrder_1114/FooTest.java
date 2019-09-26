@@ -9,7 +9,7 @@ class FooTest {
 
     @BeforeEach
     void setUp() {
-        Foo2 foo = new Foo2();
+        Foo foo = new Foo();
         t1 = new Thread(() -> {
             try {
                 foo.first(() -> System.out.print("first"));
