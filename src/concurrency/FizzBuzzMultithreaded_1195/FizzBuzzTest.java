@@ -1,16 +1,18 @@
 package concurrency.FizzBuzzMultithreaded_1195;
 
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FizzBuzzTest {
     @Test
+    @DisplayName("Fizzbuzz")
     public void test() throws Exception {
         Queue<String> strings = new LinkedBlockingQueue<>();
 
