@@ -20,15 +20,13 @@ public class FooBarLock implements FooBar {
 
     public void foo(Runnable printFoo) throws InterruptedException {
         for (int i = 0; i < n; i++) {
+            lock.lock();
             try {
-                lock.lock();
                 if (flag == 1) c2.await();
                 flag = 1;
                 // printFoo.run() outputs "foo". Do not change or remove this line.
                 printFoo.run();
                 c1.signal();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             } finally {
                 lock.unlock();
             }
@@ -37,15 +35,13 @@ public class FooBarLock implements FooBar {
 
     public void bar(Runnable printBar) throws InterruptedException {
         for (int i = 0; i < n; i++) {
+            lock.lock();
             try {
-                lock.lock();
                 if (flag == 0) c1.await();
                 flag = 0;
                 // printBar.run() outputs "bar". Do not change or remove this line.
                 printBar.run();
                 c2.signal();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             } finally {
                 lock.unlock();
             }
