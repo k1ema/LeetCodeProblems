@@ -80,7 +80,7 @@ public class Solution {
         visited[ind] = true;
         recStack[ind] = true;
 
-        for (Integer i : graph[ind]) {
+        for (int i : graph[ind]) {
             if (isCycle(graph, visited, recStack, i)) {
                 return true;
             }
