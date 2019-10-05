@@ -25,18 +25,8 @@ import java.util.Arrays;
  * There is only one duplicate number in the array, but it could be repeated more than once.
  */
 public class Solution {
-    // tc O(n*logn), sc O(1), does not apply solution requirements (array is read only)
-    int findDuplicate1(int[] nums) {
-        Arrays.sort(nums);
-        for (int i = 0; i < nums.length - 1; i++) {
-            if (nums[i] == nums[i + 1]) {
-                return nums[i];
-            }
-        }
-        return -1;
-    }
-
     // tc O(n), sc O(1)
+    // 0 ms, faster than 100.00%; 36.3 MB, less than 100.00%
     int findDuplicate(int[] nums) {
         int slow = nums[0];
         int fast = nums[nums[0]];
@@ -56,12 +46,13 @@ public class Solution {
 
     // https://leetcode.com/problems/find-the-duplicate-number/discuss/72844/Two-Solutions-(with-explanation)%3A-O(nlog(n))-and-O(n)-time-O(1)-space-without-changing-the-input-array
     // tc O(nlogn), sc O(1)
-    int findDuplicate2(int[] nums) {
+    // 3 ms, faster than 48.33%; 36.7 MB, less than 100.00%
+    int findDuplicate1(int[] nums) {
         int lo = 1;
         int hi = nums.length - 1;
         while (lo < hi) {
             int cnt = 0;
-            int mid = (lo + hi) / 2;
+            int mid = lo + (hi - lo) / 2;
             for (int i = 0; i < nums.length; i++) {
                 if (nums[i] <= mid) {
                     cnt++;
@@ -74,5 +65,16 @@ public class Solution {
             }
         }
         return lo;
+    }
+
+    // tc O(n*logn), sc O(1), does not apply solution requirements (array is read only)
+    int findDuplicate2(int[] nums) {
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] == nums[i + 1]) {
+                return nums[i];
+            }
+        }
+        return -1;
     }
 }
