@@ -28,7 +28,7 @@ import java.util.PriorityQueue;
 public class Solution {
     // https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/discuss/85173/Share-my-thoughts-and-Clean-Java-Code
     // 17 ms 44.1 MB
-    int kthSmallest(int[][] matrix, int k) {
+    int kthSmallest11(int[][] matrix, int k) {
         int n = matrix.length;
         PriorityQueue<Tuple> pq = new PriorityQueue<>();
         for (int j = 0; j < n; j++) {
@@ -56,25 +56,49 @@ public class Solution {
         }
     }
 
-    // I didn't catch binary search solution
-    // https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/discuss/85173/Share-my-thoughts-and-Clean-Java-Code
-    // 1 ms	44.5 MB
-    int kthSmallest2(int[][] matrix, int k) {
-        int lo = matrix[0][0];
-        int hi = matrix[matrix.length - 1][matrix[0].length - 1] + 1; // [lo, hi)
-        while (lo < hi) {
-            int mid = lo + (hi - lo) / 2;
-            int count = 0, j = matrix[0].length - 1;
-            for (int i = 0; i < matrix.length; i++) {
-                while (j >= 0 && matrix[i][j] > mid) {
-                    j--;
-                }
-                count += (j + 1);
+    // binary search
+    // https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/discuss/301357/Simple-to-understand-solutions-using-Heap-and-Binary-Search-JavaPython
+    // 0 ms, faster than 100.00%; 44.1 MB, less than 67.57%
+    int kthSmallest(int[][] matrix, int k) {
+        int n = matrix.length;
+        int start = matrix[0][0], end = matrix[n - 1][n - 1];
+        while (start < end) {
+            int mid = start + (end - start) / 2;
+            // first number is the smallest and the second number is the largest
+            int[] smallLargePair = { matrix[0][0], matrix[n - 1][n - 1] };
+
+            int count = countLessEqual(matrix, mid, smallLargePair);
+
+            if (count == k) return smallLargePair[0];
+
+            if (count < k) {
+                start = smallLargePair[1]; // search higher
+            } else {
+                end = smallLargePair[0]; // search lower
             }
-            if (count < k) lo = mid + 1;
-            else hi = mid;
         }
-        return lo;
+
+        return start;
+    }
+
+    private int countLessEqual(int[][] matrix, int mid, int[] smallLargePair) {
+        int count = 0;
+        int n = matrix.length, row = n - 1, col = 0;
+        while (row >= 0 && col < n) {
+            if (matrix[row][col] > mid) {
+                // as matrix[row][col] is bigger than the mid, let's keep track of the
+                // smallest number greater than the mid
+                smallLargePair[1] = Math.min(smallLargePair[1], matrix[row][col]);
+                row--;
+            } else {
+                // as matrix[row][col] is less than or equal to the mid, let's keep track of the
+                // biggest number less than or equal to the mid
+                smallLargePair[0] = Math.max(smallLargePair[0], matrix[row][col]);
+                count += row + 1;
+                col++;
+            }
+        }
+        return count;
     }
 
     // my straight forward solution
