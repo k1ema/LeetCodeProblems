@@ -56,7 +56,7 @@ public class Solution {
     // https://github.com/mission-peace/interview/blob/master/src/com/interview/dynamic/WildCardMatching.java
     boolean isMatch(String s, String p) {
         if (s == null || p == null) throw new IllegalArgumentException();
-        if (p.length() == 0) return s.length() == 0;
+        if (p.isEmpty()) return s.isEmpty();
 
         int m = s.length() + 1, n = p.length() + 1;
         boolean[][] dp = new boolean[m][n];
