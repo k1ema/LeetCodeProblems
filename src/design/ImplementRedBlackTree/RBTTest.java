@@ -23,7 +23,7 @@ public class RBTTest {
         assertFalse(rbt.isEmpty());
         assertEquals(8, rbt.size());
 
-        for(Integer k : rbt.keys()) {
+        for (int k : rbt.keys()) {
             System.out.println(k + "->" + rbt.get(k));
         }
         assertTrue(rbt.contains(9));
