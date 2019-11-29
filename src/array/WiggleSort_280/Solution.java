@@ -9,7 +9,6 @@ package array.WiggleSort_280;
  */
 public class Solution {
     // tc O(n), sc O(1)
-    // TODO check it in leetcode!
     void wiggleSort(int[] nums) {
         int n;
         if (nums == null || (n = nums.length) < 2) return;
