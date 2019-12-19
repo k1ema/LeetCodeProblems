@@ -9,9 +9,11 @@ import java.util.Map;
  * 17. Letter Combinations of a Phone Number
  * https://leetcode.com/problems/letter-combinations-of-a-phone-number/
  *
- * Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent.
+ * Given a string containing digits from 2-9 inclusive, return all possible letter combinations
+ * that the number could represent.
  *
- * A mapping of digit to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+ * A mapping of digit to letters (just like on the telephone buttons) is given below. Note that
+ * 1 does not map to any letters.
  *
  * Example:
  * Input: "23"
@@ -25,8 +27,8 @@ public class Solution {
     // to 3 letters (e.g. 2, 3, 4, 5, 6, 8) and M is the number of digits in the input that maps
     // to 4 letters (e.g. 7, 9), and N+M is the total number digits in the input.
     //
-    // 1 ms, faster than 57.23%; 36.3 MB, less than 98.63%
-    private final static Map<Character, String> map = new HashMap<>();
+    // 0 ms, faster than 100.00%, 36.2 MB, less than 98.63%
+    private static final Map<Character, String> map = new HashMap<>();
     static {
         map.put('2', "abc");
         map.put('3', "def");
@@ -40,8 +42,9 @@ public class Solution {
 
     List<String> letterCombinations(String digits) {
         List<String> result = new ArrayList<>();
-        if (digits == null || "".equals(digits.trim())) return result;
-        for (int i = 0; i < map.get(digits.charAt(0)).length(); i++) {
+        if (digits == null || digits.trim().isEmpty()) return result;
+        int len = map.get(digits.charAt(0)).length();
+        for (int i = 0; i < len; i++) {
             bt(result, new StringBuilder(), 0, i, digits);
         }
         return result;
@@ -54,10 +57,44 @@ public class Solution {
         if (sb.length() == digits.length()) {
             result.add(sb.toString());
         } else {
-            for (int i = 0; i < map.get(digits.charAt(di + 1)).length(); i++) {
+            String nextLetters = map.get(digits.charAt(di + 1));
+            for (int i = 0; i < nextLetters.length(); i++) {
                 bt(result, sb, di + 1, i, digits);
-                sb.delete(di + 1, sb.length());
+                sb.deleteCharAt(sb.length() - 1);
             }
+        }
+    }
+
+
+    private final String[][] ss = new String[][] {
+            {""},
+            {"a", "b", "c"},
+            {"d", "e", "f"},
+            {"g", "h", "i"},
+            {"j", "k", "l"},
+            {"m", "n", "o"},
+            {"p", "q", "r", "s"},
+            {"t", "u", "v"},
+            {"w", "x", "y", "z"},
+    };
+
+    List<String> letterCombinations1(String digits) {
+        List<String> result = new ArrayList<>();
+        if (digits == null || digits.trim().isEmpty()) return result;
+        backtrack(result, 0, new ArrayList<>(), digits);
+        return result;
+    }
+
+    private void backtrack(List<String> result, int index, List<String> current, String digits) {
+        if (index == digits.length()) {
+            result.add(String.join("", current));
+            return;
+        }
+        int d = digits.charAt(index) - '0' - 1;
+        for (String s : ss[d]) {
+            current.add(s);
+            backtrack(result, index + 1, current, digits);
+            current.remove(current.size() - 1);
         }
     }
 }
