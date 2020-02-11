@@ -34,7 +34,7 @@ public class Solution {
         for (int i = 0; i < min; i++) {
             sb.append(strs[0].charAt(i));
             for (String str : strs) {
-                if (str.length() > i && str.charAt(i) !=  sb.charAt(sb.length() - 1)) {
+                if (str.charAt(i) !=  sb.charAt(sb.length() - 1)) {
                     return sb.deleteCharAt(i).toString();
                 }
             }
