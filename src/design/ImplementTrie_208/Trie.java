@@ -1,8 +1,5 @@
 package design.ImplementTrie_208;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 208. Implement Trie (Prefix Tree)
  * https://leetcode.com/problems/implement-trie-prefix-tree/
@@ -24,75 +21,69 @@ import java.util.Map;
  * You may assume that all inputs are consist of lowercase letters a-z.
  * All inputs are guaranteed to be non-empty strings.
  */
-
-// Good solution with array of TrieNode instead of hashtable.
-// https://leetcode.com/problems/implement-trie-prefix-tree/discuss/58832/AC-JAVA-solution-simple-using-single-array
 public class Trie {
-    private class TrieNode {
-        char val;
-        boolean isWord;
-        Map<Character, TrieNode> children = new HashMap<>();
+    private class Node {
+        private char val;
+        private Node[] links = new Node[26];
+        private boolean isEnd;
 
-        private TrieNode() {}
-
-        private TrieNode(char val) {
+        private Node() {};
+        private Node(char val) {
             this.val = val;
+        };
+
+        void insert(Node node) {
+            links[node.val - 'a'] = node;
+        }
+
+        Node get(char val) {
+            return links[val - 'a'];
+        }
+
+        boolean containsKey(char val) {
+            return links[val - 'a'] != null;
+        }
+
+        void setEnd() {
+            isEnd = true;
+        }
+
+        boolean isEnd() {
+            return isEnd;
         }
     }
 
-    private TrieNode root;
+    private Node root = new Node();
 
-    /** Initialize your data structure here. */
-    public Trie() {
-        root = new TrieNode();
-    }
-
-    /** Inserts a word into the trie. */
-    // tc O(word.len)
+    // tc O(n), sc O(1)
     public void insert(String word) {
-        int i = 0;
-        TrieNode node = root;
-        while (i < word.length()) {
+        Node node = root;
+        for (int i = 0; i < word.length(); i++) {
             char c = word.charAt(i);
-            if (!node.children.containsKey(c)) {
-                node.children.put(c, new TrieNode(c));
+            if (!node.containsKey(c)) {
+                node.insert(new Node(c));
             }
-            node = node.children.get(c);
-            i++;
+            node = node.get(c);
         }
-        node.isWord = true;
+        node.setEnd();
     }
 
-    /** Returns if the word is in the trie. */
-    // tc O(word.len)
+    // tc O(n), sc O(1)
     public boolean search(String word) {
-        int i = 0;
-        TrieNode node = root;
-        while (i < word.length()) {
-            char c = word.charAt(i);
-            if (node.children.containsKey(c)) {
-                node = node.children.get(c);
-                i++;
-            } else {
-                return false;
-            }
+        Node node = root;
+        for (int i = 0; i < word.length(); i++) {
+            node = node.get(word.charAt(i));
+            if (node == null) return false;
         }
-        return node.isWord;
+        return node.isEnd();
     }
 
-    /** Returns if there is any word in the trie that starts with the given prefix. */
-    // tc O(prefix.len)
+    // tc O(n), sc O(1)
     public boolean startsWith(String prefix) {
-        int i = 0;
-        TrieNode node = root;
-        while (i < prefix.length()) {
-            char c = prefix.charAt(i);
-            if (node.children.containsKey(c)) {
-                node = node.children.get(c);
-                i++;
-            } else {
-                return false;
-            }
+        Node node = root;
+        for (int i = 0; i < prefix.length(); i++) {
+            node = node.get(prefix.charAt(i));
+            if (node == null) return false;
         }
         return true;
     }
