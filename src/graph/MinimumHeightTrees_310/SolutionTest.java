@@ -1,10 +1,10 @@
-package graph.Minimum_Height_Trees_310;
+package graph.MinimumHeightTrees_310;
+
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

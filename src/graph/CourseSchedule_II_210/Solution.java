@@ -1,4 +1,4 @@
-package graph.Course_Schedule_II_210;
+package graph.CourseSchedule_II_210;
 
 import java.util.*;
 

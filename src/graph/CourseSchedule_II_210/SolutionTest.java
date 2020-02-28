@@ -1,8 +1,8 @@
-package graph.Course_Schedule_II_210;
-
-import java.util.Arrays;
+package graph.CourseSchedule_II_210;
 
 import org.junit.Test;
+
+import java.util.Arrays;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;

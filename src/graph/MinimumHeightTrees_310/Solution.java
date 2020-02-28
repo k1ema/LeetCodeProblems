@@ -1,10 +1,6 @@
-package graph.Minimum_Height_Trees_310;
+package graph.MinimumHeightTrees_310;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 310. Minimum Height Trees
