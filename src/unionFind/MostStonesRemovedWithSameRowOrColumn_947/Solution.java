@@ -1,6 +1,8 @@
 package unionFind.MostStonesRemovedWithSameRowOrColumn_947;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -57,7 +59,7 @@ public class Solution {
     // 0    	1	    2	    10000	10001	10002
     // set: 10002, 10001
 
-    // tc O(nlogn), sc O(n)
+    // tc O(nlogn), sc O(20000)
     // 9 ms, faster than 78.81%; 41.8 MB, less than 75.00%
     public int removeStones(int[][] stones) {
         DSU dsu = new DSU(20000);
@@ -75,22 +77,71 @@ public class Solution {
     }
 
     private class DSU {
-        private int[] parent;
+        private int[] id;
+        private int[] sz; // for weighted union
 
         DSU (int n) {
-            this.parent = new int[n];
+            this.id = new int[n];
+            this.sz = new int[n];
             for (int i = 0; i < n; i++) {
-                parent[i] = i;
+                id[i] = i;
+                sz[i] = 1;
             }
         }
 
         int find(int x) {
-            if (parent[x] == x) return x;
-            return find(parent[x]);
+            while (x != id[x]) {
+                id[x] = id[id[x]]; // line for path compression
+                x = id[x];
+            }
+            return x;
         }
 
         void union(int x, int y) {
-            parent[find(x)] = find(y);
+            int px = find(x);
+            int py = find(y);
+            if (px == py) return;
+            if (sz[px] < sz[py]) {
+                id[px] = py;
+                sz[py] += sz[px];
+            } else {
+                id[py] = px;
+                sz[px] += sz[py];
+            }
+        }
+    }
+
+    // https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/discuss/197668/Count-the-Number-of-Islands-O(N)
+    // tc O(n^2), sc O(n)
+    // 8 ms, faster than 87.50%; 41.9 MB, less than 75.00%
+    Map<Integer, Integer> f;
+    int islands;
+
+    public int removeStones2(int[][] stones) {
+        f = new HashMap<>();
+        islands = 0;
+        for (int i = 0; i < stones.length; ++i) {
+            union(stones[i][0], stones[i][1] + 10000);
+        }
+        return stones.length - islands;
+    }
+
+    public int find(int x) {
+        if (f.putIfAbsent(x, x) == null) {
+            islands++;
+        }
+        if (x != f.get(x)) {
+            f.put(x, find(f.get(x)));
+        }
+        return f.get(x);
+    }
+
+    public void union(int x, int y) {
+        x = find(x);
+        y = find(y);
+        if (x != y) {
+            f.put(x, y);
+            islands--;
         }
     }
 }
