@@ -25,9 +25,24 @@ package dynamic.HouseRobber_198;
  *              Total amount you can rob = 2 + 9 + 1 = 12.
  */
 public class Solution {
+    // tc O(n), sc O(1)
+    // 0 ms, faster than 100.00%; 36.9 MB, less than 5.26%
+    public int rob(int[] nums) {
+        if (nums == null) return 0;
+
+        int curMax = 0, prevMax = 0;
+        for (int num : nums) {
+            int tmp = curMax;
+            curMax = Math.max(curMax, prevMax + num);
+            prevMax = tmp;
+        }
+
+        return curMax;
+    }
+
     // tc O(n), sc O(n)
     // 0 ms, faster than 100.00%; 37 MB, less than 5.26%
-    public int rob(int[] nums) {
+    public int rob1(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
         if (nums.length == 1) return nums[0];
         if (nums.length == 2) return Math.max(nums[0], nums[1]);
