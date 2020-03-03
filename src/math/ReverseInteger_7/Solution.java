@@ -24,7 +24,7 @@ package math.ReverseInteger_7;
  * assume that your function returns 0 when the reversed integer overflows.
  */
 public class Solution {
-    // tc O(logx), sc O(1)
+    // tc O(log10x), sc O(1)
     // https://leetcode.com/problems/reverse-integer/discuss/4060/My-accepted-15-lines-of-code-for-Java
     int reverse(int x) {
         int result = 0;
@@ -41,7 +41,7 @@ public class Solution {
         return result;
     }
 
-    // tc O(n), sc O(n)
+    // tc O(log10x), sc O(log10x)
     int reverse2(int x) {
         if (x == 0 || x == Integer.MIN_VALUE) {
             return 0;
