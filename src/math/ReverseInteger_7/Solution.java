@@ -1,8 +1,5 @@
 package math.ReverseInteger_7;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 7. Reverse Integer
  * https://leetcode.com/problems/reverse-integer/
@@ -27,8 +24,25 @@ import java.util.List;
  * assume that your function returns 0 when the reversed integer overflows.
  */
 public class Solution {
-    // tc O(n), sc O(n)
+    // tc O(logx), sc O(1)
+    // https://leetcode.com/problems/reverse-integer/discuss/4060/My-accepted-15-lines-of-code-for-Java
     int reverse(int x) {
+        int result = 0;
+
+        while (x != 0) {
+            int tail = x % 10;
+            int newResult = result * 10 + tail;
+            if ((newResult - tail) / 10 != result) {
+                return 0;
+            }
+            result = newResult;
+            x = x / 10;
+        }
+        return result;
+    }
+
+    // tc O(n), sc O(n)
+    int reverse2(int x) {
         if (x == 0 || x == Integer.MIN_VALUE) {
             return 0;
         }
@@ -46,21 +60,5 @@ public class Solution {
             return 0;
         }
         return x > 0 ? r : -r;
-    }
-
-    // https://leetcode.com/problems/reverse-integer/discuss/4060/My-accepted-15-lines-of-code-for-Java
-    int reverse1(int x) {
-        int result = 0;
-
-        while (x != 0) {
-            int tail = x % 10;
-            int newResult = result * 10 + tail;
-            if ((newResult - tail) / 10 != result) {
-                return 0;
-            }
-            result = newResult;
-            x = x / 10;
-        }
-        return result;
     }
 }
