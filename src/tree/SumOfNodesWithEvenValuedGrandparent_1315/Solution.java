@@ -34,9 +34,21 @@ import java.util.Queue;
  */
 public class Solution {
     // DFS, tc O(n), sc O(1)
+    // 1 ms, faster than 99.42%; 43.4 MB, less than 100.00%
+    // https://leetcode.com/problems/sum-of-nodes-with-even-valued-grandparent/discuss/477048/JavaC%2B%2BPython-1-Line-Recursive-Solution
+    public int sumEvenGrandparent(TreeNode root) {
+        return helper(root, 1, 1);
+    }
+
+    private int helper(TreeNode node, int p, int gp) {
+        if (node == null) return 0;
+        return helper(node.left, node.val, p) + helper(node.right, node.val, p) + (gp % 2 == 0 ? node.val : 0);
+    }
+
+    // DFS, tc O(n), sc O(1)
     // 1 ms, faster than 99.42%; 43 MB, less than 100.00%
     private int res;
-    public int sumEvenGrandparent(TreeNode root) {
+    public int sumEvenGrandparent1(TreeNode root) {
         res = 0;
         dfs(root);
         return res;
@@ -57,7 +69,7 @@ public class Solution {
 
     // BFS, tc O(n), sc O(1)
     // 5 ms, faster than 17.28%; 42.7 MB, less than 100.00%
-    public int sumEvenGrandparent1(TreeNode root) {
+    public int sumEvenGrandparent2(TreeNode root) {
         int sum = 0;
         Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
