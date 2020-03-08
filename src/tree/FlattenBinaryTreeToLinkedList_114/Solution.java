@@ -30,9 +30,30 @@ import tree.utils.TreeNode;
  *           6
  */
 public class Solution {
+    // tc O(n), sc O(1), 0 ms, faster than 100.00%; 38.6 MB, less than 38.18%
+    // https://leetcode.com/problems/flatten-binary-tree-to-linked-list/discuss/37010/share-my-simple-non-recursive-solution-o1-space-complexity
+    public void flatten(TreeNode root) {
+        if (root == null) return;
+        TreeNode curr = root;
+        while (curr != null) {
+            if (curr.left != null) {
+                TreeNode leftBranch = curr.left;
+                while (leftBranch.right != null) {
+                    leftBranch = leftBranch.right;
+                }
+
+                leftBranch.right = curr.right;
+                curr.right = curr.left;
+                curr.left = null;
+            }
+            curr = curr.right;
+        }
+    }
+
+    // my solution
     // tc O(n), sc O(n)
     // 1 ms, faster than 30.03%; 40.8 MB, less than 5.45%
-    public void flatten(TreeNode root) {
+    public void flatten2(TreeNode root) {
         if (root == null) return;
         TreeNode right = root.right;
         TreeNode left = dfs(root.left, root);
