@@ -19,5 +19,6 @@ public class SolutionTest {
         assertTrue(s.canJump(new int[] {6, 3, 2, 1, 0, 0, 4}));
         assertTrue(s.canJump(new int[] {5, 3, 2, 1, 0, 2, 0, 4}));
         assertTrue(s.canJump(new int[] {10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
+        assertFalse(s.canJump(new int[] {0, 2, 3}));
     }
 }
