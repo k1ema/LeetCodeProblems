@@ -1,4 +1,4 @@
-package heap.KthSmallestElementInASortedMatrix_378;
+package binarySearch.KthSmallestElementInASortedMatrix_378;
 
 import java.util.Arrays;
 import java.util.PriorityQueue;
