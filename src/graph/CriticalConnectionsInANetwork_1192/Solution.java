@@ -37,27 +37,27 @@ public class Solution {
     // https://leetcode.com/problems/critical-connections-in-a-network/discuss/382638/No-TarjanDFS-detailed-explanation-O(orEor)-solution-(I-like-this-question)
     public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
         List<Integer>[] graph = buildGraph(n, connections);
-        int[] ranks = new int[n];
-        Arrays.fill(ranks, -2);
+        int[] rank = new int[n];
+        Arrays.fill(rank, -2);
         List<List<Integer>> res = new ArrayList<>();
-        dfs(graph, n, 0, 0, ranks, res);
+        dfs(graph, n, 0, 0, rank, res);
         return res;
     }
 
-    private int dfs(List<Integer>[] graph, int n, int node, int depth, int[] ranks, List<List<Integer>> res) {
-        if (ranks[node] >= 0) return ranks[node]; // visiting (0<=rank<n), or visited (rank=n)
+    private int dfs(List<Integer>[] graph, int n, int node, int depth, int[] rank, List<List<Integer>> res) {
+        if (rank[node] >= 0) return rank[node]; // visiting (0 <= rank < n), or visited (rank = n)
 
         int lowestRank = depth;
-        ranks[node] = depth;
+        rank[node] = depth;
 
         for (int neighbor : graph[node]) {
-            if (ranks[neighbor] == depth - 1 || ranks[neighbor] == n) {
-                // ranks[neighbor] == myRank - 1:
+            if (rank[neighbor] == depth - 1 || rank[neighbor] == n) {
+                // rank[neighbor] == myRank - 1:
                 // Do not go back immediately to parent, this will lead to
                 // parent-child-parent circle immediately.
                 // This is why NO_RANK is set to -2 instead of -1, because the first node of a recursion has myRank 0.
                 //
-                // ranks[neighbor] == n:
+                // rank[neighbor] == n:
                 // Do not include node=>neighbor in the result. Reason:
                 // This can be explained from a couple of aspects:
                 // - This means neighbor has been finished, so neighbor=>node has been decided before neighbor is finished,
@@ -69,20 +69,20 @@ public class Solution {
                 continue;
             }
 
-            int neighborRank = dfs(graph, n, neighbor, depth + 1, ranks, res);
+            int neighborRank = dfs(graph, n, neighbor, depth + 1, rank, res);
             lowestRank = Math.min(lowestRank, neighborRank);
             if (neighborRank > depth) {
                 res.add(Arrays.asList(node, neighbor));
             }
         }
 
-        ranks[node] = n;
+        rank[node] = n;
         return lowestRank;
     }
 
     // time limit exceeded
     // tc O(EV), sc O(EV)
-    public List<List<Integer>> criticalConnections1(int n, List<List<Integer>> connections) {
+    public List<List<Integer>> criticalConnections2(int n, List<List<Integer>> connections) {
         List<Integer>[] graph = buildGraph(n, connections);
         List<List<Integer>> res = new LinkedList<>();
         int edgeRemoved = 0;
