@@ -52,9 +52,8 @@ public class Solution {
 
         for (int neighbor : graph[node]) {
             if (rank[neighbor] == depth - 1 || rank[neighbor] == n) {
-                // rank[neighbor] == myRank - 1:
-                // Do not go back immediately to parent, this will lead to
-                // parent-child-parent circle immediately.
+                // rank[neighbor] == myRank - 1: parent node
+                // Do not go back immediately to parent, this will lead to parent-child-parent circle immediately.
                 // This is why NO_RANK is set to -2 instead of -1, because the first node of a recursion has myRank 0.
                 //
                 // rank[neighbor] == n:
