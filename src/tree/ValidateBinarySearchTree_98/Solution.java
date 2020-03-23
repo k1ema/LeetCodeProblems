@@ -34,7 +34,7 @@ import java.util.Stack;
  * Explanation: The root node's value is 5 but its right child's value is 4.
  */
 public class Solution {
-    // tc O(n), sc O(n)
+    // tc O(n), sc O(depth). If tree is balanced then depth = logn. In worst case depth = n.
     // 0 ms, faster than 100.00%; 38.2 MB, less than 86.51%
     boolean isValidBST(TreeNode root) {
         return helper(root, null, null);
