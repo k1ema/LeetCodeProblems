@@ -26,5 +26,21 @@ public class HashTableSeparateChainingTest {
         assertNull(ht.get("aaa"));
         ht.remove("b");
         assertNull(ht.get("b"));
+
+        HashTableSeparateChaining<Integer, String> map = new HashTableSeparateChaining<>();
+        map.put(1, "1");
+        map.put(2, "2");
+        map.put(3, "3");
+        map.put(98, "98");
+        map.put(195, "195");
+        assertEquals("1", map.get(1));
+        assertEquals("2", map.get(2));
+        assertEquals("3", map.get(3));
+        assertEquals("98", map.get(98));
+        assertEquals("195", map.get(195));
+        map.remove(98);
+        assertNull(map.get(98));
+        assertEquals("1", map.get(1));
+        assertEquals("195", map.get(195));
     }
 }
