@@ -1,6 +1,9 @@
 package graph.CriticalConnectionsInANetwork_1192;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -32,10 +35,56 @@ import java.util.stream.IntStream;
  * There are no repeated connections.
  */
 public class Solution {
-    // tc O(|E|)
+    int id; // current id
+
+    // tc O(V + E), sc O(VE)
+    // 91 ms, faster than 55.61%; 109 MB, less than 100.00%
+    // https://www.youtube.com/watch?v=aZXi1unBdJA
+    public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
+        id = 0;
+        int[] disc = new int[n], low = new int[n];
+        // use adjacency list instead of matrix will save some memory, adjmatrix will cause MLE
+        List<Integer>[] graph = new ArrayList[n];
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.fill(disc, -1); // use disc to track if visited (disc[i] == -1)
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        // build graph
+        for (int i = 0; i < connections.size(); i++) {
+            int from = connections.get(i).get(0), to = connections.get(i).get(1);
+            graph[from].add(to);
+            graph[to].add(from);
+        }
+
+        dfs(0, low, disc, graph, res, -1);
+        return res;
+    }
+
+    private void dfs(int u, int[] low, int[] ids, List<Integer>[] graph, List<List<Integer>> res, int pre) {
+        ids[u] = low[u] = id++; // discover u
+        for (int j = 0; j < graph[u].size(); j++) {
+            int v = graph[u].get(j);
+            if (v == pre) {
+                continue; // if parent vertex, ignore
+            }
+            if (ids[v] == -1) { // if not discovered
+                dfs(v, low, ids, graph, res, u);
+                low[u] = Math.min(low[u], low[v]);
+                if (low[v] > ids[u]) {
+                    // u - v is critical, there is no path for v to reach back to u or previous vertices of u
+                    res.add(Arrays.asList(u, v));
+                }
+            } else { // if v discovered and is not parent of u, update low[u], cannot use low[v] because u is not subtree of v
+                low[u] = Math.min(low[u], ids[v]);
+            }
+        }
+    }
+
+    // tc O(V + E)
     // 90 ms, faster than 63.76%; 101.9 MB, less than 100.00%
     // https://leetcode.com/problems/critical-connections-in-a-network/discuss/382638/No-TarjanDFS-detailed-explanation-O(orEor)-solution-(I-like-this-question)
-    public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
+    public List<List<Integer>> criticalConnections1(int n, List<List<Integer>> connections) {
         List<Integer>[] graph = buildGraph(n, connections);
         int[] rank = new int[n];
         Arrays.fill(rank, -2);
