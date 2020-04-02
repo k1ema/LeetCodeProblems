@@ -1,5 +1,8 @@
 package math.HappyNumber_202;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 202. Happy Number
  * https://leetcode.com/problems/happy-number/
@@ -22,20 +25,43 @@ package math.HappyNumber_202;
  * 1^2 + 0^2 + 0^2 = 1
  */
 public class Solution {
-    boolean isHappy(int n) {
-        int i = 0;
-        int k;
-        while (n != 1 && i < 10) {
-            int sum = 0;
-            while (n > 0) {
-                k = n % 10;
-                sum += k * k;
-                n = n / 10;
-            }
-            n = sum;
-            i++;
+    // tc O(logn), sc O(1)
+    public boolean isHappy(int n) {
+        int slow = n;
+        int fast = getNext(n);
+        while (fast != 1 && slow != fast) {
+            slow = getNext(slow);
+            fast = getNext(getNext(fast));
         }
+        return fast == 1;
+    }
 
-        return n == 1;
+    private int getNext(int n) {
+        int totalSum = 0;
+        while (n > 0) {
+            int d = n % 10;
+            n = n / 10;
+            totalSum += d * d;
+        }
+        return totalSum;
+    }
+
+    Set<Integer> set;
+    boolean isHappy1(int n) {
+        set = new HashSet<>();
+        return bt(n);
+    }
+
+    private boolean bt(int n) {
+        if (n == 1) return true;
+        if (set.contains(n)) return false;
+        set.add(n);
+        int sum = 0;
+        while (n > 0) {
+            int v = n % 10;
+            n /= 10;
+            sum += v * v;
+        }
+        return bt(sum);
     }
 }

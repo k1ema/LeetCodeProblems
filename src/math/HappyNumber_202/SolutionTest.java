@@ -2,6 +2,7 @@ package math.HappyNumber_202;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class SolutionTest {
@@ -9,5 +10,6 @@ public class SolutionTest {
     public void test() {
         Solution s = new Solution();
         assertTrue(s.isHappy(19));
+        assertFalse(s.isHappy(17));
     }
 }
