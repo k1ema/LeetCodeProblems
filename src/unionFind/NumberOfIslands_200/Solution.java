@@ -29,11 +29,40 @@ import java.util.Set;
  * Output: 3
  */
 public class Solution {
+    // tc O(n * m), sc O(n * m)
+    // 2 ms, faster than 41.16%; 41.6 MB, less than 55.82%
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0) return 0;
+        int m = grid.length, n = grid[0].length;
+        int count = 0;
+        boolean[][] visited = new boolean[m][n];
+        for (int i=0; i<m; i++) {
+            for (int j=0; j<n; j++) {
+                if (grid[i][j] == '1' && !visited[i][j]) {
+                    dfs(grid, i, j, visited);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    private void dfs(char[][] grid, int i, int j, boolean[][] visited) {
+        if (grid[i][j] == '0') return;
+        visited[i][j] = true;
+        int[][] dirs = new int[][] {{-1,0}, {0,-1}, {1,0}, {0,1}};
+        for (int[] dir : dirs) {
+            int nextI = i + dir[0], nextJ = j + dir[1];
+            if (nextI >= 0 && nextI < grid.length && nextJ >= 0 && nextJ < grid[0].length
+                    && !visited[nextI][nextJ]) dfs(grid, nextI, nextJ, visited);
+        }
+    }
+
     // Good solution
     // https://leetcode.com/problems/number-of-islands/discuss/56359/Very-concise-Java-AC-solution
     // dfs, tc O(n * m), sc O(n * m)
     // 1 ms, faster than 100.00%, 41.3 MB, less than 58.61%
-    int numIslands(char[][] grid) {
+    int numIslands2(char[][] grid) {
         int n;
         if (grid == null || (n = grid.length) == 0) return 0;
         int count = 0;
