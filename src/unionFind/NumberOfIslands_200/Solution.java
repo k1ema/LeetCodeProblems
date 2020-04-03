@@ -36,8 +36,8 @@ public class Solution {
         int m = grid.length, n = grid[0].length;
         int count = 0;
         boolean[][] visited = new boolean[m][n];
-        for (int i=0; i<m; i++) {
-            for (int j=0; j<n; j++) {
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 if (grid[i][j] == '1' && !visited[i][j]) {
                     dfs(grid, i, j, visited);
                     count++;
@@ -50,7 +50,7 @@ public class Solution {
     private void dfs(char[][] grid, int i, int j, boolean[][] visited) {
         if (grid[i][j] == '0') return;
         visited[i][j] = true;
-        int[][] dirs = new int[][] {{-1,0}, {0,-1}, {1,0}, {0,1}};
+        int[][] dirs = new int[][] {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
         for (int[] dir : dirs) {
             int nextI = i + dir[0], nextJ = j + dir[1];
             if (nextI >= 0 && nextI < grid.length && nextJ >= 0 && nextJ < grid[0].length
@@ -91,7 +91,7 @@ public class Solution {
     // Union-find
     // https://leetcode.com/problems/number-of-islands/discuss/56354/1D-Union-Find-Java-solution-easily-generalized-to-other-problems
     // 5 ms, faster than 14.80%, 40.7 MB, less than 98.60%
-    // tc O(n * m * log(n * m)) ?, n * m - double array; for each i,j - find, which costs log(n*m)
+    // tc O(n * m) if union find uses both path compression and rank, n * m - double array;
     // sc O(n * m)
     private int[] id;
     private int[] sz; // for weighted union-find
