@@ -13,5 +13,7 @@ public class SolutionTest {
         assertEquals(1, s.change(10, new int[] {10}));
         assertEquals(1, s.change(0, new int[] {}));
         assertEquals(1, s.change(0, new int[] {7}));
+        assertEquals(2, s.change(6, new int[] {2, 3}));
+        assertEquals(12701, s.change(500, new int[] {1, 2, 5}));
     }
 }

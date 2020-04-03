@@ -19,6 +19,8 @@ import linkedList.utils.ListNode;
  * Explanation: 342 + 465 = 807.
  */
 public class Solution {
+    // tc O(n), sc O(n)
+    // 1 ms, faster than 100.00%; 39.7 MB, less than 99.69%
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode result = new ListNode(0);
         sum(result, l1, l2, 0);

@@ -15,5 +15,11 @@ public class SolutionTest {
                 s.addTwoNumbers(stringToListNode("[9]"), stringToListNode("[1,9,9,9,9,9]")));
         assertEquals(stringToListNode("[0]"),
                 s.addTwoNumbers(stringToListNode("[0]"), stringToListNode("[0]")));
+        assertEquals(stringToListNode("[0,1]"),
+                s.addTwoNumbers(stringToListNode("[5]"), stringToListNode("[5]")));
+        assertEquals(stringToListNode("[0,0,1]"),
+                s.addTwoNumbers(stringToListNode("[1]"), stringToListNode("[9,9]")));
+        assertEquals(stringToListNode("[2,0,1]"),
+                s.addTwoNumbers(stringToListNode("[3,7]"), stringToListNode("[9,2]")));
     }
 }
