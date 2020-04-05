@@ -7,20 +7,28 @@ package sorting.QuickSort;
  */
 public class ThreeWayPartitioning {
     void sort(int[] nums) {
-        if (nums == null || nums.length < 2) return;
-        int i = 0, j = 0, n = nums.length - 1;
-        while (j <= n) {
-            if (nums[j] < 1) {
-                swap(nums, i, j);
+        sort(nums, 0, nums.length - 1);
+    }
+
+    private void sort(int[] nums, int lo, int hi) {
+        if (lo >= hi) return;
+        int lt = lo, gt = hi;
+        int pivot = nums[lo];
+        int i = lo;
+        while (i <= gt) {
+            if (nums[i] < pivot) {
+                swap(nums, i, lt);
                 i++;
-                j++;
-            } else if (nums[j] > 1) {
-                swap(nums, j, n);
-                n--;
+                lt++;
+            } else if (nums[i] > pivot) {
+                swap(nums, i, gt);
+                gt--;
             } else {
-                j++;
+                i++;
             }
         }
+        sort(nums, lo, lt - 1);
+        sort(nums, gt + 1, hi);
     }
 
     private void swap(int[] nums, int i, int j) {
