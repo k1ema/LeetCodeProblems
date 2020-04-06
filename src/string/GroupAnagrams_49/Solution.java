@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 49. Group Anagrams
@@ -27,14 +28,26 @@ import java.util.Map;
  * The order of your output does not matter.
  */
 public class Solution {
-    // https://leetcode.com/problems/group-anagrams/discuss/19176/Share-my-short-JAVA-solution
-    // n - strs length, m - max word length
-    // tc O(n*m*logm), sc O(n*m + n*m) -> O(n*m); first n*m - map with List<String>,
-    // second - keys (String key = String.valueOf(chars);)
+    // tc O(NK), sc O(N) where N - strs length; K - max word length
+    // 15 ms, faster than 29.00%; 53.4 MB, less than 5.26%
     List<List<String>> groupAnagrams(String[] strs) {
-        if (strs == null || strs.length == 0) {
-            return new ArrayList<>();
+        Map<String, List<String>> map = new HashMap<>();
+        for (String s : strs) {
+            char[] word = new char[26];
+            for (int i = 0; i < s.length(); i++) {
+                word[s.charAt(i) - 'a']++;
+            }
+            String key = String.valueOf(word);
+            map.putIfAbsent(key, new ArrayList<>());
+            map.get(key).add(s);
         }
+        return new ArrayList<>(map.values());
+    }
+
+    // https://leetcode.com/problems/group-anagrams/discuss/19176/Share-my-short-JAVA-solution
+    // tc O(NKlogK), sc O(N) where N - strs length; K - max word length
+    // 6 ms, faster than 96.85%; 41.8 MB, less than 94.15%
+    List<List<String>> groupAnagrams1(String[] strs) {
         Map<String, List<String>> map = new HashMap<>();
         for (String s : strs) {
             char[] chars = s.toCharArray();
@@ -46,70 +59,5 @@ public class Solution {
             map.get(key).add(s);
         }
         return new ArrayList<>(map.values());
-    }
-
-    // in solution
-    List<List<String>> groupAnagrams2(String[] strs) {
-        if (strs.length == 0) {
-            return new ArrayList();
-        }
-        Map<String, List<String>> map = new HashMap<>();
-        for (String str : strs) {
-            int[] a = new int[26];
-            char[] chars = str.toCharArray();
-            for (int i = 0; i < chars.length; i++) {
-                a[chars[i] - 'a']++;
-            }
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < 26; i++) {
-                sb.append('#');
-                sb.append(a[i]);
-            }
-            String key = sb.toString();
-            if (!map.containsKey(key)) {
-                map.put(key, new ArrayList<>());
-            }
-            map.get(key).add(str);
-//            map.computeIfAbsent(s, f -> new LinkedList<>()).add(str); // computes 48ms vs 17ms with classic containsKey/get/add
-        }
-        return new ArrayList<>(map.values());
-    }
-
-    // tc O(n*n*m), sc O(n*m), my solution, time limit exceeded
-    List<List<String>> groupAnagrams1(String[] strs) {
-        Map<String, List<String>> map = new HashMap<>();
-        for (String str : strs) {
-            boolean contains = false;
-            for (String mapKey : map.keySet()) {
-                if (isAnagram(str, mapKey)) {
-                    map.get(mapKey).add(str);
-                    contains = true;
-                }
-            }
-            if (!contains) {
-                map.computeIfAbsent(str, f -> new LinkedList<>()).add(str);
-            }
-        }
-        return new ArrayList<>(map.values());
-    }
-
-    // tc O(n), sc O(n)
-    private boolean isAnagram(String s, String t) {
-        if (s == null || t == null || s.length() != t.length()) {
-            return false;
-        }
-        int[] a = new int[26];
-        char[] ss = s.toCharArray();
-        char[] tt = t.toCharArray();
-        for (int i = 0; i < ss.length; i++) {
-            a[ss[i] - 'a']++;
-            a[tt[i] - 'a']--;
-        }
-        for (int i = 0; i < a.length; i++) {
-            if (a[i] != 0) {
-                return false;
-            }
-        }
-        return true;
     }
 }
