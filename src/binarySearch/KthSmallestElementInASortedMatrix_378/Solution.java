@@ -27,32 +27,28 @@ import java.util.PriorityQueue;
  */
 public class Solution {
     // https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/discuss/85173/Share-my-thoughts-and-Clean-Java-Code
-    // 17 ms 44.1 MB
+    // tc O(min(K,N) + KlogN), sc O(N)
+    // 16 ms, faster than 42.18%; 43.9 MB, less than 78.38%
     int kthSmallest1(int[][] matrix, int k) {
         int n = matrix.length;
-        PriorityQueue<Tuple> pq = new PriorityQueue<>();
-        for (int j = 0; j < n; j++) {
-            pq.offer(new Tuple(0, j, matrix[0][j]));
+        PriorityQueue<Node> pq = new PriorityQueue<>((n1, n2) -> matrix[n1.i][n1.j] - matrix[n2.i][n2.j]);
+        for (int j = 0; j < n && j < k; j++) {
+            pq.offer(new Node(0, j));
         }
         for (int i = 0; i < k - 1; i++) {
-            Tuple t = pq.poll();
-            if (t.x == n - 1) continue;
-            pq.offer(new Tuple(t.x + 1, t.y, matrix[t.x + 1][t.y]));
+            Node t = pq.poll();
+            if (t.i == n - 1) continue;
+            pq.offer(new Node(t.i + 1, t.j));
         }
-        return pq.poll().val;
+        Node node = pq.poll();
+        return matrix[node.i][node.j];
     }
 
-    private class Tuple implements Comparable<Tuple> {
-        int x, y, val;
-        Tuple(int x, int y, int val) {
-            this.x = x;
-            this.y = y;
-            this.val = val;
-        }
-
-        @Override
-        public int compareTo (Tuple that) {
-            return this.val - that.val;
+    private class Node {
+        int i, j;
+        Node(int i, int j) {
+            this.i = i;
+            this.j = j;
         }
     }
 
@@ -67,23 +63,10 @@ public class Solution {
         while (lo < hi) {
             int mid = lo + (hi - lo) / 2;
             int[] smallLargePair = new int[] {lo, hi};
-            int count = 0;
-            int row = 0;
-            int col = n - 1;
-            while (row < n && col >= 0) {
-                if (matrix[row][col] > mid) {
-                    smallLargePair[1] = Math.min(smallLargePair[1], matrix[row][col]);
-                    col--;
-                } else {
-                    smallLargePair[0] = Math.max(smallLargePair[0], matrix[row][col]);
-                    count += col + 1;
-                    row++;
-                }
-            }
-
-            if (count < k) {
+            int lessThanEqualMid = countLessEqual(matrix, mid, smallLargePair);
+            if (lessThanEqualMid < k) {
                 lo = smallLargePair[1];
-            } else if (count > k) {
+            } else if (lessThanEqualMid > k) {
                 hi = smallLargePair[0];
             } else {
                 return smallLargePair[0];
@@ -92,7 +75,26 @@ public class Solution {
         return lo;
     }
 
+    private int countLessEqual(int[][] matrix, int mid, int[] smallLargePair) {
+        int count = 0;
+        int n = matrix.length;
+        int row = n - 1;
+        int col = 0;
+        while (row >= 0 && col < n) {
+            if (matrix[row][col] > mid) {
+                smallLargePair[1] = Math.min(smallLargePair[1], matrix[row][col]);
+                row--;
+            } else {
+                smallLargePair[0] = Math.max(smallLargePair[0], matrix[row][col]);
+                count += row + 1;
+                col++;
+            }
+        }
+        return count;
+    }
+
     // my straight forward solution
+    // tc O(n^2*log(n^2))
     // 9 ms; 44 MB
     int kthSmallest2(int[][] matrix, int k) {
         int n = matrix.length;
