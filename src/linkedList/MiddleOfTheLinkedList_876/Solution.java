@@ -24,23 +24,6 @@ import linkedList.utils.ListNode;
  * The number of nodes in the given list will be between 1 and 100.
  */
 class Solution {
-    private List<ListNode> l = new ArrayList<>();
-
-    // time complexity O(n), space complexity O(n)
-    ListNode middleNode1(ListNode head) {
-        l.clear();
-        fillList(head);
-        return l.get(l.size() / 2);
-    }
-
-    private void fillList(ListNode node) {
-        if (node == null) {
-            return;
-        }
-        l.add(node);
-        fillList(node.next);
-    }
-
     // time complexity O(n), space complexity O(1)
     ListNode middleNode(ListNode head) {
         ListNode slow = head;
