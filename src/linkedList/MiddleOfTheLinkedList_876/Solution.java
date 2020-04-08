@@ -1,8 +1,5 @@
 package linkedList.MiddleOfTheLinkedList_876;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import linkedList.utils.ListNode;
 
 /**
