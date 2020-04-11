@@ -3,8 +3,12 @@ package graph.CloneGraph_133;
 import java.util.Arrays;
 
 import graph.utils.Node;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class SolutionTest {
+    @Test
     public void test() {
         Solution s = new Solution();
         Node node1 = new Node(1);
@@ -15,7 +19,7 @@ public class SolutionTest {
         node3.neighbors = Arrays.asList(node2, node4);
         node2.neighbors = Arrays.asList(node1, node3);
         node4.neighbors = Arrays.asList(node1, node3);
-
-        s.cloneGraph(node1);
+        Node cloned = s.cloneGraph(node1);
+        assertEquals(node1, cloned);
     }
 }

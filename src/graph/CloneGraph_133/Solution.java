@@ -1,8 +1,6 @@
 package graph.CloneGraph_133;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import graph.utils.Node;
 
@@ -38,9 +36,9 @@ import graph.utils.Node;
 public class Solution {
     private Map<Integer, Node> map = new HashMap<>();
 
-    // tc O(n), sc O(n)
+    // DFS, tc O(V + E), sc O(V + E)
     // https://leetcode.com/problems/clone-graph/discuss/42309/Depth-First-Simple-Java-Solution
-    Node cloneGraph(Node node) {
+    public Node cloneGraph(Node node) {
         if (node == null) return null;
 
         if (map.containsKey(node.val)) {
@@ -48,12 +46,38 @@ public class Solution {
         }
 
         Node clone = new Node(node.val);
-        map.put(clone.val, clone);
+        map.put(node.val, clone);
         clone.neighbors = new ArrayList<>();
         for (Node nbr : node.neighbors) {
             clone.neighbors.add(cloneGraph(nbr));
         }
 
         return clone;
+    }
+
+    /*
+                   3            1------2
+                  / \           |      |
+                 /   \          |      |
+                2-----1         4------3
+     */
+    // BFS, tc O(V + E), sc O(V + E)
+    public Node cloneGraph1(Node node) {
+        if (node == null) return null;
+        Map<Integer, Node> visited = new HashMap<>();
+        Queue<Node> q = new LinkedList<>();
+        q.add(node);
+        visited.put(node.val, new Node(node.val, new ArrayList<>()));
+        while (!q.isEmpty()) {
+            Node n = q.poll();
+            for (Node neighbor : n.neighbors) {
+                if (!visited.containsKey(neighbor.val)) {
+                    visited.put(neighbor.val, new Node(neighbor.val, new ArrayList<>()));
+                    q.add(neighbor);
+                }
+                visited.get(n.val).neighbors.add(visited.get(neighbor.val));
+            }
+        }
+        return visited.get(node.val);
     }
 }

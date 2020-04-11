@@ -1,5 +1,8 @@
 package dynamic.DecodeWays_91;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 91. Decode Ways
  * https://leetcode.com/problems/decode-ways/
@@ -23,9 +26,11 @@ package dynamic.DecodeWays_91;
  * Explanation: It could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).
  */
 public class Solution {
+    // dynamic approach
+    // tc O(n), sc O(n)
     // 2 ms, faster than 55.98%; 36.1 MB, less than 72.64%
     // https://leetcode.com/problems/decode-ways/discuss/30358/Java-clean-DP-solution-with-explanation
-    int numDecodings(String s) {
+    public int numDecodings(String s) {
         int n = s.length();
         int[] dp = new int[n + 1];
         dp[0] = 1;
@@ -37,5 +42,33 @@ public class Solution {
             if (second >= 10 && second <= 26) dp[i] += dp[i - 2];
         }
         return dp[n];
+    }
+
+    // backtracking approach
+    // tc O(n), sc O(n)
+    // 2 ms, faster than 60.11%; 39 MB, less than 5.66%
+    // we should use memoization map for avoiding 2^n time complexity - same as finding Fibonacci number
+    private Map<Integer, Integer> map;
+    public int numDecodings1(String s) {
+        map = new HashMap<>();
+        return bt(s, 0);
+    }
+
+    private int bt(String s, int ind) {
+        if (ind == s.length()) return 1;
+        if (s.charAt(ind) == '0') return 0;
+        if (ind == s.length() - 1) return 1;
+
+        if (map.containsKey(ind)) return map.get(ind);
+
+        int res = bt(s, ind + 1);
+        int val = Integer.parseInt(s.substring(ind, ind + 2));
+        if (10 <= val && val <= 26) {
+            res += bt(s, ind + 2);
+        }
+
+        map.put(ind, res);
+
+        return res;
     }
 }
