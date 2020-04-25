@@ -23,8 +23,20 @@ package array.JumpGame_55;
  */
 public class Solution {
     // tc O(n), sc O(1)
-    // 1 ms, faster than 98.20%; 41.5 MB, less than 29.06%
     public boolean canJump(int[] nums) {
+        if (nums == null || nums.length == 0) return false;
+        int maxJumps = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (maxJumps == 0) return false;
+            maxJumps--;
+            maxJumps = Math.max(maxJumps, nums[i]);
+        }
+        return true;
+    }
+
+    // tc O(n), sc O(1)
+    // 1 ms, faster than 98.20%; 41.5 MB, less than 29.06%
+    public boolean canJump3(int[] nums) {
         int lastPos = nums.length - 1;
         for (int i = nums.length - 1; i >= 0; i--) {
             if (i + nums[i] >= lastPos) {
