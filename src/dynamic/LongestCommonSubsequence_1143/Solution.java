@@ -35,6 +35,9 @@ package dynamic.LongestCommonSubsequence_1143;
  */
 public class Solution {
     /*
+        Great explanation
+        https://leetcode.com/articles/longest-common-subsequence/
+
         "abcde"
         "abc"
             a b c d e
@@ -43,9 +46,10 @@ public class Solution {
         b 0 1 2 2 2 2
         c 0 1 2 3 3 3
     */
-    // tc O(m*n), sc O(m*n), where m = text1.length, n = text2.length
+    // DP bottom-up aproach
+    // tc O(mn), sc O(mn), where m = text1.length, n = text2.length
     // 10 ms, faster than 52.83%, 43.4 MB, less than 100.00%
-    public int longestCommonSubsequence(String text1, String text2) {
+    public int longestCommonSubsequence1(String text1, String text2) {
         int m = text1.length();
         int n = text2.length();
         int[][] dp = new int[m+1][n+1];
@@ -81,5 +85,34 @@ public class Solution {
             }
         }
         return sb.reverse().toString();
+    }
+
+    // Backtracking with memoization, top-down approach
+    // tc O(mn), sc O(mn)
+    // 18 ms, faster than 16.60%; 44.2 MB, less than 100.00%
+    public int longestCommonSubsequence(String text1, String text2) {
+        int[][] memo = new int[text1.length() + 1][text2.length() + 1];
+        for (int i = 0; i < memo.length; i++) {
+            for (int j = 0; j < memo[0].length; j++) {
+                memo[i][j] = -1;
+            }
+        }
+        return solve(text1, text2, 0, 0, memo);
+    }
+
+    private int solve(String text1, String text2, int p1, int p2, int[][] memo) {
+        if (p1 == text1.length() || p2 == text2.length()) {
+            return 0;
+        }
+
+        if (memo[p1][p2] != -1) return memo[p1][p2];
+
+        if (text1.charAt(p1) == text2.charAt(p2)) {
+            memo[p1][p2] = 1 + solve(text1, text2, p1 + 1, p2 + 1, memo);
+        } else {
+            memo[p1][p2] = Math.max(solve(text1, text2, p1 + 1, p2, memo), solve(text1, text2, p1, p2 + 1, memo));
+        }
+
+        return memo[p1][p2];
     }
 }
