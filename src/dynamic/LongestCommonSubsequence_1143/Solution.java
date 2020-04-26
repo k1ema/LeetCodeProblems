@@ -34,22 +34,35 @@ package dynamic.LongestCommonSubsequence_1143;
  * The input strings consist of lowercase English characters only.
  */
 public class Solution {
+    /*
+        "abcde"
+        "abc"
+            a b c d e
+          0 0 0 0 0 0
+        a 0 1 1 1 1 1
+        b 0 1 2 2 2 2
+        c 0 1 2 3 3 3
+    */
     // tc O(m*n), sc O(m*n), where m = text1.length, n = text2.length
     // 10 ms, faster than 52.83%, 43.4 MB, less than 100.00%
-    int longestCommonSubsequence(String text1, String text2) {
-        int[][] dp = new int[text1.length() + 1][text2.length() + 1];
-        for (int i = 0; i < text1.length(); i++) {
-            for (int j = 0; j < text2.length(); j++) {
-                if (text1.charAt(i) == text2.charAt(j)) {
-                    dp[i + 1][j + 1] = dp[i][j] + 1;
+    public int longestCommonSubsequence(String text1, String text2) {
+        int m = text1.length();
+        int n = text2.length();
+        int[][] dp = new int[m+1][n+1];
+
+        for (int i=0; i<m; i++) {
+            char c = text1.charAt(i);
+            for (int j = 0; j<n; j++) {
+                if (c == text2.charAt(j)) {
+                    dp[i+1][j+1] = dp[i][j] + 1;
                 } else {
-                    dp[i + 1][j + 1] = Math.max(dp[i][j + 1], dp[i + 1][j]);
+                    dp[i+1][j+1] = Math.max(dp[i+1][j], dp[i][j+1]);
                 }
             }
         }
         String s = getSubsequence(dp, text1);
         System.out.println(s);
-        return dp[text1.length()][text2.length()];
+        return dp[m][n];
     }
 
     private String getSubsequence(int[][] dp, String t1) {
