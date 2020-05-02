@@ -16,16 +16,17 @@ import java.util.Set;
  * Example 1:
  * Input: J = "aA", S = "aAAbbbb"
  * Output: 3
- * Example 2:
  *
+ * Example 2:
  * Input: J = "z", S = "ZZ"
  * Output: 0
- * Note:
  *
+ * Note:
  * S and J will consist of letters and have length at most 50.
  * The characters in J are distinct.
  */
 class Solution {
+    // tc O(J.len+S.len), sc O(1)
     int numJewelsInStones(String J, String S) {
         Set<Character> set = new HashSet<>();
         for (int i = 0; i < J.length(); i++) {
