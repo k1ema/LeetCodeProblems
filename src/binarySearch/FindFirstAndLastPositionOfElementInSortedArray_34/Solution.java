@@ -20,40 +20,64 @@ package binarySearch.FindFirstAndLastPositionOfElementInSortedArray_34;
  * Output: [-1,-1]
  */
 public class Solution {
-    // tc O(logn), sc O(1)
-    int[] searchRange(int[] nums, int target) {
-        int[] res = new int[] {-1, -1};
-        int len;
-        if (nums == null || (len = nums.length) == 0) {
-            return res;
-        }
-        if (len == 1) {
-            return nums[0] == target ? new int[] {0, 0} : res;
-        }
+    // https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/discuss/14734/Easy-java-O(logn)-solution
+    public int[] searchRange(int[] nums, int target) {
+        int[] result = new int[2];
+        result[0] = findFirst(nums, target);
+        result[1] = findLast(nums, target);
+        return result;
+    }
 
-        int lo = 0;
-        int hi = len - 1;
-        while (lo <= hi) {
-            int m = lo + (hi - lo) / 2;
-            if (nums[m] < target) {
-                lo++;
-            } else if (nums[m] > target) {
-                hi--;
+    private int findFirst(int[] nums, int target) {
+        int idx = -1;
+        int start = 0;
+        int end = nums.length - 1;
+        while (start <= end) {
+            int mid = (start + end) / 2;
+            if (nums[mid] >= target) {
+                end = mid - 1;
             } else {
-                int i = m;
-                while (i - 1 >= lo && nums[i - 1] == target) {
-                    i--;
-                }
-                res[0] = i;
+                start = mid + 1;
+            }
+            if (nums[mid] == target) idx = mid;
+        }
+        return idx;
+    }
 
-                while (m + 1 <= hi && nums[m + 1] == target) {
-                    m++;
-                }
-                res[1] = m;
-                break;
+    private int findLast(int[] nums, int target) {
+        int idx = -1;
+        int start = 0;
+        int end = nums.length - 1;
+        while (start <= end) {
+            int mid = (start + end) / 2;
+            if (nums[mid] <= target) {
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+            if (nums[mid] == target) idx = mid;
+        }
+        return idx;
+    }
+
+    // https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/discuss/14699/Clean-iterative-solution-with-two-binary-searches-(with-explanation)
+    public int[] searchRange1(int[] nums, int target) {
+        double left = target - 0.5, right = target + 0.5;
+        int l = bs(nums, left), r = bs(nums, right);
+        if (l == r) return new int[] {-1, -1};
+        return new int[] {l, r - 1};
+    }
+
+    public int bs(int[] nums, double target) {
+        int l = 0, h = nums.length - 1;
+        while (l <= h) {
+            int m = l + (h - l) / 2;
+            if (target > nums[m]) {
+                l = m + 1;
+            } else {
+                h = m - 1;
             }
         }
-
-        return res;
+        return l;
     }
 }
