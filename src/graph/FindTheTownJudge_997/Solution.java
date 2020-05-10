@@ -1,10 +1,7 @@
 package graph.FindTheTownJudge_997;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * 997. Find the Town Judge
@@ -52,36 +49,8 @@ import java.util.Map.Entry;
  * 1 <= trust[i][0], trust[i][1] <= N
  */
 public class Solution {
-    // tc O(t^2), sc O(t)
-    int findJudge1(int N, int[][] trust) {
-        if (N == 1 && trust.length == 0) {
-            return 1;
-        }
-        Map<Integer, List<Integer>> map = new HashMap<>();
-        for (int i = 0; i < trust.length; i++) {
-            List<Integer> list = map.containsKey(trust[i][1]) ?
-                    map.get(trust[i][1]) : new ArrayList<>();
-            list.add(trust[i][0]);
-            map.put(trust[i][1], list);
-        }
-        for (Entry<Integer, List<Integer>> entry : map.entrySet()) {
-            if (entry.getValue().size() == N - 1) {
-                boolean exist = false;
-                for (List<Integer> people : map.values()) {
-                    if (people.contains(entry.getKey())) {
-                        exist = true;
-                    }
-                }
-                if (!exist) {
-                    return entry.getKey();
-                }
-            }
-        }
-        return -1;
-    }
-
     // https://leetcode.com/problems/find-the-town-judge/discuss/242938/JavaC%2B%2BPython-Directed-Graph
-    // tc O(T + N), sc O(N)
+    // tc O(E + N), sc O(N)
     int findJudge(int N, int[][] trust) {
         int[] count = new int[N + 1];
         for (int[] t : trust) {
@@ -95,5 +64,35 @@ public class Solution {
             }
         }
         return -1;
+    }
+
+    // tc O(N^2), sc O(E + N)
+    public int findJudge2(int N, int[][] trust) {
+        List<Integer>[] graph = buildGraph(N, trust);
+        for (int i = 1; i < graph.length; i++) {
+            if (graph[i].isEmpty()) {
+                boolean ok = true;
+                for (int j = 1; j < graph.length; j++) {
+                    if (i == j) continue;
+                    if (!graph[j].contains(i)) {
+                        ok = false;
+                        break;
+                    }
+                }
+                if (ok) return i;
+            }
+        }
+        return -1;
+    }
+
+    private List<Integer>[] buildGraph(int N, int[][] trust) {
+        List<Integer>[] graph = new ArrayList[N + 1];
+        for (int i = 1; i <= N; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        for (int[] t: trust) {
+            graph[t[0]].add(t[1]);
+        }
+        return graph;
     }
 }
