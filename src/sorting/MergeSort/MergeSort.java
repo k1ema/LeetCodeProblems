@@ -1,9 +1,10 @@
 package sorting.MergeSort;
 
 public class MergeSort {
-    // Top-down MergeSort
     private int[] aux;
-    public void sort1(int[] nums) {
+
+    // Top-down MergeSort
+    public void sort(int[] nums) {
         if (nums == null || nums.length < 2) return;
         aux = new int[nums.length];
         sort(nums, 0, nums.length - 1);
@@ -18,7 +19,6 @@ public class MergeSort {
     }
 
     private void merge(int[] nums, int lo, int mid, int hi) {
-        if (lo > mid || mid > hi) return;
         for (int k = lo; k <= hi; k++) {
             aux[k] = nums[k];
         }
@@ -37,7 +37,7 @@ public class MergeSort {
     }
 
     // Bottom-up MergeSort
-    public void sort(int[] nums) {
+    public void sort1(int[] nums) {
         int n;
         if (nums == null || (n = nums.length) < 2) return;
         aux = new int[n];
