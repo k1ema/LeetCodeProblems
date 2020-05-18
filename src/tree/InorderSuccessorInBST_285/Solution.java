@@ -35,8 +35,26 @@ import tree.utils.TreeNode;
  * It's guaranteed that the values of the tree are unique.
  */
 public class Solution {
-    private boolean pFound;
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        TreeNode candidate = null;
+        TreeNode cur = root;
+
+        while (cur != null) {
+            if (cur.val > p.val) {
+                candidate = cur;
+                cur = cur.left;
+            } else {
+                // cur.val <= p.val
+                cur = cur.right;
+            }
+        }
+
+        return candidate;
+    }
+
+    // my solution
+    private boolean pFound;
+    public TreeNode inorderSuccessor1(TreeNode root, TreeNode p) {
         pFound = false;
         return dfs(root, p, null);
     }
