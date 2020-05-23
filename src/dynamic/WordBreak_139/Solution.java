@@ -1,10 +1,6 @@
 package dynamic.WordBreak_139;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 139. Word Break
@@ -33,7 +29,34 @@ import java.util.Set;
  * Output: false
  */
 public class Solution {
-    // tc - O(n^3), i.e s.substring has O(n) complexity
+    // https://thenoisychannel.com/2011/08/08/retiring-a-great-interview-problem
+    // tc O(2^n), sc O(2^n) ?? without memoization; with memo: tc O(n^3), sc O(n)
+    // i.e s.substring has O(n) complexity
+    // https://stackoverflow.com/questions/4679746/time-complexity-of-javas-substring
+    private Map<String, Boolean> memo;
+    boolean wordBreak(String s, List<String> wordDict) {
+        memo = new HashMap<>();
+        return wordBreak(s, new HashSet<>(wordDict));
+    }
+
+    private boolean wordBreak(String s, Set<String> wordDict) {
+        if (wordDict.contains(s)) return true;
+        if (memo.containsKey(s)) return memo.get(s);
+        for (int i = 1; i < s.length(); i++) {
+            String prefix = s.substring(0, i);
+            if (wordDict.contains(prefix)) {
+                String suffix = s.substring(i);
+                if (wordBreak(suffix, wordDict)) {
+                    memo.put(s, true);
+                    return true;
+                }
+            }
+        }
+        memo.put(s, false);
+        return false;
+    }
+
+    // tc - O(n^3)
     // sc - O(n)
     // https://leetcode.com/problems/word-break/discuss/43814/c-dynamic-programming-simple-and-fast-solution-4ms-with-optimization
     boolean wordBreak1(String s, List<String> wordDict) {
@@ -57,7 +80,7 @@ public class Solution {
     // BFS
     // https://leetcode.com/problems/word-break/discuss/43797/A-solution-using-BFS
     // tc O(n^3), sc O(n)
-    boolean wordBreak(String s, List<String> wordDict) {
+    boolean wordBreak2(String s, List<String> wordDict) {
         Queue<Integer> queue = new LinkedList<>();
         queue.add(0);
         Set<Integer> visited = new HashSet<>();
