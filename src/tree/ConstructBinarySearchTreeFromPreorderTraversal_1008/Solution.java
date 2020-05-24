@@ -52,27 +52,24 @@ public class Solution {
     // tc O(n), sc O(n)
     public TreeNode bstFromPreorder1(int[] preorder) {
         TreeNode root = new TreeNode(preorder[0]);
-        dfs(root, preorder, 1, null, null);
+        dfs(preorder, 1, root, Integer.MIN_VALUE, Integer.MAX_VALUE);
         return root;
     }
 
-    private int dfs(TreeNode node, int[] preorder, int curInd, Integer min, Integer max) {
-        if (curInd < 0 || curInd >= preorder.length) return -1;
-        if (min != null && preorder[curInd] < min || max != null && preorder[curInd] > max) return curInd;
-
-        if (preorder[curInd] < node.val) {
-            node.left = new TreeNode(preorder[curInd]);
-            curInd = dfs(node.left, preorder, curInd + 1, min, node.val);
+    private int dfs(int[] preorder, int ind, TreeNode parent, int min, int max) {
+        if (ind == -1 || ind == preorder.length) return -1;
+        int curVal = preorder[ind];
+        if (curVal < parent.val && curVal > min && curVal < max) {
+            parent.left = new TreeNode(curVal);
+            ind = dfs(preorder, ind + 1, parent.left, min, parent.val);
         }
-
-        if (curInd < 0 || curInd >= preorder.length) return -1;
-        if (min != null && preorder[curInd] < min || max != null && preorder[curInd] > max) return curInd;
-
-        if (preorder[curInd] > node.val) {
-            node.right = new TreeNode(preorder[curInd]);
-            curInd = dfs(node.right, preorder, curInd + 1, node.val, max);
+        if (ind != -1) {
+            curVal = preorder[ind];
+            if (curVal > parent.val && curVal > min && curVal < max) {
+                parent.right = new TreeNode(curVal);
+                ind = dfs(preorder, ind + 1, parent.right, parent.val, max);
+            }
         }
-
-        return curInd;
+        return ind;
     }
 }
