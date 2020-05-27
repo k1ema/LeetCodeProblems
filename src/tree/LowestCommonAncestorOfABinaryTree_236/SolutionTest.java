@@ -21,5 +21,9 @@ public class SolutionTest {
                 Parser.stringToTreeNode("[37,-34,-48,null,-100,-101,48,null,null,null,null,-54,null,-71,-22,null,null,null,8]"),
                 Parser.stringToTreeNode("[-71,null,null]"),
                 Parser.stringToTreeNode("[48,-54,null,-71,-22,null,null,null,8]")).val);
+        assertEquals(3, s.lowestCommonAncestor(
+                Parser.stringToTreeNode("[3,5,1,6,2,0,8,null,null,7,4]"),
+                Parser.stringToTreeNode("[7]"),
+                Parser.stringToTreeNode("[0]")).val);
     }
 }
