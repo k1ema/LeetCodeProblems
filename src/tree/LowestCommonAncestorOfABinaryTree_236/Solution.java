@@ -34,6 +34,16 @@ import java.util.Queue;
  */
 public class Solution {
     // tc O(n), sc O(n)
+    // 5 ms, faster than 100.00%; 35.9 MB, less than 5.55%
+    // https://discuss.leetcode.com/topic/18561/4-lines-c-java-python-ruby
+    TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || root.equals(p) || root.equals(q)) return root;
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        return left == null ? right : (right == null ? left : root);
+    }
+
+    // tc O(n), sc O(n)
     // 5 ms, faster than 100.00%; 35.2 MB, less than 5.55%
     private TreeNode ans;
     TreeNode lowestCommonAncestor1(TreeNode root, TreeNode p, TreeNode q) {
@@ -52,20 +62,6 @@ public class Solution {
             ans = root;
         }
         return left + right + mid >= 1;
-    }
-
-    // tc O(n), sc O(n)
-    // 5 ms, faster than 100.00%; 35.9 MB, less than 5.55%
-    // https://discuss.leetcode.com/topic/18561/4-lines-c-java-python-ruby
-    TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        // Could be a case if root has a children, and one of them is other node we are looking for.
-        // It can be, can be not. Just propagate root to the top. So other branches return null,
-        // and our root would be propagated till the top of recursion calls.
-        // This approach is not good for the case if tree might not contains p or q.
-        if (root == null || root.equals(p) || root.equals(q)) return root;
-        TreeNode left = lowestCommonAncestor(root.left, p, q);
-        TreeNode right = lowestCommonAncestor(root.right, p, q);
-        return left == null ? right : right == null ? left : root;
     }
 
     // my solution
