@@ -14,5 +14,6 @@ public class SolutionTest {
         assertFalse(s.canFinish(2, new int[][] {{1, 0}, {0, 1}}));
         assertTrue(s.canFinish(3, new int[][] {{1, 0}, {2, 1}}));
         assertTrue(s.canFinish(4, new int[][] {{0, 1}, {1, 2}, {2, 3}}));
+        assertFalse(s.canFinish(4, new int[][] {{3, 0}, {0, 1}, {1, 2}, {2, 0}}));
     }
 }

@@ -95,7 +95,11 @@ public class Solution {
     // tc O(V + E), sc O(V + E): O(V + E) for building grpah, O(V) for indegrees, O(V) for queue => O(3V + E) => O(V + E)
     boolean canFinish(int numCourses, int[][] prerequisites) {
         List<Integer>[] adj = buildGraph(numCourses, prerequisites);
-        int[] indegrees = getIndegrees(numCourses, prerequisites);
+
+        int[] indegrees = new int[numCourses];
+        for (int[] edge : prerequisites) {
+            indegrees[edge[1]]++;
+        }
 
         Queue<Integer> queue = new LinkedList<>();
         int count = 0; // counter of visited vertices.
@@ -120,14 +124,6 @@ public class Solution {
         }
 
         return count == numCourses;
-    }
-
-    private int[] getIndegrees(int numCourses, int[][] prerequisites) {
-        int[] indegrees = new int[numCourses];
-        for (int i = 0; i < prerequisites.length; i++) {
-            indegrees[prerequisites[i][1]]++;
-        }
-        return indegrees;
     }
 
     private List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
