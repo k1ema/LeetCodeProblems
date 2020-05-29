@@ -26,12 +26,28 @@ public class Solution {
     // tc O(n), sc O(n)
     // 1 ms, faster than 99.74%; 37.6 MB, less than 5.88%
     // f[i] = f[i / 2] + i % 2.
-    int[] countBits(int num) {
+    public int[] countBits(int num) {
         int[] f = new int[num + 1];
         for (int i = 1; i <= num; i++) {
             f[i] = f[i >> 1] + (i & 1);
         }
         return f;
+    }
+
+    // DFS!
+    // tc O(n), sc O(n)
+    // Runtime: 0 ms, faster than 100.00%
+    public int[] countBits11(int num) {
+        int[] result = new int[num + 1];
+        dfs(result, num, 1, 1);
+        return result;
+    }
+
+    private void dfs(int[] result, int num, int count, int val) {
+        if (val > num) return;
+        result[val] = count;
+        dfs(result, num, count, val * 2);
+        dfs(result, num, count + 1, val * 2 + 1);
     }
 
     // tc O(n), sc O(n)
@@ -58,7 +74,7 @@ public class Solution {
 
     // tc O(n * sizeof(int)), sc O(n)
     // 1ms, faster than 99.74%; 38.4 MB
-    int[] countBits2(int num) {
+    public int[] countBits2(int num) {
         int[] result = new int[num + 1];
         for (int i = 0; i <= num; i++) {
             int tmp = i;
