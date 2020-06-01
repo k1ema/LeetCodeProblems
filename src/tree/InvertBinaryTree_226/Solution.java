@@ -27,8 +27,8 @@ import java.util.Queue;
  * 9   6 3   1
  */
 public class Solution {
-    // tc O(n), sc O(n)
     // recursion
+    // tc O(n), sc O(n)
     TreeNode invertTree(TreeNode root) {
         if (root == null) return null;
         TreeNode invert = new TreeNode(root.val);
@@ -37,21 +37,31 @@ public class Solution {
         return invert;
     }
 
+    // same approach
     // tc O(n), sc O(n)
+    public TreeNode invertTree1(TreeNode root) {
+        if (root == null) return null;
+        TreeNode tmp = root.left;
+        root.left = root.right;
+        root.right = tmp;
+        invertTree1(root.left);
+        invertTree1(root.right);
+        return root;
+    }
+
     // iterative
-    TreeNode invertTree1(TreeNode root) {
-        Queue<TreeNode> tree = new LinkedList<>();
-        tree.add(root);
-        while (!tree.isEmpty()) {
-            TreeNode st = tree.poll();
-            if (st == null) {
-                continue;
-            }
-            TreeNode tmp = st.left;
-            st.left =  st.right;
-            st.right = tmp;
-            tree.add(st.left);
-            tree.add(st.right);
+    // tc O(n), sc O(n)
+    TreeNode invertTree2(TreeNode root) {
+        if (root == null) return null;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode tree = queue.poll();
+            TreeNode tmp = tree.left;
+            tree.left = tree.right;
+            tree.right = tmp;
+            if (tree.left != null) queue.add(tree.left);
+            if (tree.right != null) queue.add(tree.right);
         }
         return root;
     }
