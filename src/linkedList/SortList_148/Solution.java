@@ -87,6 +87,7 @@ class Solution {
 
     // recursive up-to-bottom solution; 3 ms, faster than 97.59%; 39.8 MB, less than 100.00%
     // https://leetcode.com/problems/sort-list/discuss/46714/Java-merge-sort-solution
+    // tc O(nlogn), sc O(logn)
     ListNode sortList1(ListNode head) {
         if (head == null || head.next == null) return head;
 

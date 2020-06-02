@@ -28,8 +28,8 @@ public class SolutionTest {
     public void test() {
         for (String line : ss) {
             ListNode head = stringToListNode(line);
-            ListNode ret = new Solution().sortList(head);
-            String out = listNodeToString(ret);
+            ListNode res = new Solution().sortList(head);
+            String out = listNodeToString(res);
             System.out.println(out);
             int[] sorted = stringToIntegerArray(line);
             Arrays.sort(sorted);
