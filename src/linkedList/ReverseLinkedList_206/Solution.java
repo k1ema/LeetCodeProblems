@@ -16,7 +16,6 @@ import linkedList.utils.ListNode;
  * A linked list can be reversed either iteratively or recursively. Could you implement both?
  */
 public class Solution {
-    // from leetcode recursive solution
     // tc O(n), sc O(n)
     ListNode reverseList(ListNode head) {
         if (head == null || head.next == null) {
@@ -28,7 +27,7 @@ public class Solution {
         return node;
     }
 
-    // iterate, time complexity O(n), space O(1)
+    // tc O(n), sc O(1)
     ListNode reverseList1(ListNode head) {
         ListNode prev = null;
         ListNode curr = head;
@@ -40,26 +39,5 @@ public class Solution {
             curr = tmp;
         }
         return prev;
-    }
-
-    // recursive, time complexity: O(n), space: O(n)
-    private ListNode result;
-    ListNode reverseList2(ListNode head) {
-        if (head == null) {
-            return null;
-        }
-        reverse(head);
-        return result;
-    }
-
-    private ListNode reverse(ListNode head) {
-        if (head.next != null) {
-            ListNode next = reverse(head.next);
-            next.next = new ListNode(head.val);
-            return next.next;
-        } else {
-            result = head;
-        }
-        return result;
     }
 }
