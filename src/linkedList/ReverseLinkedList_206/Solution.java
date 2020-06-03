@@ -32,11 +32,12 @@ public class Solution {
         ListNode prev = null;
         ListNode curr = head;
 
+        // next ... curr.next ... curr.next ... prev
         while (curr != null) {
-            ListNode tmp = curr.next;
+            ListNode next = curr.next;
             curr.next = prev;
             prev = curr;
-            curr = tmp;
+            curr = next;
         }
         return prev;
     }
