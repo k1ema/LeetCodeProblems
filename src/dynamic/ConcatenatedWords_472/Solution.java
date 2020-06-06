@@ -26,8 +26,9 @@ import java.util.*;
  * 4. The returned elements order does not matter.
  */
 public class Solution {
+    // tc O(n * k^3), sc O(n)
     // 358 ms, faster than 16.30%; 45.5 MB, less than 95.24%
-    public List<String> findAllConcatenatedWordsInADict(String[] words) {
+    public List<String> findAllConcatenatedWordsInADict1(String[] words) {
         List<String> res = new ArrayList<>();
         if (words == null || words.length < 2) return res;
 
@@ -43,6 +44,7 @@ public class Solution {
         return res;
     }
 
+    // tc O(k^3) i.e s.substring has O(n) complexity
     private boolean canForm(String s, Set<String> dict) {
         if (dict.isEmpty()) return false;
         boolean[] dp = new boolean[s.length() + 1];
@@ -57,5 +59,61 @@ public class Solution {
             }
         }
         return dp[dp.length - 1];
+    }
+
+    // Trie
+    // tc O(n * k) ?, sc O(n * k), where n - number of words, k - max word's length
+    // 50 ms, faster than 84.34%; 50.2 MB, less than 26.81%
+    public List<String> findAllConcatenatedWordsInADict(String[] words) {
+        List<String> res = new ArrayList<>();
+        if (words == null || words.length < 2) return res;
+
+        TrieNode root = new TrieNode();
+        for (String word : words) {
+            if (word == null || word.isEmpty()) continue;
+            addWord(root, word);
+        }
+        for (String word : words) {
+            if (testWord(root, 0, word, 0)) {
+                res.add(word);
+            }
+        }
+        return res;
+    }
+
+    private boolean testWord(TrieNode root, int ind, String word, int count) {
+        TrieNode cur = root;
+        for (int i = ind; i < word.length(); i++) {
+            TrieNode node = cur.children[word.charAt(i) - 'a'];
+            if (node == null) {
+                return false;
+            }
+            if (node.isEnd) {
+                if (i == word.length() - 1) {
+                    return count >= 1;
+                }
+                if (testWord(root, i + 1, word, count + 1)) {
+                    return true;
+                }
+            }
+            cur = node;
+        }
+        return false;
+    }
+
+    private void addWord(TrieNode root, String word) {
+        TrieNode cur = root;
+        for (char c : word.toCharArray()) {
+            if (cur.children[c - 'a'] == null) {
+                cur.children[c - 'a'] = new TrieNode();
+            }
+            cur = cur.children[c - 'a'];
+        }
+        cur.isEnd = true;
+    }
+
+    private class TrieNode {
+        boolean isEnd;
+        TrieNode[] children = new TrieNode[26];
     }
 }
