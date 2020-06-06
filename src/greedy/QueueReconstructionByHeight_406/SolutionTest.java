@@ -1,4 +1,4 @@
-package array.QueueReconstructionByHeight_406;
+package greedy.QueueReconstructionByHeight_406;
 
 import org.junit.Test;
 

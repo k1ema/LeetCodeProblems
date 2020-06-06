@@ -1,4 +1,4 @@
-package array.QueueReconstructionByHeight_406;
+package greedy.QueueReconstructionByHeight_406;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -22,6 +22,12 @@ import java.util.List;
  * [[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
  */
 public class Solution {
+    /*
+        1. sort input array: by height desc, among equal height -> by k asc
+        2. create res list of array: List<int[]>
+        3. iterate through input and put to res: res.add(p[1], p)
+    */
+    // tc O(n^2), sc O(n)
     public int[][] reconstructQueue(int[][] people) {
         Arrays.sort(people, (o1, o2) -> {
             // if the heights are equal, compare k-values
