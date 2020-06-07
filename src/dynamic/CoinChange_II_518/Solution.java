@@ -27,6 +27,22 @@ package dynamic.CoinChange_II_518;
  * Output: 1
  */
 public class Solution {
+    /*
+        0 1 2 3 4 5
+      1 1 1 1 1 1 1
+      2 1 1 2 2 3 3
+      5 1 1 2 2 3 4
+
+        0 1 2 3
+      2 1 0 1 0
+
+        init dp array : new int[amount + 1]
+        dp[0] = 1
+        for i : amount
+            for j : coins
+                if j >= coins[i] dp[j] += dp[j - coins[i]]
+    */
+
     // tc O(m * n), sc O(m), where m = amount, n = coins.length
     // 3 ms, faster than 49.82%; 34.5 MB, less than 100.00%
     int change(int amount, int[] coins) {
@@ -34,11 +50,7 @@ public class Solution {
         dp[0] = 1;
         for (int i = 0; i < coins.length; i++) {
             for (int j = 1; j <= amount; j++) {
-                if (j - coins[i] == 0) {
-                    dp[j] += 1;
-                } else if (j - coins[i] > 0) {
-                    dp[j] += dp[j - coins[i]];
-                }
+                if (j >= coins[i]) dp[j] += dp[j - coins[i]];
             }
         }
         return dp[amount];
