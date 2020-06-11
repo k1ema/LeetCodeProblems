@@ -1,7 +1,5 @@
 package array.SortColors_75;
 
-import java.util.Arrays;
-
 /**
  * 75. Sort Colors
  * https://leetcode.com/problems/sort-colors/
@@ -28,55 +26,49 @@ public class Solution {
     // https://en.wikipedia.org/wiki/Dutch_national_flag_problem
     // https://www.geeksforgeeks.org/sort-an-array-of-0s-1s-and-2s/
     // tc O(n), one pass; sc O(1)
-    void sortColors(int[] nums) {
+    public void sortColors(int[] nums) {
         if (nums == null || nums.length < 2) return;
 
         int n = nums.length - 1;
         int i = 0, j = 0;
         while (j <= n) {
             if (nums[j] < 1) {
-                swap(nums, i, j);
-                i++;
-                j++;
+                swap(nums, i++, j++);
             } else if (nums[j] > 1) {
-                swap(nums, j, n);
-                n--;
+                swap(nums, j, n--);
             } else {
                 j++;
             }
         }
+    }
 
-        System.out.println(Arrays.toString(nums));
+    // classic implementation
+    public void sortColors2(int[] nums) {
+        if (nums == null || nums.length == 0) return;
+        sort(nums, 0, nums.length - 1);
+    }
+
+    private void sort(int[] nums, int lo, int hi) {
+        if (lo >= hi) return;
+        int lt = lo, gt = hi;
+        int v = nums[lo];
+        int i = lo;
+        while (i <= gt) {
+            if (nums[i] < v) {
+                swap(nums, i++, lt++);
+            } else if (nums[i] > v) {
+                swap(nums, i, gt--);
+            } else {
+                i++;
+            }
+        }
+        sort(nums, lo, lt - 1);
+        sort(nums, gt + 1, hi);
     }
 
     private void swap(int[] nums, int i, int j) {
         int tmp = nums[i];
         nums[i] = nums[j];
         nums[j] = tmp;
-    }
-
-    void sortColors1(int[] nums) {
-        if (nums == null || nums.length < 2) return;
-        int zeroes = 0;
-        int ones = 0;
-        int twos = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] == 0) {
-                zeroes++;
-            } else if (nums[i] == 1) {
-                ones++;
-            } else if (nums[i] == 2) {
-                twos++;
-            }
-        }
-        for (int i = 0; i < zeroes; i++) {
-            nums[i] = 0;
-        }
-        for (int i = zeroes; i < zeroes + ones; i++) {
-            nums[i] = 1;
-        }
-        for (int i = zeroes + ones; i < zeroes + ones + twos; i++) {
-            nums[i] = 2;
-        }
     }
 }
