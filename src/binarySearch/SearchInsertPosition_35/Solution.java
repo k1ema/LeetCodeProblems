@@ -27,24 +27,13 @@ package binarySearch.SearchInsertPosition_35;
  */
 public class Solution {
     public int searchInsert(int[] nums, int target) {
-        if (nums == null || nums.length == 0) return 0;
-        int lo = 0, hi = nums.length - 1;
-        while (lo <= hi) {
-            int mid = lo + (hi - lo) / 2;
-            if (nums[mid] < target) {
-                if (mid + 1 < nums.length && nums[mid + 1] > target || mid == nums.length - 1) {
-                    return mid + 1;
-                }
-                lo = mid + 1;
-            } else if (nums[mid] > target) {
-                if (mid - 1 >= 0 && nums[mid - 1] < target || mid == 0) {
-                    return mid;
-                }
-                hi = mid - 1;
-            } else {
-                return mid;
-            }
+        int low = 0, high = nums.length - 1;
+        while (low <= high) {
+            int mid = (low + high) >>> 1;
+            if (nums[mid] == target) return mid;
+            else if (nums[mid] > target) high = mid - 1;
+            else low = mid + 1;
         }
-        return lo;
+        return low;
     }
 }
