@@ -50,16 +50,16 @@ public class Solution {
     int findDuplicate1(int[] nums) {
         int lo = 1;
         int hi = nums.length - 1;
-        while (lo < hi) {
+        while (lo <= hi) {
             int cnt = 0;
-            int mid = lo + (hi - lo) / 2;
+            int mid = (lo + hi) >>> 1;
             for (int i = 0; i < nums.length; i++) {
                 if (nums[i] <= mid) {
                     cnt++;
                 }
             }
             if (cnt > mid) {
-                hi = mid;
+                hi = mid - 1;
             } else {
                 lo = mid + 1;
             }
