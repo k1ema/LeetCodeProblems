@@ -11,6 +11,6 @@ public class SolutionTest {
         assertEquals(4, s.lengthOfLIS(new int[] {10, 9, 2, 5, 3, 7, 101, 18}));
         assertEquals(4, s.lengthOfLIS(new int[] {1, 2, 3, 1, 1, 1, 4}));
         assertEquals(4, s.lengthOfLIS(new int[] {1, 2, 3, 1, 2, 1, 4}));
-        assertEquals(4, s.lengthOfLIS(new int[] {1, 2, 3, 1, 2, 1, 2, 4}));
+        assertEquals(3, s.lengthOfLIS(new int[] {10, 2, 3, 1, 2, 1, 2, 4}));
     }
 }

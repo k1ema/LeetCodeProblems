@@ -15,11 +15,34 @@ import java.util.Arrays;
  *
  * Note:
  * There may be more than one LIS combination, it is only necessary for you to return the length.
- * Your algorithm should run in O(n2) complexity.
+ * Your algorithm should run in O(n^2) complexity.
  *
  * Follow up: Could you improve it to O(n log n) time complexity?
  */
 public class Solution {
+    // tc O(nlogn), sc O(n)
+    // 1 ms, faster than 87.28%; 37.7 MB, less than 34.00%
+    // https://leetcode.com/problems/longest-increasing-subsequence/discuss/74824/JavaPython-Binary-search-O(nlogn)-time-with-explanation
+    public int lengthOfLIS(int[] nums) {
+        if (nums == null) return 0;
+        int[] tails = new int[nums.length];
+        int size = 0;
+        for (int x : nums) {
+            int i = 0, j = size - 1;
+            while (i <= j) {
+                int m = (i + j) >>> 1;
+                if (x <= tails[m]) {
+                    j = m - 1;
+                } else {
+                    i = m + 1;
+                }
+            }
+            tails[i] = x;
+            if (i == size) size++;
+        }
+        return size;
+    }
+
     // tc O(n^2), sc O(n)
     // 10 ms, faster than 62.07%; 37.8 MB, less than 30.00%
     public int lengthOfLIS1(int[] nums) {
@@ -41,26 +64,24 @@ public class Solution {
         return dp[nums.length - 1];
     }
 
-    // tc O(nlogn), sc O(n)
-    // 1 ms, faster than 87.28%; 37.7 MB, less than 34.00%
-    // https://leetcode.com/problems/longest-increasing-subsequence/discuss/74824/JavaPython-Binary-search-O(nlogn)-time-with-explanation
-    public int lengthOfLIS(int[] nums) {
-        if (nums == null) return 0;
-        int[] tails = new int[nums.length];
-        int size = 0;
-        for (int x : nums) {
-            int i = 0, j = size;
-            while (i < j) {
-                int m = i + (j - i) / 2;
-                if (x <= tails[m]) {
-                    j = m;
-                } else {
-                    i = m + 1;
-                }
-            }
-            tails[i] = x;
-            if (i == size) size++;
+    // tc O(n^2), sc O(n^2)
+    public int lengthOfLIS2(int[] nums) {
+        int[][] memo = new int[nums.length + 1][nums.length];
+        for (int[] m : memo) {
+            Arrays.fill(m, -1);
         }
-        return size;
+        return bt(nums, -1, 0, memo);
+    }
+
+    private int bt(int[] nums, int prevInd, int curInd, int[][] memo) {
+        if (curInd == nums.length) return 0;
+        if (memo[prevInd + 1][curInd] >= 0) return memo[prevInd + 1][curInd];
+        int taken = 0;
+        if (prevInd < 0 || nums[curInd] > nums[prevInd]) {
+            taken = 1 + bt(nums, curInd, curInd + 1, memo);
+        }
+        int nottaken = bt(nums, prevInd, curInd + 1, memo);
+        memo[prevInd + 1][curInd] = Math.max(taken, nottaken);
+        return memo[prevInd + 1][curInd];
     }
 }
