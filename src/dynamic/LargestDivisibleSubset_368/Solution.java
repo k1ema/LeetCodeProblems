@@ -1,8 +1,6 @@
 package dynamic.LargestDivisibleSubset_368;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * 368. Largest Divisible Subset
@@ -24,8 +22,40 @@ import java.util.List;
  * Output: [1,2,4,8]
  */
 public class Solution {
+    // recursion with memoization
     // tc O(n^2), sc O(n^2)
     public List<Integer> largestDivisibleSubset(int[] nums) {
+        Arrays.sort(nums);
+        List<Integer> maxSubset = new ArrayList<>();
+        Map<Integer, List<Integer>> memo = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            List<Integer> subset = bt(nums, i, memo);
+            if (maxSubset.size() < subset.size()) {
+                maxSubset = subset;
+            }
+        }
+        return maxSubset;
+    }
+
+    private List<Integer> bt(int[] nums, int i, Map<Integer, List<Integer>> memo) {
+        if (memo.containsKey(i)) return memo.get(i);
+        List<Integer> maxSubset = new ArrayList<>();
+        for (int j = i - 1; j >= 0; j--) {
+            if (nums[i] % nums[j] == 0) {
+                List<Integer> subset = bt(nums, j, memo);
+                if (maxSubset.size() < subset.size()) {
+                    maxSubset = subset;
+                }
+            }
+        }
+        List<Integer> list = new ArrayList<>(maxSubset);
+        list.add(nums[i]);
+        memo.put(i, list);
+        return list;
+    }
+
+    // tc O(n^2), sc O(n^2)
+    public List<Integer> largestDivisibleSubset1(int[] nums) {
         if (nums == null || nums.length == 0) return new ArrayList<>();
 
         List<Integer>[] list = new ArrayList[nums.length];
