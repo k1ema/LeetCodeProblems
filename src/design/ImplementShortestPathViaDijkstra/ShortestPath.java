@@ -12,7 +12,6 @@ public class ShortestPath {
 
         Edge[] edgeTo = new Edge[n];
         int[] distTo = new int[n];
-        boolean[] visited = new boolean[n];
         for (int i = 0; i < n; i++) {
             distTo[i] = Integer.MAX_VALUE;
         }
@@ -21,8 +20,6 @@ public class ShortestPath {
         pq.add(new int[] {s, 0});
         while (!pq.isEmpty()) {
             int[] v = pq.poll();
-            if (visited[v[0]]) continue;
-            visited[v[0]] = true;
             for (Edge e : graph.adj(v[0])) {
                 if (distTo[e.from()] + e.weight() < distTo[e.to()]) {
                     distTo[e.to()] = distTo[e.from()] + e.weight();
