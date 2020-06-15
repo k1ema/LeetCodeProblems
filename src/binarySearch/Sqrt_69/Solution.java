@@ -45,7 +45,7 @@ public class Solution {
         int lo = 2, hi = x / 2;
         long num;
         while (lo <= hi) {
-            int mid = lo + (hi - lo) / 2;
+            int mid = (lo + hi) >>> 1;
             num = (long) mid * mid;
             if (num > x) {
                 hi = mid - 1;
@@ -56,6 +56,20 @@ public class Solution {
             }
         }
         return hi;
+    }
+
+    int mySqrt4(int x) {
+        if (x < 2) return x;
+        int lo = 1, hi = x;
+        while (hi - lo > 1) {
+            int mid = (lo + hi) >>> 1;
+            if (mid * mid <= x) {
+                lo = mid;
+            } else {
+                hi = mid;
+            }
+        }
+        return lo;
     }
 
     // https://discuss.leetcode.com/topic/19698/my-clean-c-code-8ms
