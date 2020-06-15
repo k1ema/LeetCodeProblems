@@ -1,7 +1,6 @@
 package array.SubarraySumEqualsK_560;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 560. Subarray Sum Equals K
@@ -23,15 +22,16 @@ public class Solution {
     // 10 ms, faster than 98.40%; 41.7 MB, less than 5.43%
     // https://leetcode.com/problems/subarray-sum-equals-k/solution/
     public int subarraySum(int[] nums, int k) {
-        Map<Integer, Integer> map = new HashMap<>();
+        var map = new HashMap<Integer, Integer>();
         map.put(0, 1);
-        int count = 0, sum = 0;
+        var count = 0;
+        var sum = 0;
         for (int i = 0; i < nums.length; i++) {
             sum += nums[i];
             if (map.containsKey(sum - k)) {
                 count += map.get(sum - k);
             }
-            map.merge(sum, 1, Integer::sum);
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
         }
         return count;
     }
