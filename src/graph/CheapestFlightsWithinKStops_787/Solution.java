@@ -40,7 +40,7 @@ import java.util.*;
  * There will not be any duplicated flights or self cycles.
  */
 public class Solution {
-    // tc O(E + E*logV) ?, sc O(EV). Dijkstra
+    // tc O(k*E*logV) ?, sc O(EV). Dijkstra
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
         List<Edge>[] graph = new ArrayList[n];
         for (int i = 0; i < n; i++) {
@@ -105,5 +105,54 @@ public class Solution {
         int weight() {
             return w;
         }
+    }
+
+
+    // tc O(k*E*logV) ?, sc O(max(V^2, EV))
+    public int findCheapestPrice1(int n, int[][] flights, int src, int dst, int K) {
+        List<int[]>[] graph = new List[n];
+        for (int i = 0; i < n; i++) graph[i] = new LinkedList<>();
+        // a[0] - u, a[1] - v, a[2] - weight
+        for (int[] a : flights) {
+            graph[a[0]].add(new int[] {a[1], a[2]});
+        }
+        int[][] weight = new int[n][n + 1];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(weight[i], Integer.MAX_VALUE);
+        }
+        weight[src][0] = 0;
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[1], b[1]));
+        pq.add(new int[] {src, 0, 0});
+        while (!pq.isEmpty()) {
+            int[] a = pq.poll();
+            if (a[0] == dst) return a[1];
+            if (a[2] > K) continue;
+            for (int[] nei : graph[a[0]]) {
+                if (a[1] + nei[1] < weight[nei[0]][a[2] + 1]) {
+                    weight[nei[0]][a[2] + 1] = a[1] + nei[1];
+                    pq.add(new int[] {nei[0], a[1] + nei[1], a[2] + 1});
+                }
+            }
+        }
+        return -1;
+    }
+
+    // Bellman-Ford
+    public int findCheapestPrice2(int n, int[][] edges, int src, int dst, int k) {
+        int inf = Integer.MAX_VALUE;
+        int[] d = new int[n];
+        Arrays.fill(d, inf);
+        d[src] = 0;
+        for (int i = 0; i <= k; ++i) {
+            int[] ud = Arrays.copyOf(d, n);
+            for (int[] e : edges) {
+                int u = e[0], v = e[1], weight = e[2];
+                if ((d[u] < inf) && ((d[u] + weight) < d[v]))
+                    ud[v] = d[u] + weight;
+            }
+            d = ud;
+        }
+        return (d[dst] < inf) ? d[dst] : -1;
     }
 }
