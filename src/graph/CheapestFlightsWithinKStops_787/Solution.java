@@ -46,10 +46,16 @@ public class Solution {
         for (int i = 0; i < n; i++) {
             graph[i] = new ArrayList<>();
         }
-
         for (int[] flight : flights) {
             graph[flight[0]].add(new Edge(flight[0], flight[1], flight[2]));
         }
+
+        int[] distTo = new int[n];
+        int[] curStops = new int[n];
+        Arrays.fill(distTo, Integer.MAX_VALUE);
+        Arrays.fill(curStops, Integer.MAX_VALUE);
+        distTo[src] = 0;
+        curStops[src] = 0;
 
         Queue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
         pq.add(new int[] {src, 0, 0});
@@ -64,7 +70,13 @@ public class Solution {
             if (stops > K) continue;
 
             for (Edge e : graph[u]) {
-                pq.add(new int[] {e.to(), curWeight + e.weight(), stops + 1});
+                if (curWeight + e.weight() < distTo[e.to()]) {
+                    distTo[e.to()] = curWeight + e.weight();
+                    pq.add(new int[] {e.to(), curWeight + e.weight(), stops + 1});
+                } else if (stops + 1 < curStops[e.to()]) {
+                    curStops[e.to()] = stops + 1;
+                    pq.add(new int[] {e.to(), curWeight + e.weight(), stops + 1});
+                }
             }
         }
 
