@@ -1,20 +1,20 @@
 package design.ImplementShortestPathViaDijkstra;
 
 public class Edge {
-    private int v, w, weight;
+    private int u, v, weight;
 
-    Edge(int v, int w, int weight) {
+    Edge(int u, int v, int weight) {
+        this.u = u;
         this.v = v;
-        this.w = w;
         this.weight = weight;
     }
 
     int from() {
-        return v;
+        return u;
     }
 
     int to() {
-        return w;
+        return v;
     }
 
     int weight() {
@@ -23,6 +23,6 @@ public class Edge {
 
     @Override
     public String toString() {
-        return String.format("[%d-%d %d]", v, w, weight);
+        return String.format("[%d-%d %d]", u, v, weight);
     }
 }
