@@ -37,33 +37,32 @@ public class Solution {
     // X X O X  ->       X X O X    ->       X X X X
     // X O X X           X 1 X X             X O X X
     // X O X X           X 1 X X             X O X X
-    void solve(char[][] board) {
-        int n;
-        if (board == null || (n = board.length) == 0) return;
-        int m = board[0].length;
-        for (int j = 0; j < m; j++) {
-            dfs(board, 0, j, n, m);
-            if (n > 1) dfs(board, n - 1, j, n, m);
+    public void solve(char[][] board) {
+        if (board == null || board.length == 0) return;
+        int m = board.length, n = board[0].length;
+        for (int i = 0; i < m; i++) {
+            dfs(board, i, 0, m, n);
+            if (n > 1) dfs(board, i, n - 1, m, n);
         }
-        for (int i = 0; i < n; i++) {
-            dfs(board, i, 0, n, m);
-            if (m > 1) dfs(board, i, m - 1, n, m);
+        for (int j = 0; j < n; j++) {
+            dfs(board, 0, j, m, n);
+            if (m > 1) dfs(board, m - 1, j, m, n);
         }
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 if (board[i][j] == 'O') board[i][j] = 'X';
                 if (board[i][j] == '1') board[i][j] = 'O';
             }
         }
     }
 
-    private void dfs(char[][] board, int i, int j, int n, int m) {
-        if (board[i][j] == 'X' || board[i][j] == '1') return;
+    private void dfs(char[][] board, int i, int j, int m, int n) {
+        if (i < 0 || i == m || j < 0 || j == n || board[i][j] == 'X' || board[i][j] == '1') return;
         board[i][j] = '1';
-        if (i > 0) dfs(board, i - 1, j, n, m);
-        if (j > 0) dfs(board, i, j - 1, n, m);
-        if (i < n - 1) dfs(board, i + 1, j, n, m);
-        if (j < m - 1) dfs(board, i, j + 1, n, m);
+        int[][] dirs = new int[][] {{-1,0}, {0,-1}, {1,0}, {0,1}};
+        for (int[] dir : dirs) {
+            dfs(board, i + dir[0], j + dir[1], m, n);
+        }
     }
 
     // Union-find: 4 ms, faster than 20.75%; 47.3 MB, less than 10.71%
