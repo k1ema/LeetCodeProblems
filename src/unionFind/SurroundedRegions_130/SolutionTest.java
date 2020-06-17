@@ -51,5 +51,19 @@ public class SolutionTest {
                 {'O', 'X', 'O', 'O', 'O'},
                 {'X', 'X', 'O', 'X', 'O'},
         }, board);
+
+        board = new char[][] {
+                {'X','O','X','O','X','O'},
+                {'O','X','O','X','O','X'},
+                {'X','O','X','O','X','O'},
+                {'O','X','O','X','O','X'}
+        };
+        s.solve(board);
+        assertArrayEquals(new char[][] {
+                {'X','O','X','O','X','O'},
+                {'O','X','X','X','X','X'},
+                {'X','X','X','X','X','O'},
+                {'O','X','O','X','O','X'}
+        }, board);
     }
 }

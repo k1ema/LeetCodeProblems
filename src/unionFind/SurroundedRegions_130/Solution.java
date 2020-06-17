@@ -70,40 +70,32 @@ public class Solution {
     private int[] id;
     private int[] rank;
     void solve1(char[][] board) {
-        int n;
-        if (board == null || (n = board.length) == 0) return;
-        int m = board[0].length;
-        id = new int[n * m + 1];
-        rank = new int[n * m + 1];
+        if (board == null || board.length == 0) return;
+        int m = board.length, n = board[0].length;
+        id = new int[m * n + 1];
+        rank = new int[m * n + 1];
         for (int i = 0; i < id.length; i++) {
             id[i] = i;
         }
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 if (board[i][j] == 'X') continue;
-                int ind = i * m + j;
-                if (i == 0 || i == n - 1 || j == 0 || j == m - 1) {
-                    union(ind, m * n);
+                int ind = i * n + j;
+                if (i == 0 || i == m - 1 || j == 0 || j == n - 1) {
+                    union(ind, n * m);
                 } else {
-                    if (board[i - 1][j] == 'O') {
-                        union(ind, (i - 1) * m + j);
-                    }
-                    if (board[i][j - 1] == 'O') {
-                        union(ind, i * m + j - 1);
-                    }
-                    if (board[i + 1][j] == 'O') {
-                        union(ind, (i + 1) * m + j);
-                    }
-                    if (board[i][j + 1] == 'O') {
-                        union(ind, i * m + j + 1);
+                    int[][] dirs = new int[][] {{-1,0}, {0,-1}, {1,0}, {0,1}};
+                    for (int[] dir : dirs) {
+                        int newI = i + dir[0], newJ = j + dir[1];
+                        if (board[newI][newJ] == 'O') union(ind, newI * n + newJ);
                     }
                 }
             }
         }
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (connected(i * m + j, n * m)) continue;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (connected(i * n + j, m * n)) continue;
                 board[i][j] = 'X';
             }
         }
