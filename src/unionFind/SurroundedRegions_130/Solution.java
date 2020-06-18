@@ -56,10 +56,11 @@ public class Solution {
         }
     }
 
+    private int[][] dirs = new int[][] {{-1,0}, {0,-1}, {1,0}, {0,1}};
+
     private void dfs(char[][] board, int i, int j, int m, int n) {
-        if (i < 0 || i == m || j < 0 || j == n || board[i][j] == 'X' || board[i][j] == '1') return;
+        if (i < 0 || i == m || j < 0 || j == n || board[i][j] != 'O') return;
         board[i][j] = '1';
-        int[][] dirs = new int[][] {{-1,0}, {0,-1}, {1,0}, {0,1}};
         for (int[] dir : dirs) {
             dfs(board, i + dir[0], j + dir[1], m, n);
         }
