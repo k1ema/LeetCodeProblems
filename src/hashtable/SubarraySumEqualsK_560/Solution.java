@@ -1,4 +1,4 @@
-package array.SubarraySumEqualsK_560;
+package hashtable.SubarraySumEqualsK_560;
 
 import java.util.HashMap;
 
