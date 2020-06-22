@@ -1,7 +1,6 @@
 package binarySearch.LongestDuplicateSubstring_1044;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 1044. Longest Duplicate Substring
@@ -27,61 +26,68 @@ import java.util.Set;
  */
 public class Solution {
     /*
-          Rabin-Karp with polynomial rolling hash.
-          Search a substring of given length that occurs at least 2 times.
-          Return start position if the substring exits and -1 otherwise.
-     */
+        1. run bs to find proper pattern length
+        2. run Rabin-Karp:
+            - compute hash for substring in S from 0 to len = mid
+            - add it to HashSet
+            - start iterating from 1 to S.length - len inclusive, compute in O(1) hash of new substring
+                (using rolling hash) and check whether it contains in hash.
+                h(i + 1) = (h(i) - s[i - 1] * 26^(len - 1)) * 26 + s[i + len - 1]
+            - if so -> return current index
+            - Add value to hash
+            - return -1
+    */
+
     // tc O(nlogn), sc O(n)
+    // https://leetcode.com/problems/longest-duplicate-substring/discuss/292982/Java-version-with-comment
+
+    private int R = 26;
+    private long mod = (long) Math.pow(2, 32);
+
     public String longestDupSubstring(String S) {
         int n = S.length();
-        // convert string to array of integers to implement constant time slice
-        int[] nums = new int[n];
-        for (int i = 0; i < n; ++i) {
-            nums[i] = (int) S.charAt(i) - (int) 'a';
-        }
-        // base value for the rolling hash function
-        int a = 26;
-        // modulus value for the rolling hash function to avoid overflow
-        long mod = (long) Math.pow(2, 32);
 
-        // binary search, L = repeating string length
+        int[] s = new int[n];
+        for (int i = 0; i < n; i++) {
+            s[i] = S.charAt(i) - 'a';
+        }
+
         int l = 1, r = n;
+        int idx, foundIdx = -1, len = 0;
         while (l <= r) {
             int m = (l + r) >>> 1;
-            if (search(m, a, mod, n, nums) != -1) {
+            idx = findSubstring(s, m);
+            if (idx > -1) {
                 l = m + 1;
+                len = m;
+                foundIdx = idx;
             } else {
                 r = m - 1;
             }
         }
 
-        int start = search(l - 1, a, mod, n, nums);
-        return S.substring(start, start + l - 1);
+        return foundIdx == -1 ? "" : S.substring(foundIdx, foundIdx + len);
     }
 
-    private int search(int L, int a, long mod, int n, int[] nums) {
-        // compute the hash of string S[:L]
+    private int findSubstring(int[] s, int len) {
+        long pow = 1;
+        for (int i = 1; i < len; i++) {
+            pow = (pow * R) % mod;
+        }
+
         long h = 0;
-        for (int i = 0; i < L; ++i) {
-            h = (h * a + nums[i]) % mod;
+        for (int i = 0; i < len; i++) {
+            h = (h * R + s[i]) % mod;
         }
 
-        // already seen hashes of strings of length L
-        Set<Long> seen = new HashSet<>();
-        seen.add(h);
+        Set<Long> set = new HashSet<>();
+        set.add(h);
 
-        // const value to be used often : a**L % modulus
-        long aL = 1;
-        for (int i = 1; i <= L; ++i) {
-            aL = (aL * a) % mod;
-        }
-
-        for (int start = 1; start < n - L + 1; ++start) {
-            // compute rolling hash in O(1) time
-            h = (h * a - nums[start - 1] * aL % mod + mod) % mod;
-            h = (h + nums[start + L - 1]) % mod;
-            if (seen.contains(h)) return start;
-            seen.add(h);
+        for (int i = 1; i <= s.length - len; i++) {
+            h = (h - s[i - 1] * pow % mod) % mod;
+            h = (h * R % mod + s[i + len - 1]) % mod;
+            if (set.contains(h)) return i;
+            set.add(h);
         }
 
         return -1;
