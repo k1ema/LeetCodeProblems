@@ -26,7 +26,7 @@ import tree.utils.TreeNode;
 public class Solution {
     // https://leetcode.com/problems/count-complete-tree-nodes/discuss/61958/Concise-Java-solutions-O(log(n)2)
     // tc O(log(n)^2)
-    int countNodes(TreeNode root) {
+    int countNodes4(TreeNode root) {
         int h = height(root);
         if (h < 0) {
             return 0;
@@ -39,9 +39,26 @@ public class Solution {
         }
     }
 
+    // tc O(log(n)^2)
+    int countNodes(TreeNode root) {
+        int l = depth(root, true);
+        int r = depth(root, false);
+        return l == r ? (1 << l) - 1 : 1 + countNodes(root.left) + countNodes(root.right);
+    }
+
+    private int depth(TreeNode node, boolean left) {
+        if (node == null) return 0;
+        int d = 0;
+        while (node != null) {
+            node = left ? node.left : node.right;
+            d++;
+        }
+        return d;
+    }
+
     // iterative
     // tc O(log(n)^2)
-    int countNodes1(TreeNode root) {
+    int countNodes2(TreeNode root) {
         int h = height(root);
         int nodes = 0;
         while (root != null) {
@@ -63,7 +80,7 @@ public class Solution {
 
     // my solution
     // tc O(n), sc O(1)
-    int countNodes2(TreeNode root) {
+    int countNodes3(TreeNode root) {
         if (root == null) {
             return 0;
         }
