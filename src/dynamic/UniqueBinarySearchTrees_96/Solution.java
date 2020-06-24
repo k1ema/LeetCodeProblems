@@ -1,5 +1,7 @@
 package dynamic.UniqueBinarySearchTrees_96;
 
+import java.util.Arrays;
+
 /**
  * 96. Unique Binary Search Trees
  * https://leetcode.com/problems/unique-binary-search-trees/
@@ -20,10 +22,28 @@ package dynamic.UniqueBinarySearchTrees_96;
  *    2     1         2                 3
  */
 public class Solution {
+    public int numTrees(int n) {
+        int[] memo = new int[n + 1];
+        Arrays.fill(memo, -1);
+        return bt(n, memo);
+    }
+
+    private int bt(int n, int[] memo) {
+        if (n == 0) return 1;
+        if (memo[n] != -1) return memo[n];
+        int count = 0;
+        for (int i = 1; i <= n; i++) {
+            count += bt(i - 1, memo) * bt(n - i, memo);
+        }
+        memo[n] = count;
+        return count;
+    }
+
+
     // https://leetcode.com/problems/unique-binary-search-trees/discuss/31666/DP-Solution-in-6-lines-with-explanation.-F(i-n)-G(i-1)-*-G(n-i)
     // https://leetcode.com/problems/unique-binary-search-trees/discuss/31707/Fantastic-Clean-Java-DP-Solution-with-Detail-Explaination
     // tc O(n^2), sc O(n)
-    int numTrees(int n) {
+    public int numTrees2(int n) {
         if (n == 0) return 1;
         int[] G = new int[n + 1];
         G[0] = 1;
@@ -40,7 +60,7 @@ public class Solution {
     // tc O(n * (n-1)^2 * (n-2)^4 * ... * (n-n+1)^(2^(n-1)))) =
     // = O(n^(1 + 2^1 + 2^2 + ... + 2^(n-1))) = O(n^((2^(n-1)))), (?)
     // sc O(n)
-    int numTrees1(int n) {
+    public int numTrees1(int n) {
         if (n == 0) {
             return 1;
         }
