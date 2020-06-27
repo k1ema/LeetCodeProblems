@@ -1,6 +1,10 @@
 package tree.SumRootToLeafNumbers_129;
 
+import javafx.util.Pair;
 import tree.utils.TreeNode;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * 129. Sum Root to Leaf Numbers
@@ -41,6 +45,7 @@ import tree.utils.TreeNode;
  * Therefore, sum = 495 + 491 + 40 = 1026.
  */
 public class Solution {
+    // recursive
     // tc O(n), sc O(h) where h - tree height; could be O(n) in worst case
     // 0 ms, faster than 100.00%; 37.3 MB, less than 5.13%
     public int sumNumbers(TreeNode root) {
@@ -55,5 +60,26 @@ public class Solution {
         } else {
             return dfs(tree.left, curr) + dfs(tree.right, curr);
         }
+    }
+
+    // iterative
+    // tc O(n), sc O(h) where h - tree height
+    public int sumNumbers1(TreeNode root) {
+        int res = 0;
+        if (root == null) return res;
+        Queue<Pair<TreeNode, Integer>> q = new LinkedList<>();
+        q.add(new Pair<>(root, 0));
+        while (!q.isEmpty()) {
+            Pair<TreeNode, Integer> pair = q.poll();
+            TreeNode tree = pair.getKey();
+            int val = pair.getValue();
+            int cur = val * 10 + tree.val;
+            if (tree.left != null) q.add(new Pair<>(tree.left, cur));
+            if (tree.right != null) q.add(new Pair<>(tree.right, cur));
+            if (tree.left == null && tree.right == null) {
+                res += cur;
+            }
+        }
+        return res;
     }
 }
