@@ -21,6 +21,8 @@ public class SolutionTest {
         assertEquals(3, s.numSquares(14));
         assertEquals(4, s.numSquares(15));
         assertEquals(1, s.numSquares(16));
+        assertEquals(3, s.numSquares(19));
         assertEquals(3, s.numSquares(48));
+        assertEquals(3, s.numSquares(1324));
     }
 }
