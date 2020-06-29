@@ -34,13 +34,12 @@ import java.util.Stack;
  *              But it is larger in lexical order.
  */
 public class Solution {
-    private Map<String, PriorityQueue<String>> targets;
-    private LinkedList<String> route;
-
     // dfs
     // tc O(nlogn), sc O(n)
     // https://leetcode.com/problems/reconstruct-itinerary/discuss/78768/Short-Ruby-Python-Java-C%2B%2B
-    List<String> findItinerary1(List<List<String>> tickets) {
+    private Map<String, PriorityQueue<String>> targets;
+    private LinkedList<String> route;
+    List<String> findItinerary(List<List<String>> tickets) {
         targets = new HashMap<>();
         route = new LinkedList<>();
 
@@ -55,24 +54,24 @@ public class Solution {
         while (targets.containsKey(airport) && !targets.get(airport).isEmpty()) {
             visit(targets.get(airport).poll());
         }
-        route.addFirst(airport);
+        route.push(airport);
     }
 
     // iterative
     // tc O(nlogn), sc O(n)
-    List<String> findItinerary(List<List<String>> tickets) {
+    List<String> findItinerary1(List<List<String>> tickets) {
         Map<String, PriorityQueue<String>> targets = new HashMap<>();
         for (List<String> ticket : tickets) {
             targets.computeIfAbsent(ticket.get(0), t -> new PriorityQueue<>()).add(ticket.get(1));
         }
         LinkedList<String> route = new LinkedList<>();
-        Stack<String> stack = new Stack<>();
-        stack.add("JFK");
+        LinkedList<String> stack = new LinkedList<>();
+        stack.push("JFK");
         while (!stack.isEmpty()) {
             while (targets.containsKey(stack.peek()) && !targets.get(stack.peek()).isEmpty()) {
-                stack.add(targets.get(stack.peek()).poll());
+                stack.push(targets.get(stack.peek()).poll());
             }
-            route.addFirst(stack.pop());
+            route.push(stack.pop());
         }
         return route;
     }
