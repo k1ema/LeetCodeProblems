@@ -32,13 +32,13 @@ import java.util.Map;
  * The values of words are distinct.
  */
 // 20 ms
-public class SolutionHashMap {
+public class SolutionHashMap implements Solution {
     private class TrieNode {
         private String word;
         private Map<Character, TrieNode> children = new HashMap<>();
     }
 
-    List<String> findWords(char[][] board, String[] words) {
+    public List<String> findWords(char[][] board, String[] words) {
         List<String> result = new ArrayList<>();
 
         // construct the Trie
