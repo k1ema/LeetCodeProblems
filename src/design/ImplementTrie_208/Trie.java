@@ -27,10 +27,10 @@ public class Trie {
         private Node[] links = new Node[26];
         private boolean isEnd;
 
-        private Node() {};
+        private Node() {}
         private Node(char val) {
             this.val = val;
-        };
+        }
 
         void insert(Node node) {
             links[node.val - 'a'] = node;
