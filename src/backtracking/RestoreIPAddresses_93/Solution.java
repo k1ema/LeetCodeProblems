@@ -18,7 +18,7 @@ import java.util.Set;
  * Output: ["255.255.11.135", "255.255.111.35"]
  */
 public class Solution {
-    // tc: there is not more than 27 combinations to check.
+    // tc: there is not more than 3*3*3 = 27 combinations to check.
     // Space complexity : constant space to keep the solutions, not more than 19 valid IP addresses.
     // Runtime: 9 ms, Memory Usage: 40 MB
     public List<String> restoreIpAddresses(String s) {
