@@ -32,6 +32,9 @@ import java.util.List;
 // https://leetcode.com/problems/word-search-ii/discuss/59780/Java-15ms-Easiest-Solution-(100.00)
 // 9 ms, faster than 94.45%, 47.6 MB, less than 51.11%
 public class Solution_I implements Solution {
+    // tc O(m * n * 4 * 3 ^ (L - 1)), where m,n - dimensions in board, L - the max length of string in words
+    // sc O(m * n)
+
     private class TrieNode {
         private TrieNode[] children = new TrieNode[26];
         private String word;

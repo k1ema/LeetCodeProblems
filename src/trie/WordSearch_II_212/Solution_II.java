@@ -7,6 +7,8 @@ import java.util.Set;
 
 // Just backtracking solution, 496 ms
 public class Solution_II implements Solution {
+    // tc O(w * (m * n) * 4 * 3 ^ (L - 1)) ?, where m,n - dimensions in board, L - max length of string in words
+    // sc O(m * n)
     public List<String> findWords(char[][] board, String[] words) {
         Set<String> res = new HashSet<>();
         if (board == null || board.length == 0 || board[0].length == 0) return new ArrayList<>();

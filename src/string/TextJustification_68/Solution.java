@@ -69,6 +69,8 @@ import java.util.List;
  */
 public class Solution {
     // https://leetcode.com/problems/text-justification/discuss/24891/Concise-python-solution-10-lines.
+    // tc O(n * maxWidth), sc O(n * maxWidth)
+    // round robin logic
     public List<String> fullJustify(String[] words, int maxWidth) {
         List<String> result = new ArrayList<>();
         List<StringBuilder> current = new ArrayList<>();

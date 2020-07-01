@@ -33,6 +33,9 @@ import java.util.Map;
  */
 // 20 ms
 public class SolutionHashMap implements Solution {
+    // tc O(M * 4 * 3 ^ (L - 1)), where M - number of letters in board, L - the max length of string in words
+    // sc O(M)
+
     private class TrieNode {
         private String word;
         private Map<Character, TrieNode> children = new HashMap<>();
