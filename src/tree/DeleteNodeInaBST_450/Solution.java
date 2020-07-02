@@ -43,9 +43,35 @@ import tree.utils.TreeNode;
  */
 public class Solution {
     // tc O(h), sc O(h)
-    // 0 ms, faster than 100.00%; 40.1 MB, less than 17.24%
     public TreeNode deleteNode(TreeNode root, int key) {
         if (root == null) return null;
+        if (root.val == key) {
+            if (root.left == null) {
+                return root.right;
+            } else if (root.right == null) {
+                return root.left;
+            }
+            TreeNode p = findMin(root.right);
+            root.val = p.val;
+            root.right = deleteNode(root.right, p.val);
+        } else if (root.val > key) {
+            root.left = deleteNode(root.left, key);
+        } else {
+            root.right = deleteNode(root.right, key);
+        }
+        return root;
+    }
+
+    private TreeNode findMin(TreeNode tree) {
+        while (tree != null && tree.left != null) {
+            tree = tree.left;
+        }
+        return tree;
+    }
+
+    // tc O(h), sc O(h)
+    // 0 ms, faster than 100.00%; 40.1 MB, less than 17.24%
+    public TreeNode deleteNode1(TreeNode root, int key) {
         return dfs(root, key);
     }
 
