@@ -1,6 +1,5 @@
 package tree.BinaryTreeLevelOrderTraversal_II_107;
 
-import javafx.util.Pair;
 import tree.utils.TreeNode;
 
 import java.util.ArrayList;
@@ -30,9 +29,30 @@ import java.util.Queue;
  * ]
  */
 public class Solution {
+    // bfs
+    // 1 ms, faster than 99.52%; 36.6 MB, less than 100.00%
+    List<List<Integer>> levelOrderBottom(TreeNode root) {
+        LinkedList<List<Integer>> stack = new LinkedList<>();
+        if (root == null) return stack;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()) {
+            int size = q.size();
+            List<Integer> level = new LinkedList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode tree = q.poll();
+                level.add(tree.val);
+                if (tree.left != null) q.add(tree.left);
+                if (tree.right != null) q.add(tree.right);
+            }
+            stack.push(level);
+        }
+        return stack;
+    }
+
     // dfs, tc O(n), sc O(n)
     // 0 ms, faster than 100.00%; 36.3 MB, less than 100.00%
-    List<List<Integer>> levelOrderBottom(TreeNode root) {
+    List<List<Integer>> levelOrderBottom1(TreeNode root) {
         List<List<Integer>> result = new ArrayList<>();
         helper(result, root, 0);
         return result;
@@ -44,52 +64,5 @@ public class Solution {
         helper(list, root.left, level + 1);
         helper(list, root.right, level + 1);
         list.get(list.size() - level - 1).add(root.val);
-    }
-
-    // bfs
-    // 1 ms, faster than 99.52%; 36.6 MB, less than 100.00%
-    List<List<Integer>> levelOrderBottom1(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<>();
-        if (root == null) return result;
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-        while (!q.isEmpty()) {
-            List<Integer> list = new ArrayList<>();
-            int size = q.size();
-            for (int i = 0; i < size; i++) {
-                TreeNode node = q.poll();
-                list.add(node.val);
-                if (node.left != null) q.add(node.left);
-                if (node.right != null) q.add(node.right);
-            }
-            result.add(0, list);
-        }
-        return result;
-    }
-
-    // my solution
-    // bfs, tc O(n), sc O(n)
-    // 1 ms, faster than 99.52%; 36.3 MB, less than 100.00%
-    List<List<Integer>> levelOrderBottom2(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<>();
-        if (root == null) return result;
-        Queue<Pair<Integer, TreeNode>> queue = new LinkedList<>();
-        queue.add(new Pair<>(0, root));
-        while (!queue.isEmpty()) {
-            Pair<Integer, TreeNode> pair = queue.poll();
-            int level = pair.getKey();
-            if (level >= result.size()) {
-                result.add(0, new ArrayList<>());
-            }
-            TreeNode node = pair.getValue();
-            if (node.left != null) {
-                queue.add(new Pair<>(level + 1, node.left));
-            }
-            if (node.right != null) {
-                queue.add(new Pair<>(level + 1, node.right));
-            }
-            result.get(result.size() - level - 1).add(node.val);
-        }
-        return result;
     }
 }

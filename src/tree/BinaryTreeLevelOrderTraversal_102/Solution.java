@@ -29,6 +29,27 @@ import java.util.Queue;
  * ]
  */
 public class Solution {
+    // bfs, tc O(n), sc O(n)
+    // 0 ms, faster than 100.00%; 39.8 MB, less than 43.77%
+    List<List<Integer>> levelOrder(TreeNode root) {
+        LinkedList<List<Integer>> res = new LinkedList<>();
+        if (root == null) return res;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()) {
+            int size = q.size();
+            List<Integer> level = new LinkedList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode tree = q.poll();
+                level.add(tree.val);
+                if (tree.left != null) q.add(tree.left);
+                if (tree.right != null) q.add(tree.right);
+            }
+            res.add(level);
+        }
+        return res;
+    }
+
     // dfs, tc O(n), sc O(n)
     // 0 ms, faster than 100.00%; 36.2 MB, less than 100.00%
     List<List<Integer>> levelOrder1(TreeNode root) {
@@ -43,27 +64,5 @@ public class Solution {
         if (node.left != null) dfs(list, node.left, level + 1);
         if (node.right != null) dfs(list, node.right, level + 1);
         list.get(level).add(node.val);
-    }
-
-    // bfs, tc O(n), sc O(n)
-    // 1 ms, faster than 92.70%; 36.3 MB, less than 100.00%
-    List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<>();
-        if (root == null) return result;
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-        int level = 0;
-        while (!q.isEmpty()) {
-            int size = q.size();
-            if (level >= result.size()) result.add(new ArrayList<>());
-            for (int i = 0; i < size; i++) {
-                TreeNode node = q.poll();
-                if (node.left != null) q.add(node.left);
-                if (node.right != null) q.add(node.right);
-                result.get(level).add(node.val);
-            }
-            level++;
-        }
-        return result;
     }
 }
