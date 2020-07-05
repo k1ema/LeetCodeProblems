@@ -25,11 +25,21 @@ package bitManipulation.HammingDistance_461;
  * The above arrows point to positions where the corresponding bits are different.
  */
 public class Solution {
+    public int hammingDistance(int x, int y) {
+        int count = 0;
+        for (int i = 0; i < 32; i++) {
+            if ((((x >> i) & 1) ^ ((y >> i) & 1)) == 1) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     // Integer.bitCount(x ^ y);
     // https://discuss.leetcode.com/topic/72093/java-1-line-solution-d/2
     // https://discuss.leetcode.com/topic/72089/java-3-line-solution
     // tc O(1), sc O(1)
-    int hammingDistance(int x, int y) {
+    int hammingDistance1(int x, int y) {
         int count = 0;
         while (x != 0 || y != 0) {
             if ((x & 1) != (y & 1)) {
