@@ -19,5 +19,8 @@ public class SolutionTest {
         assertEquals(6, s.minNumberOfSemesters(6, new int[][] {{2, 5}, {1, 5}, {3, 5}, {3, 4}, {3, 6}}, 1));
         assertEquals(3, s.minNumberOfSemesters(6, new int[][] {{2, 5}, {1, 5}, {3, 5}, {3, 4}, {3, 6}}, 2));
         assertEquals(2, s.minNumberOfSemesters(6, new int[][] {{2, 5}, {1, 5}, {3, 5}, {3, 4}, {3, 6}}, 3));
+        assertEquals(4, s.minNumberOfSemesters(8, new int[][] {{2, 7}, {1, 6}, {2, 8}, {8, 7}, {6, 7}, {5, 4}, {1, 7}, {1, 2}, {1, 4}, {2, 6}}, 3));
+        assertEquals(4, s.minNumberOfSemesters(8, new int[][] {{1, 3}, {1, 4}, {2, 3}, {2, 4}, {5, 6}, {6, 7}, {7, 8}}, 2));
+        assertEquals(6, s.minNumberOfSemesters(12, new int[][] {{1, 2}, {1, 3}, {7, 5}, {7, 6}, {4, 8}, {8, 9}, {9, 10}, {10, 11}, {11, 12}}, 2));
     }
 }

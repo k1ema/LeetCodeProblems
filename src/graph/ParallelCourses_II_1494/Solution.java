@@ -44,6 +44,15 @@ import java.util.*;
  * The given graph is a directed acyclic graph.
  */
 public class Solution {
+    // https://leetcode.com/problems/parallel-courses-ii/discuss/708120/Java-Solution-Priority-Queue-%2B-Topological-Sort
+    // https://leetcode.com/problems/parallel-courses-ii/discuss/708164/Java-Topological-Sort-%2B-PriorityQueue-of-outdegrees
+
+    // this problem is very similar to Course Schedule which is straightforward implementation of Topological sorting.
+    // In this case the only difference is we have a constraint on how many courses can be taken parallely during a semester
+    // and to handle that I used PQ of outdegrees and greedily choosing the course with highest outdegree to do next
+    // (i.e the course that will free up most number of dependent courses).
+
+    // 2 ms, faster than 100.00%; 37.4 MB, less than 100.00%
     public int minNumberOfSemesters(int n, int[][] dependencies, int k) {
         List<Integer>[] graph = buildGraph(n, dependencies);
         int[] indegree = new int[n + 1];
@@ -53,26 +62,24 @@ public class Solution {
             outdegree[dep[0]]++;
         }
 
-        Queue<Integer> q = new LinkedList<>();
+        Queue<Integer> pq = new PriorityQueue<>((a, b) -> outdegree[b] - outdegree[a]);
         for (int i = 1; i <= n; i++) {
-            if (indegree[i] == 0) q.add(i);
+            if (indegree[i] == 0) pq.add(i);
         }
 
         int res = 0;
-        while (!q.isEmpty()) {
+        while (!pq.isEmpty()) {
             res++;
 
-            int size = Math.min(k, q.size());
-            Queue<Integer> pq = new PriorityQueue<>((a, b) -> outdegree[b] - outdegree[a]);
-            pq.addAll(q);
-
+            int size = Math.min(k, pq.size());
+            Queue<Integer> tmp = new LinkedList<>();
             for (int i = 0; i < size; i++) {
-                int course = pq.poll();
-                q.remove(course);
-                for (int adj : graph[course]) {
-                    indegree[adj]--;
-                    if (indegree[adj] <= 0) {
-                        q.add(adj);
+                tmp.add(pq.poll());
+            }
+            while (!tmp.isEmpty()) {
+                for (int adj : graph[tmp.poll()]) {
+                    if (--indegree[adj] <= 0) {
+                        pq.add(adj);
                     }
                 }
             }
