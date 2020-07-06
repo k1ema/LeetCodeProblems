@@ -24,21 +24,38 @@ package binarySearch.BinarySearch_704;
  * The value of each element in nums will be in the range [-9999, 9999].
  */
 public class Solution {
+    // leftmost index of non-unique element. good numbers: nums[i] < target, bad numbers: nums[i] >= target
     public int search(int[] nums, int target) {
         if (nums == null || nums.length == 0) return -1;
-        int l = 0, r = nums.length;
-        while (l + 1 < r) {
+        int l = -1, r = nums.length;
+        while (r - l > 1) {
             int m = (l + r) >>> 1;
-            if (nums[m] > target) {
-                r = m;
-            } else {
+            if (nums[m] < target) {
                 l = m;
+            } else {
+                r = m;
             }
         }
-        return nums[l] == target ? l : -1;
+        return r != nums.length && nums[r] == target ? r : -1;
     }
 
+    // rightmost index of non-unique element. good numbers: nums[i] <= target, bad numbers: nums[i] > target
     public int search1(int[] nums, int target) {
+        if (nums == null || nums.length == 0) return -1;
+        int l = -1, r = nums.length;
+        while (r - l > 1) {
+            int m = (l + r) >>> 1;
+            if (nums[m] <= target) {
+                l = m;
+            } else {
+                r = m;
+            }
+        }
+        return l >= 0 && nums[l] == target ? l : -1;
+    }
+
+    // does not work if there are non unique elements in nums and the goal is to find leftmost / rightmost index
+    public int search2(int[] nums, int target) {
         if (nums == null || nums.length == 0) return -1;
         int l = 0, r = nums.length - 1;
         while (l <= r) {
