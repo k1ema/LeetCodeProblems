@@ -107,9 +107,9 @@ public class Solution {
             if (!(o instanceof Node)) return false;
             Node node = (Node) o;
             return val == node.val &&
-                    (prev == null && node.prev == null || prev != null && node.prev != null && prev.val == node.prev.val) &&
-                    (next == null && node.next == null || next != null && node.next != null && next.val == node.next.val) &&
-                    (child == null && node.child == null || child != null && node.child != null && child.val == node.child.val);
+//                    Objects.equals(prev, node.prev) &&
+                    Objects.equals(next, node.next) &&
+                    Objects.equals(child, node.child);
         }
 
         @Override

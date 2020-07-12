@@ -6,6 +6,15 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class SolutionTest {
+    /*
+     *  1---2---3---4---5---6--NULL
+     *          |
+     *          7---8---9---10--NULL
+     *              |
+     *              11--12--NULL
+     *
+     * 1---2---3---7---8---11---12---9---10---4---5---6--NULL
+     */
     @Test
     public void test() {
         Solution s = new Solution();
@@ -81,6 +90,37 @@ public class SolutionTest {
         res_5.next = res_6;
         res_6.prev = res_5;
 
+        assertEquals(res_1, s.flatten(head_1));
+    }
+
+    /*
+     *  1---2---NULL
+     *      |
+     *      3---NULL
+     *      |
+     *      4---NULL
+     */
+    @Test
+    public void test1() {
+        Solution s = new Solution();
+        Node head_1 = new Node(1);
+        Node head_2 = new Node(2);
+        Node head_3 = new Node(3);
+        Node head_4 = new Node(4);
+        head_1.next = head_2;
+        head_2.prev = head_1;
+        head_2.child = head_3;
+        head_3.child = head_4;
+        Node res_1 = new Node(1);
+        Node res_2 = new Node(2);
+        Node res_3 = new Node(3);
+        Node res_4 = new Node(4);
+        res_1.next = res_2;
+        res_2.prev = res_1;
+        res_2.next = res_3;
+        res_3.prev = res_2;
+        res_3.next = res_4;
+        res_4.prev = res_3;
         assertEquals(res_1, s.flatten(head_1));
     }
 }
