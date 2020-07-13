@@ -25,26 +25,23 @@ package bitManipulation.ReverseBits_190;
 // https://leetcode.com/problems/reverse-bits/discuss/54746/Java-Solution-and-Optimization
 public class Solution {
     public int reverseBits(int n) {
+        if (n == 0 || n == 0xffffffff) return n;
+        int res = 0;
+        for (int i = 0; i < 32; i++) {
+            res <<= 1;
+            res |= (n & 1);
+            n >>= 1;
+        }
+        return res;
+    }
+
+    public int reverseBits2(int n) {
         int result = 0;
         for (int i = 0; i < 32; i++) {
             int bit = (n >> i) & 1;
             if (bit == 1) {
                 result |= (1 << (31 - i));
             }
-        }
-        return result;
-    }
-
-    public int reverseBits1(int n) {
-        if (n == 0) {
-            return 0;
-        }
-
-        int result = 0;
-        for (int i = 0; i < 32; i++) {
-            result <<= 1;
-            result += (n & 1);
-            n >>= 1;
         }
         return result;
     }
