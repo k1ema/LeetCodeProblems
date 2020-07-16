@@ -24,6 +24,21 @@ package binarySearch.Sqrt_69;
 
 // https://discuss.leetcode.com/topic/24532/3-4-short-lines-integer-newton-every-language
 public class Solution {
+    // binary search
+    int mySqrt(int x) {
+        if (x < 2) return x;
+        int l = 1, r = x;
+        while (r - l > 1) {
+            int m = (l + r) >>> 1;
+            if (m * m <= x) {
+                l = m;
+            } else {
+                r = m;
+            }
+        }
+        return l;
+    }
+
     // Newton`s algorithm
     // https://leetcode.com/problems/valid-perfect-square/solution/
 
@@ -39,63 +54,8 @@ public class Solution {
         return (int) r;
     }
 
-    // binary search
-    int mySqrt(int x) {
-        if (x < 2) return x;
-        int lo = 2, hi = x / 2;
-        long num;
-        while (lo <= hi) {
-            int mid = (lo + hi) >>> 1;
-            num = (long) mid * mid;
-            if (num > x) {
-                hi = mid - 1;
-            } else if (num < x) {
-                lo = mid + 1;
-            } else {
-                return mid;
-            }
-        }
-        return hi;
-    }
-
-    int mySqrt4(int x) {
-        if (x < 2) return x;
-        int lo = 1, hi = x;
-        while (hi - lo > 1) {
-            int mid = (lo + hi) >>> 1;
-            if (mid * mid <= x) {
-                lo = mid;
-            } else {
-                hi = mid;
-            }
-        }
-        return lo;
-    }
-
-    // https://discuss.leetcode.com/topic/19698/my-clean-c-code-8ms
-    // https://discuss.leetcode.com/topic/8680/a-binary-search-solution
-    // tc O(logn), sc O(1)
-    int mySqrt2(int x) {
-        if (x < 2) {
-            return x;
-        }
-
-        int lo = 1, hi = x;
-        while (true) {
-            int mid = lo + (hi - lo) / 2;
-            if (mid > x / mid) {
-                hi = mid - 1;
-            } else {
-                if (mid + 1 > x / (mid + 1)) {
-                    return mid;
-                }
-                lo = mid + 1;
-            }
-        }
-    }
-
     // tc O(1), sc O(1)
-    int mySqrt3(int x) {
+    int mySqrt2(int x) {
         if (x < 2) return x;
         int left = (int) Math.pow(Math.E, 0.5 * Math.log(x));
         int right = left + 1;
