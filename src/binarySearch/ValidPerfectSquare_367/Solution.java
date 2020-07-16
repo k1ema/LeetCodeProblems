@@ -18,27 +18,23 @@ package binarySearch.ValidPerfectSquare_367;
  */
 public class Solution {
     // tc O(logn) ,sc O(1)
-    public boolean isPerfectSquare1(int num) {
-        if (num < 2) return true;
-        long lo = 2, hi = num / 2;
-        while (lo <= hi) {
-            long mid = lo + (hi - lo) / 2;
-            long x = mid * mid;
-            if (x == num) {
-                return true;
-            } else if (x < num) {
-                lo = mid + 1;
+    public boolean isPerfectSquare(int num) {
+        long l = 0, r = num;
+        while (r - l > 1) {
+            long m = (l + r) >>> 1;
+            if (m * m < num) {
+                l = m;
             } else {
-                hi = mid - 1;
+                r = m;
             }
         }
-        return false;
+        return r * r == num;
     }
 
     // Newton's method
     // https://leetcode.com/problems/valid-perfect-square/solution/
     // tc O(logn) ,sc O(1)
-    public boolean isPerfectSquare(int num) {
+    public boolean isPerfectSquare1(int num) {
         if (num < 2) return true;
         long x = num / 2;
         while (x * x > num) {

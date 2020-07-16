@@ -11,6 +11,6 @@ public class SolutionTest {
         Solution s = new Solution();
         assertTrue(s.isPerfectSquare(16));
         assertFalse(s.isPerfectSquare(14));
-        assertTrue(s.isPerfectSquare(808201));
+        assertTrue(s.isPerfectSquare(808201)); // 899 * 899
     }
 }
