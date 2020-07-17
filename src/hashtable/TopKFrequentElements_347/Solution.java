@@ -21,11 +21,45 @@ import java.util.*;
  * Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
  */
 public class Solution {
+    /*
+        1. compare k to n. if k == n -> return nums;
+        2. count frequencies of elements. put them to hashmap - O(n)
+        3. iterate through map and put pairs to min heap.
+            for each step check heap size <= k. if size > k - poll from heap
+            O(nlogk)
+        4. convert min heap to int[]
+    */
+
+    // tc O(nlogk) if k < n and O(n) if k == n, sc O(n)
+    // 10 ms, faster than 76.55%; 42.3 MB, less than 37.02%
+    int[] topKFrequent2(int[] nums, int k) {
+        int n = nums.length;
+        if (k == n) return nums;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        PriorityQueue<Map.Entry<Integer, Integer>> pq = new PriorityQueue<>((e1, e2) -> e1.getValue() - e2.getValue());
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            pq.add(entry);
+            if (pq.size() > k) pq.poll();
+        }
+
+        int[] res = new int[pq.size()];
+        int i = 0;
+        while (!pq.isEmpty()) {
+            res[i++] = pq.poll().getKey();
+        }
+
+        return res;
+    }
+
     // tc O(n), sc O(n)
     // Bucket sort
     // https://leetcode.com/problems/top-k-frequent-elements/discuss/81602/Java-O(n)-Solution-Bucket-Sort
-    // 13 ms, faster than 70.85%; 40.2 MB, less than 71.55%
-    List<Integer> topKFrequent(int[] nums, int k) {
+    // 22 ms, faster than 19.28%; 47.7 MB, less than 8.90%
+    int[] topKFrequent3(int[] nums, int k) {
         List<Integer>[] bucket = new List[nums.length + 1];
         Map<Integer, Integer> frequencyMap = new HashMap<>();
 
@@ -42,51 +76,46 @@ public class Solution {
         }
 
         List<Integer> res = new ArrayList<>();
-
         for (int pos = bucket.length - 1; pos >= 0 && res.size() < k; pos--) {
             if (bucket[pos] != null) {
                 res.addAll(bucket[pos]);
             }
         }
-        return res;
+        return res.stream().mapToInt(i -> i).toArray();
     }
 
     // tc O(n), sc O(n)
-    // 43 ms, faster than 40.71%; 41.7 MB, less than 14.65%
-    List<Integer> topKFrequent1(int[] nums, int k) {
+    // 10 ms, faster than 76.55%; 42.3 MB, less than 38.53%
+    public int[] topKFrequent(int[] nums, int k) {
         Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < nums.length; i++) {
-            map.merge(nums[i], 1, Integer::sum);
-        }
-        int[] a = new int[map.size()];
-        int i = 0;
-        for (int num : map.values()) {
-            a[i++] = num;
+        for (int n : nums) {
+            map.put(n, map.getOrDefault(n, 0) + 1);
         }
 
-        int kth = findKthElement(a, k);
-        List<Integer> result = new ArrayList<>();
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            if (entry.getValue() >= kth) {
-                result.add(entry.getKey());
-            }
+        int[] freq = new int[nums.length];
+        int i = 0;
+        for (int f : map.values()) {
+            freq[i++] = f;
         }
-        return result;
+
+        int kth = findKthElement(freq, k);
+
+        List<Integer> res = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            if (entry.getValue() >= kth) res.add(entry.getKey());
+        }
+        return res.stream().mapToInt(j -> j).toArray();
     }
 
     private int findKthElement(int[] nums, int k) {
         int n = nums.length;
         k = n - k;
-        int lo = 0, hi = n - 1;
-        while (lo < hi) {
-            int j = partition(nums, lo, hi);
-            if (k > j) {
-                lo = j + 1;
-            } else if (k < j) {
-                hi = j - 1;
-            } else {
-                break;
-            }
+        int l = 0, r = n - 1;
+        while (l < r) {
+            int j = partition(nums, l, r);
+            if (j == k) break;
+            if (j < k) l = j + 1;
+            else r = j - 1;
         }
         return nums[k];
     }
@@ -95,15 +124,13 @@ public class Solution {
     private int partition(int[] nums, int lo, int hi) {
         int pInd = lo + rnd.nextInt(hi - lo + 1);
         int pivot = nums[pInd];
-        swap(nums, pInd, lo);
+        swap(nums, lo, pInd);
 
         int i = lo, j = hi;
         while (i < j) {
             while (i <= j && nums[i] <= pivot) i++;
             while (i <= j && nums[j] > pivot) j--;
-            if (i < j) {
-                swap(nums, i, j);
-            }
+            if (i < j) swap(nums, i, j);
         }
         swap(nums, lo, j);
         return j;
@@ -113,25 +140,5 @@ public class Solution {
         int tmp = nums[i];
         nums[i] = nums[j];
         nums[j] = tmp;
-    }
-
-    // tc O(nlogn), sc O(n)
-    // 47 ms, faster than 17.49%; 41.5 MB, less than 19.83%
-    List<Integer> topKFrequent2(int[] nums, int k) {
-        Map<Integer, Integer> frequencyMap = new HashMap<>();
-        for (int n : nums) {
-            frequencyMap.merge(n, 1, Integer::sum);
-        }
-
-        Comparator<Integer> comparator = Comparator.comparingInt(frequencyMap::get);
-        PriorityQueue<Integer> heap = new PriorityQueue<>(comparator);
-        for (int n : frequencyMap.keySet()) {
-            heap.add(n);
-            if (heap.size() > k) {
-                heap.poll();
-            }
-        }
-
-        return new ArrayList<>(heap);
     }
 }
