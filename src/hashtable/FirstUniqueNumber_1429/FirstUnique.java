@@ -65,7 +65,7 @@ import java.util.*;
  */
 public class FirstUnique {
     private Set<Integer> set = new LinkedHashSet<>();
-    private Map<Integer, Boolean> unique = new HashMap<>();
+    private Map<Integer, Integer> freq = new HashMap<>();
 
     // tc O(n), sc O(n)
     public FirstUnique(int[] nums) {
@@ -81,11 +81,11 @@ public class FirstUnique {
 
     // tc O(1)
     public void add(int value) {
-        if (unique.containsKey(value)) {
-            unique.put(value, false);
+        if (freq.containsKey(value)) {
+            freq.put(value, freq.get(value) + 1);
             set.remove(value);
         } else {
-            unique.put(value, true);
+            freq.put(value, 1);
             set.add(value);
         }
     }
