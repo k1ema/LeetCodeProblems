@@ -41,75 +41,69 @@ public class Solution {
     // https://www.geeksforgeeks.org/topological-sorting/
     // https://www.geeksforgeeks.org/detect-cycle-in-a-graph/
     // tc O(V + E), sc O(V + E)
-    int[] findOrder(int numCourses, int[][] prerequisites) {
-        if (numCourses == 0 || prerequisites == null) return new int[] {};
-        if (numCourses == 1) return new int[] {0};
-
-        List<Integer>[] adj = buildAdj(numCourses, prerequisites);
-
-        Queue<Integer> queue = new LinkedList<>();
+    public int[] findOrder1(int numCourses, int[][] prerequisites) {
+        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
+        LinkedList<Integer> stack = new LinkedList<>();
         boolean[] visited = new boolean[numCourses];
-        boolean[] recStack = new boolean[numCourses];
-
         for (int i = 0; i < numCourses; i++) {
-            if (isCycle(adj, i, visited, recStack, queue)) {
+            if (!dfs(graph, stack, i, visited, new boolean[numCourses])) {
                 return new int[] {};
             }
         }
-        int i = 0;
-        int[] r = new int[queue.size()];
-        while (!queue.isEmpty()) {
-            r[i++] = queue.poll();
-        }
-        return r;
+        return stack.size() == numCourses ? stack.stream().mapToInt(j -> j).toArray() : new int[] {};
     }
 
-    private boolean isCycle(List<Integer>[] adj, int u, boolean[] visited, boolean[] recStack, Queue<Integer> queue) {
-        if (recStack[u]) return true;
-        if (visited[u]) return false;
-
+    private boolean dfs(List<Integer>[] graph, LinkedList<Integer> stack, int u, boolean[] visited, boolean[] recStack) {
+        if (recStack[u]) return false; // cycle detected
+        if (visited[u]) return true;
         recStack[u] = true;
         visited[u] = true;
+        for (int v : graph[u]) {
+            if (!dfs(graph, stack, v, visited, recStack)) return false;
+        }
+        stack.push(u);
+        recStack[u] = false;
+        return true;
+    }
 
-        for (int v : adj[u]) {
-            if (isCycle(adj, v, visited, recStack, queue)) {
-                return true;
-            }
+    private List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
+        List<Integer>[] graph = new ArrayList[numCourses];
+        for (int i = 0; i < graph.length; i++) {
+            graph[i] = new ArrayList<>();
         }
 
-        recStack[u] = false;
-        queue.add(u);
-        return false;
+        for (int[] p : prerequisites) {
+            graph[p[1]].add(p[0]);
+        }
+
+        return graph;
     }
 
     // BFS
     // tc O(V + E), sc O(V + E)
-    int[] findOrder2(int numCourses, int[][] prerequisites) {
-        if (numCourses == 0 || prerequisites == null) return new int[] {};
-        if (numCourses == 1) return new int[] {0};
-
-        Stack<Integer> stack = new Stack<>();
+    int[] findOrder(int numCourses, int[][] prerequisites) {
         int[] indegrees = getIndegrees(numCourses, prerequisites);
-        List<Integer>[] adj = buildAdj(numCourses, prerequisites);
+        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
 
         Queue<Integer> queue = new LinkedList<>();
+        Queue<Integer> res = new LinkedList<>();
         int count = 0; // count vertices with zero indegree
         for (int i = 0; i < indegrees.length; i++) {
             if (indegrees[i] == 0) {
                 indegrees[i] = -1;
                 queue.add(i);
-                stack.add(i);
+                res.add(i);
                 count++;
             }
         }
 
         while (!queue.isEmpty()) {
             int u = queue.poll();
-            for (int v : adj[u]) {
+            for (int v : graph[u]) {
                 indegrees[v]--;
                 if (indegrees[v] == 0) {
                     queue.add(v);
-                    stack.add(v);
+                    res.add(v);
                     count++;
                 }
             }
@@ -119,30 +113,19 @@ public class Solution {
             return new int[] {};
         }
 
-        int[] r = new int[stack.size()];
+        int[] r = new int[res.size()];
         int i = 0;
-        while (!stack.isEmpty()) {
-            r[i++] = stack.pop();
+        while (!res.isEmpty()) {
+            r[i++] = res.poll();
         }
 
         return r;
     }
 
-    private List<Integer>[] buildAdj(int numCourses, int[][] prerequisites) {
-        List<Integer>[] adj = new ArrayList[numCourses];
-        for (int i = 0; i < numCourses; i++) {
-            adj[i] = new ArrayList<>();
-        }
-        for (int i = 0; i < prerequisites.length; i++) {
-            adj[prerequisites[i][0]].add(prerequisites[i][1]);
-        }
-        return adj;
-    }
-
     private int[] getIndegrees(int numCourses, int[][] prerequisites) {
         int[] indegrees = new int[numCourses];
         for (int i = 0; i < prerequisites.length; i++) {
-            indegrees[prerequisites[i][1]]++;
+            indegrees[prerequisites[i][0]]++;
         }
         return indegrees;
     }
