@@ -21,6 +21,39 @@ import java.util.*;
  * Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
  */
 public class Solution {
+    // tc O(n), sc O(n)
+    // Bucket sort
+    // https://leetcode.com/problems/top-k-frequent-elements/discuss/81602/Java-O(n)-Solution-Bucket-Sort
+    // 22 ms, faster than 19.28%; 47.7 MB, less than 8.90%
+    /*
+        1. compute map of frequencies - O(n)
+        2. bucket sort:
+            init array of lists. index = freq - O(n)
+            iterate through this array from last index for k indexes and fill result array
+    */
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int n : nums) {
+            freq.put(n, freq.getOrDefault(n, 0) + 1);
+        }
+        List<Integer>[] bucket = new ArrayList[nums.length + 1];
+        for (Map.Entry<Integer, Integer> e : freq.entrySet()) {
+            int ind = e.getValue();
+            if (bucket[ind] == null) {
+                bucket[ind] = new ArrayList<>();
+            }
+            bucket[ind].add(e.getKey());
+        }
+        int[] res = new int[k];
+        for (int i = bucket.length - 1; i >=0 && k > 0; i--) {
+            if (bucket[i] == null) continue;
+            for (int n : bucket[i]) {
+                res[--k] = n;
+            }
+        }
+        return res;
+    }
+
     /*
         1. compare k to n. if k == n -> return nums;
         2. count frequencies of elements. put them to hashmap - O(n)
@@ -32,7 +65,7 @@ public class Solution {
 
     // tc O(nlogk) if k < n and O(n) if k == n, sc O(n)
     // 10 ms, faster than 76.55%; 42.3 MB, less than 37.02%
-    int[] topKFrequent2(int[] nums, int k) {
+    int[] topKFrequent1(int[] nums, int k) {
         int n = nums.length;
         if (k == n) return nums;
         Map<Integer, Integer> map = new HashMap<>();
@@ -55,38 +88,10 @@ public class Solution {
         return res;
     }
 
-    // tc O(n), sc O(n)
-    // Bucket sort
-    // https://leetcode.com/problems/top-k-frequent-elements/discuss/81602/Java-O(n)-Solution-Bucket-Sort
-    // 22 ms, faster than 19.28%; 47.7 MB, less than 8.90%
-    int[] topKFrequent3(int[] nums, int k) {
-        List<Integer>[] bucket = new List[nums.length + 1];
-        Map<Integer, Integer> frequencyMap = new HashMap<>();
-
-        for (int n : nums) {
-            frequencyMap.put(n, frequencyMap.getOrDefault(n, 0) + 1);
-        }
-
-        for (int key : frequencyMap.keySet()) {
-            int frequency = frequencyMap.get(key);
-            if (bucket[frequency] == null) {
-                bucket[frequency] = new ArrayList<>();
-            }
-            bucket[frequency].add(key);
-        }
-
-        List<Integer> res = new ArrayList<>();
-        for (int pos = bucket.length - 1; pos >= 0 && res.size() < k; pos--) {
-            if (bucket[pos] != null) {
-                res.addAll(bucket[pos]);
-            }
-        }
-        return res.stream().mapToInt(i -> i).toArray();
-    }
-
+    // Quick select
     // tc O(n), sc O(n)
     // 10 ms, faster than 76.55%; 42.3 MB, less than 38.53%
-    public int[] topKFrequent(int[] nums, int k) {
+    public int[] topKFrequent2(int[] nums, int k) {
         Map<Integer, Integer> map = new HashMap<>();
         for (int n : nums) {
             map.put(n, map.getOrDefault(n, 0) + 1);
