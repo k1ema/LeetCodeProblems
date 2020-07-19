@@ -17,9 +17,27 @@ package string.AddBinary_67;
  * Output: "10101"
  */
 public class Solution {
+    // my solution
+    // tc O(n), sc O(n);  n = max(a.len, b.len)
+    public String addBinary(String a, String b) {
+        StringBuilder sb = new StringBuilder();
+        int i = a.length() - 1, j = b.length() - 1;
+        int carry = 0;
+        while (i >= 0 || j >= 0) {
+            int ai = i >= 0 ? a.charAt(i) - '0' : 0;
+            int bj = j >= 0 ? b.charAt(j) - '0' : 0;
+            int res = carry == 0 ? ai ^ bj : carry ^ (ai ^ bj);
+            carry = (ai == 1 && bj == 1 || carry == 1 && (ai == 1 || bj == 1)) ? 1 : 0;
+            sb.append(res);
+            i--; j--;
+        }
+        if (carry == 1) sb.append("1");
+        return sb.reverse().toString();
+    }
+
     // https://leetcode.com/problems/add-binary/discuss/24488/Short-AC-solution-in-Java-with-explanation
     // tc O(n), sc O(n);  n = max(a.len, b.len)
-    String addBinary(String a, String b) {
+    String addBinary1(String a, String b) {
         int carry = 0;
         int i = a.length() - 1;
         int j = b.length() - 1;
@@ -39,39 +57,5 @@ public class Solution {
             sb.append(carry);
         }
         return sb.reverse().toString();
-    }
-
-    // my solution
-    private int rem = 0;
-    String addBinary1(String a, String b) {
-        rem = 0;
-        StringBuilder sb = new StringBuilder();
-        if (a.length() < b.length()) {
-            a = equalLen(a, b.length());
-        } else if (a.length() > b.length()) {
-            b = equalLen(b, a.length());
-        }
-
-        for (int i = a.length() - 1; i >= 0; i--) {
-            int aa = a.charAt(i) - '0';
-            int bb = b.charAt(i) - '0';
-            sb.append(aa ^ bb ^ rem);
-            if (aa == 1 && bb == 1 || ((aa == 1 | bb == 1) && rem == 1)) {
-                rem = 1;
-            } else {
-                rem = 0;
-            }
-        }
-        if (rem == 1) {
-            sb.append(rem);
-        }
-        return sb.reverse().toString();
-    }
-
-    private String equalLen(String s, int len) {
-        while (s.length() < len) {
-            s = "0" + s;
-        }
-        return s;
     }
 }
