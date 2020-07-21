@@ -9,21 +9,12 @@ public class SolutionTest {
     @Test
     public void test() {
         Solution s = new Solution();
-        char[][] board = {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}};
-        assertTrue(s.exist(board, "ABCCED"));
-        assertTrue(s.exist(board, "SEE"));
-        assertFalse(s.exist(board, "ABCB"));
-
-        board = new char[][] {{'a', 'a', 'a', 'a'}, {'a', 'a', 'a', 'a'}, {'a', 'a', 'a', 'a'}};
-        assertFalse(s.exist(board, "aaaaaaaaaaaaa"));
-
-        board = new char[][] {{'a', 'a'}, {'a', 'a'}};
-        assertFalse(s.exist(board, "aaaaa"));
-
-        board = new char[][] {{'a', 'b'}, {'c', 'd'}};
-        assertTrue(s.exist(board, "acdb"));
-
-        board = new char[][] {{'A', 'B', 'C', 'E'}, {'S', 'F', 'E', 'S'}, {'A', 'D', 'E', 'E'}};
-        assertTrue(s.exist(board, "ABCESEEEFS"));
+        assertTrue(s.exist(new char[][] {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "ABCCED"));
+        assertTrue(s.exist(new char[][] {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "SEE"));
+        assertFalse(s.exist(new char[][] {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "ABCB"));
+        assertFalse(s.exist(new char[][] {{'a', 'a', 'a', 'a'}, {'a', 'a', 'a', 'a'}, {'a', 'a', 'a', 'a'}}, "aaaaaaaaaaaaa"));
+        assertFalse(s.exist(new char[][] {{'a', 'a'}, {'a', 'a'}}, "aaaaa"));
+        assertTrue(s.exist(new char[][] {{'a', 'b'}, {'c', 'd'}}, "acdb"));
+        assertTrue(s.exist(new char[][] {{'A', 'B', 'C', 'E'}, {'S', 'F', 'E', 'S'}, {'A', 'D', 'E', 'E'}}, "ABCESEEEFS"));
     }
 }
