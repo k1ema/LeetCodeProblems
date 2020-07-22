@@ -52,15 +52,15 @@ public class Solution {
     public int longestCommonSubsequence1(String text1, String text2) {
         int m = text1.length();
         int n = text2.length();
-        int[][] dp = new int[m+1][n+1];
+        int[][] dp = new int[m + 1][n + 1];
 
-        for (int i=0; i<m; i++) {
+        for (int i = 0; i < m; i++) {
             char c = text1.charAt(i);
-            for (int j = 0; j<n; j++) {
+            for (int j = 0; j < n; j++) {
                 if (c == text2.charAt(j)) {
-                    dp[i+1][j+1] = dp[i][j] + 1;
+                    dp[i + 1][j + 1] = dp[i][j] + 1;
                 } else {
-                    dp[i+1][j+1] = Math.max(dp[i+1][j], dp[i][j+1]);
+                    dp[i + 1][j + 1] = Math.max(dp[i + 1][j], dp[i][j + 1]);
                 }
             }
         }
