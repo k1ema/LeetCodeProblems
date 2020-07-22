@@ -2,10 +2,7 @@ package tree.BinaryTreeZigzagLevelOrderTraversal_103;
 
 import tree.utils.TreeNode;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 103. Binary Tree Zigzag Level Order Traversal
@@ -30,7 +27,7 @@ import java.util.List;
  */
 public class Solution {
     // BFS, tc O(n), sc O(n)
-    public List<List<Integer>> zigzagLevelOrder1(TreeNode root) {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         if (root == null) return res;
         boolean reverse = false;
@@ -53,7 +50,7 @@ public class Solution {
     }
 
     // DFS, tc O(n), sc O(n)
-    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+    public List<List<Integer>> zigzagLevelOrder1(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         if (root == null) return res;
         dfs(root, 0, res);
@@ -73,5 +70,31 @@ public class Solution {
         }
         if (node.left != null) dfs(node.left, level + 1, res);
         if (node.right != null) dfs(node.right, level + 1, res);
+    }
+
+    // BFS, tc O(n), sc O(n)
+    public List<List<Integer>> zigzagLevelOrder2(TreeNode root) {
+        List<List<Integer>> res = new LinkedList<>();
+        if (root == null) return res;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        boolean reverse = false;
+        while (!q.isEmpty()) {
+            int size = q.size();
+            LinkedList<Integer> list = new LinkedList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode tree = q.poll();
+                if (reverse) {
+                    list.addFirst(tree.val);
+                } else {
+                    list.addLast(tree.val);
+                }
+                if (tree.left != null) q.add(tree.left);
+                if (tree.right != null) q.add(tree.right);
+            }
+            reverse = !reverse;
+            res.add(list);
+        }
+        return res;
     }
 }
