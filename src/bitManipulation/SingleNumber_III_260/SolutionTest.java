@@ -8,6 +8,6 @@ public class SolutionTest {
     @Test
     public void test() {
         Solution s = new Solution();
-        assertArrayEquals(new int[] {3, 5}, s.singleNumber(new int[] {1, 2, 1, 3, 2, 5}));
+        assertArrayEquals(new int[] {5, 3}, s.singleNumber(new int[] {1, 2, 1, 3, 2, 5}));
     }
 }
