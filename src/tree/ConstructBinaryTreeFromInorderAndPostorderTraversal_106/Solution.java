@@ -34,31 +34,30 @@ public class Solution {
     // The the basic idea is to take the last element in postorder array as the root, find the position
     // of the root in the inorder array; then locate the range for left sub-tree and right sub-tree and
     // do recursion. Use a HashMap to record the index of root in the inorder array.
+    private int pIndex;
+    private int[] postorder;
+    private Map<Integer, Integer> inMap;
     TreeNode buildTree(int[] inorder, int[] postorder) {
-        if (inorder == null || postorder == null
-                || inorder.length == 0 || postorder.length != inorder.length) {
-            return null;
-        }
+        if (inorder == null || postorder == null || inorder.length == 0 || inorder.length != postorder.length) return null;
+        pIndex = postorder.length - 1;
 
-        Map<Integer, Integer> inMap = new HashMap<>();
+        this.postorder = postorder;
+
+        inMap = new HashMap<>();
         for (int i = 0; i < inorder.length; i++) {
             inMap.put(inorder[i], i);
         }
 
-        return construct(inMap, postorder.length - 1, 0, inorder.length - 1, postorder);
+        return helper(0, postorder.length - 1);
     }
 
-    private TreeNode construct(Map<Integer, Integer> inMap, int pIndex, int left, int right, int[] postorder) {
-        if (left > right) {
-            return null;
-        }
-
-        int rootVal = postorder[pIndex];
-        TreeNode root = new TreeNode(rootVal);
-        int inIndex = inMap.get(rootVal);
-        int rightLength = right - inIndex;
-        root.right = construct(inMap, pIndex - 1, inIndex + 1, right, postorder);
-        root.left = construct(inMap, pIndex - 1 - rightLength, left, inIndex - 1, postorder);
+    private TreeNode helper(int left, int right) {
+        if (left > right) return null;
+        TreeNode root = new TreeNode(postorder[pIndex]);
+        int inIndex = inMap.get(postorder[pIndex]);
+        pIndex--;
+        root.right = helper(inIndex + 1, right);
+        root.left = helper(left, inIndex - 1);
         return root;
     }
 }
