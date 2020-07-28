@@ -26,13 +26,37 @@ import tree.utils.TreeNode;
  *    15   7
  */
 public class Solution {
+    private int preIndex;
+    private Map<Integer, Integer> inMap;
+    private int[] preorder;
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        if (preorder == null || inorder == null || preorder.length == 0 || preorder.length != inorder.length) return null;
+        preIndex = 0;
+        this.preorder = preorder;
+        inMap = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) {
+            inMap.put(inorder[i], i);
+        }
+        return helper(0, inorder.length - 1);
+    }
+
+    private TreeNode helper(int left, int right) {
+        if (left > right) return null;
+        int rootVal = preorder[preIndex++];
+        TreeNode root = new TreeNode(rootVal);
+        int inIndex = inMap.get(rootVal);
+        root.left = helper(left, inIndex - 1);
+        root.right = helper(inIndex + 1, right);
+        return root;
+    }
+
     // tc O(n), sc O(n)
     // https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
     // explanation https://www.techiedelight.com/construct-binary-tree-from-inorder-preorder-traversal/
     // The the basic idea is to take the first element in preorder array as the root, find the position
     // of the root in the inorder array; then locate the range for left sub-tree and right sub-tree and
     // do recursion. Use a HashMap to record the index of root in the inorder array.
-    TreeNode buildTree(int[] preorder, int[] inorder) {
+    TreeNode buildTree1(int[] preorder, int[] inorder) {
         if (preorder == null || inorder == null
                 || inorder.length == 0 || preorder.length != inorder.length) {
             return null;

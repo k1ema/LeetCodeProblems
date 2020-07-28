@@ -48,7 +48,7 @@ public class Solution {
             inMap.put(inorder[i], i);
         }
 
-        return helper(0, postorder.length - 1);
+        return helper(0, inorder.length - 1);
     }
 
     private TreeNode helper(int left, int right) {
