@@ -1,6 +1,7 @@
 package array.TaskScheduler_621;
 
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
@@ -28,29 +29,51 @@ import java.util.PriorityQueue;
 public class Solution {
     // tc O(n), sc O(1), n = tasks.length
     // 3 ms, faster than 77.32%; 42.8 MB, less than 5.88%
-    public int leastInterval(char[] tasks, int n) {
-        if (n == 0) return tasks.length;
+    public int leastInterval2(char[] tasks, int n) {
         int[] a = new int[26];
-        for (int i = 0; i < tasks.length; i++) {
-            a[tasks[i] - 'A']++;
+        for (char c : tasks) {
+            a[c - 'A']++;
         }
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
-        for (int i = 0; i < a.length; i++) {
-            if (a[i] > 0) {
-                pq.add(a[i]);
-            }
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+        for (int v : a) {
+            pq.add(v);
         }
+
         int maxN = pq.poll();
         int idles = (maxN - 1) * n;
         while (!pq.isEmpty()) {
-            int N = pq.poll();
-            if (N < maxN) {
-                idles = Math.max(0, idles - N);
+            int nextTask = pq.poll();
+            if (nextTask == maxN) {
+                idles = Math.max(0, idles - nextTask + 1);
             } else {
-                idles = Math.max(0, idles - N + 1);
+                idles = Math.max(0, idles - nextTask);
             }
-            n--;
         }
+
         return tasks.length + idles;
+    }
+
+    // same approach but w/o heap
+    // tc O(n), sc O(1), n = tasks.length
+    public int leastInterval(char[] tasks, int n) {
+        // frequencies of the tasks
+        int[] frequencies = new int[26];
+        for (int t : tasks) {
+            frequencies[t - 'A']++;
+        }
+
+        Arrays.sort(frequencies);
+
+        // max frequency
+        int f_max = frequencies[25];
+        int idle_time = (f_max - 1) * n;
+
+        for (int i = frequencies.length - 2; i >= 0 && idle_time > 0; --i) {
+            idle_time -= Math.min(f_max - 1, frequencies[i]);
+        }
+        idle_time = Math.max(0, idle_time);
+
+        return idle_time + tasks.length;
     }
 }
