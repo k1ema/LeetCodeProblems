@@ -40,13 +40,11 @@ import tree.utils.TreeNode;
  */
 public class Solution {
     public TreeNode insertIntoBST(TreeNode root, int val) {
-        if (root == null) return null;
+        if (root == null) return new TreeNode(val);
         if (val < root.val) {
-            if (root.left != null) insertIntoBST(root.left, val);
-            else root.left = new TreeNode(val);
+            root.left = insertIntoBST(root.left, val);
         } else {
-            if (root.right != null) insertIntoBST(root.right, val);
-            else root.right = new TreeNode(val);
+            root.right = insertIntoBST(root.right, val);
         }
         return root;
     }
