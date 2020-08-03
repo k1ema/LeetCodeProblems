@@ -19,32 +19,18 @@ package string.ValidPalindrome_125;
  */
 public class Solution {
     // tc O(n), sc O(1)
-    // 4 ms, faster than 81.21%; 37.6 MB, less than 100.00%
-    boolean isPalindrome(String s) {
+    // 2 ms, faster than 98.71%; 39.9 MB, less than 30.20%
+    public boolean isPalindrome(String s) {
         if (s == null) return false;
-        if (s.isEmpty()) return true;
-
-        int len = s.length();
-        int p1 = 0;
-        int p2 = len - 1;
-        while (p1 <= p2) {
-            char c1 = s.charAt(p1);
-            if (!Character.isLetterOrDigit(c1)) {
-                p1++;
-                continue;
-            }
-            char c2 = s.charAt(p2);
-            if (!Character.isLetterOrDigit(c2)) {
-                p2--;
-                continue;
-            }
-            if (Character.toLowerCase(c1) != Character.toLowerCase(c2)) {
+        int l = 0, r = s.length() - 1;
+        while (l < r) {
+            while (l < r && !Character.isLetterOrDigit(s.charAt(l))) l++;
+            while (l < r && !Character.isLetterOrDigit(s.charAt(r))) r--;
+            if (l < r && Character.toLowerCase(s.charAt(l)) != Character.toLowerCase(s.charAt(r))) {
                 return false;
             }
-            p1++;
-            p2--;
+            l++; r--;
         }
-
         return true;
     }
 }
