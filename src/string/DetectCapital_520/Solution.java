@@ -24,6 +24,7 @@ package string.DetectCapital_520;
  * Note: The input will be a non-empty word consisting of uppercase and lowercase latin letters.
  */
 public class Solution {
+    // tc O(n), sc O(1)
     public boolean detectCapitalUse(String word) {
         boolean allUpper = true, oneUpper = true, allLower = true;
         for (int i = 0; i < word.length(); i++) {
@@ -40,11 +41,12 @@ public class Solution {
         return allUpper || oneUpper || allLower;
     }
 
-    private boolean isUpper(char c) {
-        return c >= 'A' && c <= 'Z';
-    }
-
     private boolean isLower(char c) {
         return c >= 'a' && c <= 'z';
+    }
+
+    // see solutions
+    public boolean detectCapitalUse1(String word) {
+        return word.matches("[A-Z]*|.[a-z]*");
     }
 }
