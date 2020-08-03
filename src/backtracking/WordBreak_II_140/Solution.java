@@ -44,33 +44,32 @@ import java.util.*;
  * []
  */
 public class Solution {
+    // https://leetcode.com/problems/word-break-ii/discuss/44167/My-concise-JAVA-solution-based-on-memorized-DFS
     public List<String> wordBreak(String s, List<String> wordDict) {
         return bt(s, 0, new HashSet<>(wordDict), new HashMap<>());
     }
 
-    private List<String> bt(String s, int start, Set<String> dict, Map<Integer, List<String>> map) {
-        if (map.containsKey(start)) {
-            return map.get(start);
-        }
+    private List<String> bt(String s, int i, Set<String> wordDict, Map<Integer, List<String>> memo) {
+        if (memo.containsKey(i)) return memo.get(i);
 
         List<String> res = new ArrayList<>();
 
-        if (start == s.length()) {
+        if (i == s.length()) {
             res.add("");
             return res;
         }
 
-
-        for (int end = start + 1; end <= s.length(); end++) {
-            if (dict.contains(s.substring(start, end))) {
-                List<String> list = bt(s, end, dict, map);
-                for (String ss : list) {
-                    res.add(s.substring(start, end) + (ss.equals("") ? "" : " ") + ss);
+        for (int j = i + 1; j <= s.length(); j++) {
+            String word = s.substring(i, j);
+            if (wordDict.contains(word)) {
+                List<String> list = bt(s, j, wordDict, memo);
+                for (String str : list) {
+                    res.add(word + (str.isEmpty() ? "" : " " + str));
                 }
             }
         }
 
-        map.put(start, res);
+        memo.put(i, res);
         return res;
     }
 }
