@@ -49,24 +49,6 @@ public class Solution {
     }
 
     // tc O(nlogn)
-    public int hIndex1(int[] citations) {
-        Arrays.sort(citations);
-        if (citations == null || citations.length == 0) return 0;
-        int n = citations.length;
-        int l = 0, r = n - 1;
-        while (l <= r) {
-            int m = (l + r) >>> 1;
-            if (citations[m] == n - m) return n - m;
-            if (citations[m] < n - m) {
-                l = m + 1;
-            } else {
-                r = m - 1;
-            }
-        }
-        return n - l;
-    }
-
-    // tc O(nlogn)
     public int hIndex2(int[] citations) {
         Arrays.sort(citations);
         int n = citations.length;
