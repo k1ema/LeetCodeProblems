@@ -1,4 +1,4 @@
-package array.FindMinimumInRotatedSortedArray_153;
+package binarySearch.FindMinimumInRotatedSortedArray_153;
 
 import org.junit.Test;
 
