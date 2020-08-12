@@ -39,43 +39,18 @@ public class Solution {
 
     // tc O(n^2), sc O(n^2)
     List<List<Integer>> generate1(int numRows) {
-        if (numRows == 0) return new ArrayList<>();
-        List<List<Integer>> resultList = new LinkedList<>();
-        int[][] result = new int[numRows][];
-        result[0] = new int[1];
-        result[0][0] = 1;
-        resultList.add(Collections.singletonList(1));
-        for (int i = 1; i < numRows; i++) {
-            int[] row = new int[i + 1];
-            List<Integer> rowList = new LinkedList<>();
-            row[0] = 1;
-            row[i] = 1;
-            rowList.add(1);
-            for (int j = 1; j < i; j++) {
-                row[j] = result[i - 1][j - 1] + result[i - 1][j];
-                rowList.add(j, row[j]);
+        List<List<Integer>> rows = new ArrayList<>();
+        for (int i = 0; i <= numRows; i++) {
+            rows.add(new ArrayList<>());
+            for (int j = 0; j < i + 1; j++) {
+                if (j == 0 || j == i) {
+                    rows.get(i).add(1);
+                } else {
+                    int v = rows.get(i - 1).get(j - 1) + rows.get(i - 1).get(j);
+                    rows.get(i).add(v);
+                }
             }
-            rowList.add(1);
-            result[i] = row;
-            resultList.add(rowList);
         }
-        return resultList;
-    }
-
-    List<List<Integer>> generate2(int numRows) {
-        if (numRows == 0) return new ArrayList<>();
-        List<List<Integer>> result = new ArrayList<>();
-        result.add(Collections.singletonList(1));
-        for (int i = 1; i < numRows; i++) {
-            List<Integer> row = new ArrayList<>();
-            row.add(1);
-            for (int j = 1; j < i; j++) {
-                List<Integer> prevRow = result.get(i - 1);
-                row.add(j, prevRow.get(j - 1) + prevRow.get(j));
-            }
-            row.add(1);
-            result.add(row);
-        }
-        return result;
+        return rows;
     }
 }
