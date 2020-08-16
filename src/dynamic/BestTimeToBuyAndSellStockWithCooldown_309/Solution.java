@@ -80,7 +80,7 @@ public class Solution {
     // 79 ms, 39.8 MB
     public int maxProfit2(int[] prices) {
         Integer[] memo = new Integer[prices.length];
-        return bt(prices, 1, memo);
+        return bt(prices, 0, memo);
     }
 
     private int bt(int[] prices, int cur, Integer[] memo) {
