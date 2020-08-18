@@ -34,30 +34,25 @@ import java.util.Map;
  * cache.get(4);      // returns 4
  */
 public class LRUCache {
-    // 64 ms, faster than 37.24%; 57.6 MB, less than 61.35%
-    private class CashItem {
-        CashItem prev;
-        CashItem next;
-        int key;
-        int value;
-        CashItem(int key, int value) {
+    // 15 ms, faster than 63.96%; 50 MB, less than 41.49%
+    private class ListNode {
+        private int key, value;
+        private ListNode prev;
+        private ListNode next;
+
+        public ListNode(int key, int value) {
             this.key = key;
             this.value = value;
         }
-
-        @Override
-        public String toString() {
-            return String.format("[%d,%d]", key, value);
-        }
     }
 
-    private int capacity;
-    private Map<Integer, CashItem> data = new HashMap<>();
-    private CashItem head = new CashItem(-1, -1);
-    private CashItem tail = new CashItem(-1, -1);
+    private final int capacity;
+    private Map<Integer, ListNode> map;
+    private ListNode head = new ListNode(-1, -1), tail = new ListNode(-1, -1);
 
     public LRUCache(int capacity) {
         this.capacity = capacity;
+        map = new HashMap<>();
         head.next = tail;
         tail.prev = head;
     }
@@ -65,49 +60,39 @@ public class LRUCache {
     // tc O(1)
     public int get(int key) {
         int value = -1;
-        if (data.containsKey(key)) {
-            CashItem cashItem = data.get(key);
-            value = cashItem.value;
-            insert(cashItem);
+        if (map.containsKey(key)) {
+            ListNode node = map.get(key);
+            value = node.value;
+            insert(node);
         }
         return value;
     }
 
     // tc O(1)
     public void put(int key, int value) {
-        if (data.containsKey(key)) {
-            // move to the head
-            CashItem cashItem = data.get(key);
-            // set new value
-            cashItem.value = value;
-            data.put(key, cashItem);
-            insert(cashItem);
-        } else {
-            if (data.size() >= capacity) {
-                // remove last one and put new
-                data.remove(tail.prev.key);
-                CashItem prev = tail.prev.prev;
-                prev.next = tail;
-                tail.prev = prev;
-            }
-            CashItem newItem = new CashItem(key, value);
-            insert(newItem);
-            data.put(key, newItem);
+        if (!map.containsKey(key) && map.size() >= capacity) {
+            ListNode toRemove = tail.prev;
+            tail.prev = toRemove.prev;
+            toRemove.prev.next = tail;
+            map.remove(toRemove.key);
         }
+        ListNode node = new ListNode(key, value);
+        insert(node);
+        map.put(key, node);
     }
 
-    private void insert(CashItem newItem) {
-        CashItem prev = newItem.prev;
-        if (prev != null) {
-            // remove from double linked list
-            prev.next = newItem.next;
-            newItem.next.prev = prev;
+    // tc O(1)
+    private void insert(ListNode node) {
+        if (map.containsKey(node.key)) {
+            ListNode toRemove = map.get(node.key);
+            toRemove.prev.next = toRemove.next;
+            toRemove.next.prev = toRemove.prev;
         }
-        // insert to the 1st position
-        newItem.prev = head;
-        head.next.prev = newItem;
-        newItem.next = head.next;
-        head.next = newItem;
+        ListNode headNext = head.next;
+        head.next = node;
+        node.prev = head;
+        node.next = headNext;
+        headNext.prev = node;
     }
 }
 
