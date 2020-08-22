@@ -22,8 +22,48 @@ import java.util.Map;
  */
 public class Solution {
     // tc O(n), sc O(1)
-    // 4 ms, faster than 17.30%; 50.1 MB, less than 28.95%
+    // 1 ms, faster than 99.96%;  42.5 MB, less than 53.66%
     public void reorderList(ListNode head) {
+        if (head == null) return;
+
+        ListNode slow = head, fast = head;
+        while (fast != null &&  fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        ListNode l1 = head;
+        ListNode l2 = reverse(slow);
+
+        merge(l1, l2);
+    }
+
+    private ListNode reverse(ListNode head) {
+        ListNode prev = null, cur = head;
+        while (cur != null) {
+            ListNode next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
+        }
+        return prev;
+    }
+
+    private void merge(ListNode l1, ListNode l2) {
+        while (l2.next != null) {
+            ListNode next = l1.next;
+            l1.next = l2;
+            l1 = next;
+
+            next = l2.next;
+            l2.next = l1;
+            l2 = next;
+        }
+    }
+
+    // tc O(n), sc O(1)
+    // 4 ms, faster than 17.30%; 50.1 MB, less than 28.95%
+    public void reorderList1(ListNode head) {
         if (head == null || head.next == null) return;
 
         // 1. find the middle of ll
@@ -43,21 +83,21 @@ public class Solution {
         }
 
         // 3. merge two parts
-        ListNode first = head, second = prev; // 1-2-3-4; 4-3
+        ListNode first = head, second = prev; // 1-2-3; 4-3
         while (second.next != null) {
-            ListNode tmp = first.next;
+            ListNode next = first.next;
             first.next = second;
-            first = tmp;
+            first = next;
 
-            tmp = second.next;
+            next = second.next;
             second.next = first;
-            second = tmp;
+            second = next;
         }
     }
 
     // my solution
     // tc O(n), sc O(n)
-    public void reorderList1(ListNode head) {
+    public void reorderList2(ListNode head) {
         ListNode list = head;
         Map<Integer, ListNode> map = new HashMap<>();
         int j = 0;
