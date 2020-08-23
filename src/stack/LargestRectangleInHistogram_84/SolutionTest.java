@@ -10,5 +10,6 @@ public class SolutionTest {
         Solution s = new Solution();
         assertEquals(10, s.largestRectangleArea(new int[] {2, 1, 5, 6, 2, 3}));
         assertEquals(15, s.largestRectangleArea(new int[] {2, 1, 5, 6, 7, 3}));
+        assertEquals(24, s.largestRectangleArea(new int[] {2, 1, 5, 6, 2, 3, 8, 8, 8}));
     }
 }
