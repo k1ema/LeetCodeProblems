@@ -29,8 +29,32 @@ import java.util.Arrays;
  * Intervals like [1,2] and [2,3] have borders "touching" but they don't overlap each other.
  */
 public class Solution {
+    /*
+        1. sort intervals by end point
+        2. start iterating:
+            if cur start < prev end
+                res += 1
+            else prev = cur
+        3. return res
+    */
     // tc O(nlogn), sc O(1)
     public int eraseOverlapIntervals(int[][] intervals) {
+        if (intervals == null || intervals.length < 2) return 0;
+        Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
+        int end = intervals[0][1];
+        int count = 0;
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] < end) {
+                count++;
+            } else {
+                end = intervals[i][1];
+            }
+        }
+        return count;
+    }
+
+    // tc O(nlogn), sc O(1)
+    public int eraseOverlapIntervals1(int[][] intervals) {
         if (intervals == null || intervals.length == 0) return 0;
         Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
         int count = 1;
@@ -45,7 +69,7 @@ public class Solution {
     }
 
     // tc O(n^2), sc O(n)
-    public int eraseOverlapIntervals1(int[][] intervals) {
+    public int eraseOverlapIntervals2(int[][] intervals) {
         if (intervals == null || intervals.length == 0) return 0;
         Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
         int n = intervals.length;
