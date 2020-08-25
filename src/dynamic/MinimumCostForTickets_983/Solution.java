@@ -1,7 +1,7 @@
 package dynamic.MinimumCostForTickets_983;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 983. Minimum Cost For Tickets
@@ -48,53 +48,51 @@ import java.util.Set;
  * 1 <= costs[i] <= 1000
  */
 public class Solution {
-    // tc O(365), sc O(365)
+    // top-down recursive with memoization
+    // tc O(n), sc O(n), where n is a days.length (max = 365)
+    // 1 ms, faster than 89.33%; 38.1 MB, less than 60.97%
     public int mincostTickets(int[] days, int[] costs) {
+        return bt(days, costs, 0, days[0], new HashMap<>());
+    }
+
+    private int bt(int[] days, int[] costs, int dayInd, int validToDay, Map<Integer, Integer> memo) {
+        if (dayInd == days.length) return 0;
+        // tricky part: should put this condition here but not after accessing memo
+        if (days[dayInd] < validToDay) {
+            return bt(days, costs, dayInd + 1, validToDay, memo);
+        }
+        if (memo.containsKey(dayInd)) {
+            return memo.get(dayInd);
+        }
+
+        int one = costs[0] + bt(days, costs, dayInd + 1, days[dayInd] + 1, memo);
+        int seven = costs[1] + bt(days, costs, dayInd + 1, days[dayInd] + 7, memo);
+        int thirty = costs[2] + bt(days, costs, dayInd + 1, days[dayInd] + 30, memo);
+        int res = Math.min(one, Math.min(seven, thirty));
+        memo.put(dayInd, res);
+        return res;
+    }
+
+    // bottom-up
+    // tc O(n), sc O(n), where n is a days.length (max = 365)
+    // 1 ms, faster than 89.33%; 37.7 MB, less than 65.00%
+    public int mincostTickets1(int[] days, int[] costs) {
         int n = days[days.length - 1];
         int[] dp = new int[n + 1];
         boolean[] travelDay = new boolean[n + 1];
         for (int day : days) {
             travelDay[day] = true;
         }
-        for (int i = 1; i < dp.length; i++) {
+        for (int i = 0; i < dp.length; i++) {
             if (travelDay[i]) {
-                int one = dp[i - 1] + costs[0];
+                int one = dp[Math.max(0, i - 1)] + costs[0];
                 int seven = dp[Math.max(0, i - 7)] + costs[1];
                 int thirty = dp[Math.max(0, i - 30)] + costs[2];
                 dp[i] = Math.min(one, Math.min(seven, thirty));
             } else {
-                dp[i] = dp[i - 1];
+                dp[i] = dp[Math.max(0, i - 1)];
             }
         }
         return dp[dp.length - 1];
-    }
-
-    private Integer[] memo;
-    private Set<Integer> dayset;
-    private int[] costs;
-
-    // tc O(365), sc O(365)
-    public int mincostTickets1(int[] days, int[] costs) {
-        memo = new Integer[366];
-        dayset = new HashSet<>();
-        this.costs = costs;
-        for (int d : days) {
-            dayset.add(d);
-        }
-        return dp(1);
-    }
-
-    private int dp(int i) {
-        if (i > 365) return 0;
-        if (memo[i] != null) return memo[i];
-        int res;
-        if (dayset.contains(i)) {
-            res = Math.min(dp(i + 1) + costs[0], dp(i + 7) + costs[1]);
-            res = Math.min(res, dp(i + 30) + costs[2]);
-        } else {
-            res = dp(i + 1);
-        }
-        memo[i] = res;
-        return res;
     }
 }
