@@ -14,5 +14,7 @@ public class SolutionTest {
         assertEquals(2, s.singleNonDuplicate(new int[] {1, 1, 2}));
         assertEquals(1, s.singleNonDuplicate(new int[] {1, 2, 2}));
         assertEquals(8, s.singleNonDuplicate(new int[] {7, 7, 8, 9, 9}));
+        assertEquals(3, s.singleNonDuplicate(new int[] {1, 1, 2, 2, 3}));
+        assertEquals(1, s.singleNonDuplicate(new int[] {1, 2, 2, 3, 3}));
     }
 }

@@ -19,7 +19,27 @@ package binarySearch.SingleElementInASortedArray_540;
  * Note: Your solution should run in O(log n) time and O(1) space.
  */
 public class Solution {
+    // tc O(logn), sc O(1)
+    // 0 ms, faster than 100.00%; 39.6 MB, less than 79.56%
     public int singleNonDuplicate(int[] nums) {
+        if (nums.length == 1) return nums[0];
+        int l = -1, r = nums.length;
+        while (r - l > 1) {
+            int m = (l + r) >>> 1;
+            if (isGood(nums, m)) {
+                l = m;
+            } else {
+                r = m;
+            }
+        }
+        return r == nums.length ? nums[l] : nums[r];
+    }
+
+    private boolean isGood(int[] nums, int m) {
+        return m % 2 == 0 && (m == nums.length - 1 || nums[m] == nums[m + 1]) || m % 2 == 1 && nums[m] == nums[m - 1];
+    }
+
+    public int singleNonDuplicate1(int[] nums) {
         if (nums.length == 1) return nums[0];
         int lo = 0, hi = nums.length - 1;
         while (lo <= hi) {
