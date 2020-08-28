@@ -24,13 +24,14 @@ import java.util.List;
  * ]
  */
 public class Solution {
-    // tc O(C(n,k)), sc O(C(n,k)) ?
+    // tc O(C(n,k)), sc O(C(n,k))
     List<List<Integer>> combine(int n, int k) {
         List<List<Integer>> result = new ArrayList<>();
         backtrack(result, new ArrayList<>(), 1, n, k);
         return result;
     }
 
+    // 1 ms, faster than 100.00%
     private void backtrack(List<List<Integer>> combs, List<Integer> temp, int start, int n, int k) {
         if (k == 0) {
             combs.add(new ArrayList<>(temp));
@@ -43,4 +44,19 @@ public class Solution {
             temp.remove(temp.size() - 1);
         }
     }
+
+    // 18-20 ms
+    private void backtrack1(List<List<Integer>> combs, List<Integer> temp, int start, int n, int k) {
+        if (temp.size() == k) {
+            combs.add(new ArrayList<>(temp));
+            return;
+        }
+
+        for (int i = start; i <= n; i++) {
+            temp.add(i);
+            backtrack1(combs, temp, i + 1, n, k);
+            temp.remove(temp.size() - 1);
+        }
+    }
+
 }
