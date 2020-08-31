@@ -42,57 +42,35 @@ import tree.utils.TreeNode;
  *     4   7
  */
 public class Solution {
+    /*
+        1. find node using dfs traversal
+        2. if node is found,
+            - copy its left node - *Left
+            - find right leftmost node, store *Left to its left node (*leftmost)
+            - find recursively leftmost node and delete reference
+            - return *leftmost
+    */
     // tc O(h), sc O(h)
+    // 0 ms, faster than 100.00%; 39.7 MB, less than 90.43%
     public TreeNode deleteNode(TreeNode root, int key) {
         if (root == null) return null;
         if (root.val == key) {
-            if (root.left == null) {
-                return root.right;
-            } else if (root.right == null) {
+            if (root.right == null) {
                 return root.left;
+            } else {
+                TreeNode leftMost = root.right;
+                while (leftMost.left != null) {
+                    leftMost = leftMost.left;
+                }
+                leftMost.right = deleteNode(root.right, leftMost.val);
+                leftMost.left = root.left;
+                return leftMost;
             }
-            TreeNode p = findMin(root.right);
-            root.val = p.val;
-            root.right = deleteNode(root.right, p.val);
-        } else if (root.val > key) {
-            root.left = deleteNode(root.left, key);
-        } else {
+        } else if (root.val < key) {
             root.right = deleteNode(root.right, key);
+        } else {
+            root.left = deleteNode(root.left, key);
         }
         return root;
-    }
-
-    private TreeNode findMin(TreeNode tree) {
-        while (tree != null && tree.left != null) {
-            tree = tree.left;
-        }
-        return tree;
-    }
-
-    // tc O(h), sc O(h)
-    // 0 ms, faster than 100.00%; 40.1 MB, less than 17.24%
-    public TreeNode deleteNode1(TreeNode root, int key) {
-        return dfs(root, key);
-    }
-
-    private TreeNode dfs(TreeNode tree, int key) {
-        if (tree == null) return null;
-        if (tree.val == key) {
-            if (tree.left == null || tree.right == null) {
-                return tree.left != null ? tree.left : tree.right;
-            }
-            TreeNode newNode = tree.right;
-            TreeNode tmp = newNode;
-            while (tmp.left != null) {
-                tmp = tmp.left;
-            }
-            tmp.left = tree.left;
-            return newNode;
-        } else if (tree.val < key) {
-            tree.right = dfs(tree.right, key);
-        } else {
-            tree.left = dfs(tree.left, key);
-        }
-        return tree;
     }
 }
