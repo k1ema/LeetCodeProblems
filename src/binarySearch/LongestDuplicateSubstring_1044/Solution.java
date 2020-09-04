@@ -1,6 +1,7 @@
 package binarySearch.LongestDuplicateSubstring_1044;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 1044. Longest Duplicate Substring
@@ -52,17 +53,17 @@ public class Solution {
             s[i] = S.charAt(i) - 'a';
         }
 
-        int l = 1, r = n;
+        int l = 0, r = n;
         int idx, foundIdx = -1, len = 0;
-        while (l <= r) {
+        while (r - l > 1) {
             int m = (l + r) >>> 1;
             idx = findSubstring(s, m);
             if (idx > -1) {
-                l = m + 1;
+                l = m;
                 len = m;
                 foundIdx = idx;
             } else {
-                r = m - 1;
+                r = m;
             }
         }
 
