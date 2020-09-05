@@ -1,6 +1,7 @@
 package hashtable.LongestSubstringWithoutRepeatingCharacters_3;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 3. Longest Substring Without Repeating Characters
@@ -25,8 +26,24 @@ import java.util.HashMap;
  *              Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
  */
 public class Solution {
-    // tc O(n), sc O(1)
+    // https://leetcode.com/problems/longest-substring-without-repeating-characters/discuss/1729/11-line-simple-Java-solution-O(n)-with-explanation
+    // tc O(n), sc O(n)
     int lengthOfLongestSubstring(String s) {
+        if (s.length() == 0) return 0;
+        Map<Character, Integer> map = new HashMap<>();
+        int max = 0;
+        for (int i = 0, j = 0; i < s.length(); i++) {
+            if (map.containsKey(s.charAt(i))) {
+                j = Math.max(j, map.get(s.charAt(i)) + 1);
+            }
+            map.put(s.charAt(i), i);
+            max = Math.max(max, i - j + 1);
+        }
+        return max;
+    }
+
+    // tc O(n^2), sc O(1)
+    int lengthOfLongestSubstring1(String s) {
         if (s == null) {
             return 0;
         } else if (s.length() == 1) {
@@ -42,21 +59,5 @@ public class Solution {
             longest = Math.max(longest, s.substring(i, j + 1).length());
         }
         return longest;
-    }
-
-    // https://leetcode.com/problems/longest-substring-without-repeating-characters/discuss/1729/11-line-simple-Java-solution-O(n)-with-explanation
-    // tc O(n)
-    int lengthOfLongestSubstring1(String s) {
-        if (s.length() == 0) return 0;
-        HashMap<Character, Integer> map = new HashMap<>();
-        int max = 0;
-        for (int i = 0, j = 0; i < s.length(); ++i) {
-            if (map.containsKey(s.charAt(i))) {
-                j = Math.max(j, map.get(s.charAt(i)) + 1);
-            }
-            map.put(s.charAt(i), i);
-            max = Math.max(max, i - j + 1);
-        }
-        return max;
     }
 }
