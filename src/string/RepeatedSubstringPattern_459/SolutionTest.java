@@ -17,5 +17,7 @@ public class SolutionTest {
         assertTrue(s.repeatedSubstringPattern("aabaab"));
         assertFalse(s.repeatedSubstringPattern("aabaaba"));
         assertTrue(s.repeatedSubstringPattern("aaaa"));
+        assertTrue(s.repeatedSubstringPattern("babbabbabbabbab"));
+        assertFalse(s.repeatedSubstringPattern("aaaaaaaabbbbbbbb"));
     }
 }

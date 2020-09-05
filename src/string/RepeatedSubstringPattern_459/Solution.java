@@ -1,5 +1,8 @@
 package string.RepeatedSubstringPattern_459;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 459. Repeated Substring Pattern
  * https://leetcode.com/problems/repeated-substring-pattern/
@@ -23,9 +26,42 @@ package string.RepeatedSubstringPattern_459;
  * Explanation: It's the substring "abc" four times. (And the substring "abcabc" twice.)
  */
 public class Solution {
+    // tc O(n); sc O(1)
+    // Rabin-Karp
+    // 6 ms, faster than 92.43%; 40 MB, less than 72.71%
+    public boolean repeatedSubstringPattern(String s) {
+        if (s == null || s.length() < 2) return false;
+        if (s.length() == 2) return s.charAt(0) == s.charAt(1);
+        int n = s.length();
+        for (int i = (int) Math.sqrt(n); i > 0; i--) {
+            if (n % i == 0) {
+                List<Integer> divisors = new ArrayList<>();
+                divisors.add(i);
+                if (i != 1) {
+                    divisors.add(n / i);
+                }
+
+                for (int l : divisors) {
+                    String str = s.substring(0, l);
+                    int startHash = str.hashCode();
+                    int curHash = startHash;
+                    int start = l;
+                    while (start != n && curHash == startHash) {
+                        curHash = s.substring(start, start + l).hashCode();
+                        start += l;
+                    }
+                    if (start == n && curHash == startHash) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     // tc O(?); sc O(1)
     // 15 ms, faster than 66.60%; 39.6 MB, less than 14.29%
-    public boolean repeatedSubstringPattern(String s) {
+    public boolean repeatedSubstringPattern3(String s) {
         int n = s.length();
         for (int i = n / 2; i > 0; i--) {
             if (n % i == 0) {
@@ -39,45 +75,28 @@ public class Solution {
         return false;
     }
 
+    // tc O(n^2), sc O(n)
     // 70 ms, faster than 31.18%; 39.9 MB, less than 9.52%
     public boolean repeatedSubstringPattern1(String s) {
         String str = s + s;
         return str.substring(1, str.length() - 1).contains(s);
     }
 
-    /*
-       v
-    abcabcd
-          ^
-    for i = 1..n-1
-        bool res = true
-        find s = substr(0, i)
-        store len = substr.len
-        int j = i + len
-        while j <= s.len
-            res &= compare new subtring(i, j) with s
-            if (!res || j == s.len) break
-            j +=len
-        if j == s.length && res return true
-     return false
-     */
     // tc O(n^2), sc O(1)
     // 127 ms, faster than 16.66%; 39.6 MB, less than 14.29%
     public boolean repeatedSubstringPattern2(String s) {
-        for (int i = 1; i < s.length(); i++) {
-            boolean res = true;
+        if (s == null || s.length() < 2) return false;
+        int n = s.length();
+
+        for (int i = 1; i <= n / 2; i++) {
             String substr = s.substring(0, i);
-            int len = substr.length();
-            int j = i + len;
-            if (j > s.length()) return false;
-            while (j <= s.length()) {
-                String s2 = s.substring(j - len, j);
-                res = substr.equals(s2);
-                if (!res || j == s.length()) break;
-                j += len;
+            for (int j = i; j + i <= n; j += i) {
+                String substr2 = s.substring(j, j + i);
+                if (!substr.equals(substr2)) break;
+                if (j + i == n) return true;
             }
-            if (res && j == s.length()) return true;
         }
+
         return false;
     }
 }
