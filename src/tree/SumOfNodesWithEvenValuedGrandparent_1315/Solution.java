@@ -33,7 +33,7 @@ import java.util.Queue;
  * The value of nodes is between 1 and 100.
  */
 public class Solution {
-    // DFS, tc O(n), sc O(1)
+    // DFS, tc O(n), sc O(h)
     // 1 ms, faster than 99.42%; 43.4 MB, less than 100.00%
     // https://leetcode.com/problems/sum-of-nodes-with-even-valued-grandparent/discuss/477048/JavaC%2B%2BPython-1-Line-Recursive-Solution
     public int sumEvenGrandparent(TreeNode root) {
@@ -45,7 +45,7 @@ public class Solution {
         return helper(node.left, node.val, p) + helper(node.right, node.val, p) + (gp % 2 == 0 ? node.val : 0);
     }
 
-    // DFS, tc O(n), sc O(1)
+    // DFS, tc O(n), sc O(h)
     // 1 ms, faster than 99.42%; 43 MB, less than 100.00%
     private int res;
     public int sumEvenGrandparent1(TreeNode root) {
@@ -67,7 +67,7 @@ public class Solution {
         return new int[] {childSum, root.val};
     }
 
-    // BFS, tc O(n), sc O(1)
+    // BFS, tc O(n), sc O(n)
     // 5 ms, faster than 17.28%; 42.7 MB, less than 100.00%
     public int sumEvenGrandparent2(TreeNode root) {
         int sum = 0;
