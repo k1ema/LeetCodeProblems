@@ -32,8 +32,9 @@ import java.util.Map;
  * digits, and their lengths are always equal.
  */
 public class Solution {
+    // two pass
     // tc O(n), sc O(1)
-    public String getHint(String secret, String guess) {
+    public String getHint1(String secret, String guess) {
         if (secret == null || secret.isEmpty()) return "";
         Map<Integer, Integer> map = new HashMap<>();
         int bulls = 0, cows = 0;
@@ -55,6 +56,31 @@ public class Solution {
             }
         }
 
+        return "" + bulls + "A" + cows + "B";
+    }
+
+    // one pass
+    // tc O(n), sc O(1)
+    public String getHint(String secret, String guess) {
+        if (secret == null || secret.isEmpty()) return "";
+        Map<Integer, Integer> map = new HashMap<>();
+        int bulls = 0, cows = 0;
+        for (int i = 0; i < secret.length(); i++) {
+            int s = secret.charAt(i) - '0';
+            int g = guess.charAt(i) - '0';
+            if (s == g) {
+                bulls++;
+            } else {
+                if (map.getOrDefault(s, 0) < 0) {
+                    cows++;
+                }
+                if (map.getOrDefault(g, 0) > 0) {
+                    cows++;
+                }
+                map.put(s, map.getOrDefault(s, 0) + 1);
+                map.put(g, map.getOrDefault(g, 0) - 1);
+            }
+        }
         return "" + bulls + "A" + cows + "B";
     }
 }
