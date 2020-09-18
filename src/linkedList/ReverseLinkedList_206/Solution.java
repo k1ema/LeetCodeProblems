@@ -17,7 +17,7 @@ import linkedList.utils.ListNode;
  */
 public class Solution {
     // tc O(n), sc O(n)
-    ListNode reverseList(ListNode head) {
+    public ListNode reverseList2(ListNode head) {
         if (head == null || head.next == null) {
             return head;
         }
@@ -27,8 +27,32 @@ public class Solution {
         return node;
     }
 
+    public ListNode reverseList(ListNode head) {
+        if (head == null) return null;
+        return reverseList(null, head);
+    }
+
+    private ListNode reverseList(ListNode prev, ListNode cur) {
+        ListNode head = cur;
+        if (cur.next != null) {
+            head = reverseList(cur, cur.next);
+        }
+        cur.next = prev;
+        return head;
+    }
+
+    private ListNode reverseList1(ListNode prev, ListNode cur) {
+        if (cur.next == null) {
+            cur.next = prev;
+            return cur;
+        }
+        ListNode head = reverseList(cur, cur.next);
+        cur.next = prev;
+        return head;
+    }
+
     // tc O(n), sc O(1)
-    ListNode reverseList1(ListNode head) {
+    public ListNode reverseList1(ListNode head) {
         ListNode prev = null;
         ListNode curr = head;
 
