@@ -1,6 +1,6 @@
 package dynamic.PartitionEqualSubsetSum_416;
 
-import java.util.Arrays;
+import java.util.stream.IntStream;
 
 /**
  * 416. Partition Equal Subset Sum
@@ -24,19 +24,63 @@ import java.util.Arrays;
  * Explanation: The array cannot be partitioned into equal sum subsets.
  */
 public class Solution {
-    // tc O(n), sc O(n)
+    // top-down recursion with memoization
+    // tc O(2^n), The calculated sum maybe always unique. If the sub-problems are not repeated,
+    // the worst-case time complexity would be the same as the non-memoized version.
+    // sc O(n*s), where n - nums.length and s = total sum
+    // 3 ms, faster than 88.98%; 43.1 MB, less than 22.22%
+    public boolean canPartition(int[] nums) {
+        if (nums == null || nums.length < 2) return false;
+        int sum = IntStream.of(nums).sum();
+        if (sum % 2 == 1) return false;
+        Boolean[][] memo = new Boolean[nums.length][sum / 2 + 1];
+        return bt(nums, 0, sum / 2, memo);
+    }
+
+    private boolean bt(int[] nums, int idx, int sum, Boolean[][] memo) {
+        if (sum == 0) return true;
+        if (idx == nums.length) return false;
+        if (memo[idx][sum] != null) return memo[idx][sum];
+        if (sum - nums[idx] >= 0) {
+            if (bt(nums, idx + 1, sum - nums[idx], memo)) {
+                memo[idx][sum] = true;
+                return true;
+            }
+        }
+        memo[idx][sum] = bt(nums, idx + 1, sum, memo);
+        return memo[idx][sum];
+    }
+
+    // dp bottom-up
+    // tc O(n*s), sc O(n*s)
+    // 33 ms, faster than 41.40%; 39.2 MB, less than 69.84%
+    public boolean canPartition1(int[] nums) {
+        int sum = IntStream.of(nums).sum();
+        if ((sum & 1) == 1) return false;
+        sum /= 2;
+        boolean[][] dp = new boolean[nums.length][sum + 1];
+        for (int i = 0; i < dp.length; i++) {
+            dp[i][0] = true;
+        }
+        for (int i = 0; i < dp.length; i++) {
+            for (int j = 0; j < dp[i].length; j++) {
+                if (j < nums[i]) {
+                    dp[i][j] = i != 0 && dp[i - 1][j];
+                } else {
+                    dp[i][j] = i == 0 ? j == nums[i] : dp[i - 1][j] | dp[i - 1][j - nums[i]];
+                }
+            }
+        }
+        return dp[dp.length - 1][sum];
+    }
+
+    // tc O(n*s), sc O(sum)
     // https://leetcode.com/problems/partition-equal-subset-sum/discuss/90592/01-knapsack-detailed-explanation
     // https://www.youtube.com/watch?v=s6FhG--P7z0
     // https://www.youtube.com/watch?v=8LusJS5-AGo
-    boolean canPartition(int[] nums) {
-        int sum = 0;
-        for (int num : nums) {
-            sum += num;
-        }
-        if (sum % 2 == 1) {
-            return false;
-        }
-
+    public boolean canPartition2(int[] nums) {
+        int sum = IntStream.of(nums).sum();
+        if ((sum & 1) == 1) return false;
         sum /= 2;
 
         boolean[] dp = new boolean[sum + 1];
@@ -56,44 +100,5 @@ public class Solution {
         }
 
         return dp[sum];
-    }
-
-    boolean canPartition1(int[] nums) {
-        int sum = 0;
-
-        for (int num : nums) {
-            sum += num;
-        }
-
-        if ((sum & 1) == 1) {
-            return false;
-        }
-        sum /= 2;
-
-        int n = nums.length;
-        boolean[][] dp = new boolean[n + 1][sum + 1];
-        for (int i = 0; i < dp.length; i++) {
-            Arrays.fill(dp[i], false);
-        }
-
-        dp[0][0] = true;
-
-        for (int i = 1; i < n + 1; i++) {
-            dp[i][0] = true;
-        }
-        for (int j = 1; j < sum + 1; j++) {
-            dp[0][j] = false;
-        }
-
-        for (int i = 1; i < n + 1; i++) {
-            for (int j = 1; j < sum + 1; j++) {
-                dp[i][j] = dp[i - 1][j];
-                if (j >= nums[i - 1]) {
-                    dp[i][j] = dp[i][j] || dp[i - 1][j - nums[i - 1]];
-                }
-            }
-        }
-
-        return dp[n][sum];
     }
 }
