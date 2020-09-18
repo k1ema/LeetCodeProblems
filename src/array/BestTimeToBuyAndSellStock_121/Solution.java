@@ -24,22 +24,14 @@ package array.BestTimeToBuyAndSellStock_121;
  */
 public class Solution {
     // tc O(n), sc O(1), one pass
-    int maxProfit(int[] prices) {
-        if (prices == null) {
-            return 0;
+    public int maxProfit(int prices[]) {
+        if (prices == null || prices.length == 0) return 0;
+        int res = 0, min = prices[0];
+        for (int price : prices) {
+            min = Math.min(min, price);
+            res = Math.max(res, price - min);
         }
-
-        int maxprofit = 0;
-        int minprize = Integer.MAX_VALUE;
-        for (int i = 0; i < prices.length; i++) {
-            if (prices[i] < minprize) {
-                minprize = prices[i];
-            } else if (prices[i] - minprize > maxprofit) {
-                maxprofit = prices[i] - minprize;
-            }
-        }
-
-        return maxprofit;
+        return res;
     }
 
     // tc O(n^2), loop runs n*(n-1)/2 times - sum of arithmetic progression: n-1 + n-2 + ... + n-n+1,
