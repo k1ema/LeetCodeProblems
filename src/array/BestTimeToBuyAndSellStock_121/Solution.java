@@ -24,7 +24,7 @@ package array.BestTimeToBuyAndSellStock_121;
  */
 public class Solution {
     // tc O(n), sc O(1), one pass
-    public int maxProfit(int prices[]) {
+    public int maxProfit(int[] prices) {
         if (prices == null || prices.length == 0) return 0;
         int res = 0, min = prices[0];
         for (int price : prices) {
