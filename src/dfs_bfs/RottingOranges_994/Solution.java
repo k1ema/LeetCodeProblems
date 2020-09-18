@@ -1,4 +1,4 @@
-package bfs.RottingOranges_994;
+package dfs_bfs.RottingOranges_994;
 
 import java.util.LinkedList;
 import java.util.Queue;

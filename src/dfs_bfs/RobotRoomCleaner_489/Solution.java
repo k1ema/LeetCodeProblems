@@ -1,4 +1,4 @@
-package dfs.RobotRoomCleaner_489;
+package dfs_bfs.RobotRoomCleaner_489;
 
 import javafx.util.Pair;
 

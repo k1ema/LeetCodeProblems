@@ -1,4 +1,4 @@
-package dfs.DetectCyclesIn2DGrid_1559;
+package dfs_bfs.DetectCyclesIn2DGrid_1559;
 
 import org.junit.Test;
 

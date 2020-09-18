@@ -1,4 +1,4 @@
-package dfs.TheMaze_490;
+package dfs_bfs.TheMaze_490;
 
 import java.util.LinkedList;
 import java.util.Queue;

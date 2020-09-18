@@ -1,4 +1,4 @@
-package dfs.Matrix01_542;
+package dfs_bfs.Matrix01_542;
 
 import org.junit.Test;
 
