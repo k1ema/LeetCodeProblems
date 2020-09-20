@@ -22,6 +22,8 @@ package greedy.CorporateFlightBookings_1109;
  * 1 <= bookings[i][2] <= 10000
  */
 public class Solution {
+    // tc O(m + n), sc O(n), m - number of bookings
+    // 2ms
     public int[] corpFlightBookings(int[][] bookings, int n) {
         int[] res = new int[n];
         for (int[] b : bookings) {
@@ -32,6 +34,18 @@ public class Solution {
         }
         for (int i = 1; i < n; i++) {
             res[i] += res[i - 1];
+        }
+        return res;
+    }
+
+    // tc O(mn), sc O(n)
+    // 1271 ms, faster than 27.32%; 55 MB, less than 51.06%
+    public int[] corpFlightBookings1(int[][] bookings, int n) {
+        int[] res = new int[n];
+        for (int[] booking : bookings) {
+            for (int i = booking[0]; i <= booking[1]; i++) {
+                res[i - 1] += booking[2];
+            }
         }
         return res;
     }
