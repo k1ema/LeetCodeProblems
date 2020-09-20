@@ -19,6 +19,7 @@ package hashtable.SubarraySumsDivisibleBy_K_974;
  * 2 <= K <= 10000
  */
 public class Solution {
+    // prefix sum
     // tc O(n), sc O(n)
     // 5 ms, faster than 87.05%; 42.7 MB, less than 75.78%
     public int subarraysDivByK(int[] A, int K) {
