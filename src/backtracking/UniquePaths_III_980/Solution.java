@@ -44,44 +44,37 @@ package backtracking.UniquePaths_III_980;
  */
 public class Solution {
     // my solution
-    // tc O(3^(m+n)*?(_check_isok_)), sc O(mn)
+    // tc O(m*n*3^(m+n)), sc O(mn)
     public int uniquePathsIII_1(int[][] grid) {
-        int m = grid.length;
-        int n = grid[0].length;
-        int startI = 0, startJ = 0;
+        int m = grid.length, n = grid[0].length;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (grid[i][j] == 1) {
-                    startI = i; startJ = j; break;
-                }
+                if (grid[i][j] == 1) return dfs(grid, i, j, m, n);
             }
         }
-        return dfs(grid, startI, startJ, m, n, new boolean[m][n]);
+        return 0;
     }
 
-    private int dfs(int[][] grid, int i, int j, int m, int n, boolean[][] visited) {
-        if (i < 0 || j < 0 || i == m || j == n || visited[i][j] || grid[i][j] == -1) return 0;
-        visited[i][j] = true;
+    private int dfs(int[][] grid, int i, int j, int m, int n) {
+        if (i < 0 || j < 0 || i == m || j == n || grid[i][j] == 3 || grid[i][j] == -1) return 0;
         if (grid[i][j] == 2) {
-            int res = isok(grid, visited, m, n) ? 1 : 0;
-            visited[i][j] = false;
-            return res;
+            return check(grid) ? 1 : 0;
         }
+        int tmp = grid[i][j];
+        grid[i][j] = 3;
         int[][] dirs = new int[][] {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
-        int count = 0;
+        int res = 0;
         for (int[] dir : dirs) {
-            count += dfs(grid, i + dir[0], j + dir[1], m, n, visited);
+            res += dfs(grid, i + dir[0], j + dir[1], m, n);
         }
-        visited[i][j] = false;
-        return count;
+        grid[i][j] = tmp;
+        return res;
     }
 
-    private boolean isok(int[][] grid, boolean[][] visited, int m, int n) {
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (!visited[i][j] && grid[i][j] != -1) {
-                    return false;
-                }
+    private boolean check(int[][] grid) {
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] == 0) return false;
             }
         }
         return true;
