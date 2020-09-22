@@ -1,4 +1,4 @@
-package string.GenerateParentheses_22;
+package backtracking.GenerateParentheses_22;
 
 import java.util.Arrays;
 
