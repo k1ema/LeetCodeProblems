@@ -1,4 +1,4 @@
-package bitManipulation.MajorityElement_169;
+package array.MajorityElement_169;
 
 import org.junit.Test;
 
