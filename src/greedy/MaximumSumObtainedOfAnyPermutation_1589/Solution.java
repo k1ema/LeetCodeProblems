@@ -51,6 +51,7 @@ import java.util.Arrays;
  * 0 <= starti <= endi < n
  */
 public class Solution {
+    // prefix sum
     // tc O(nlogn), sc O(n)
     // 17 ms, faster than 100.00%; 76.4 MB, less than 50.00%
     // https://leetcode.com/problems/maximum-sum-obtained-of-any-permutation/discuss/854206/JavaC%2B%2BPython-Sweep-Line
