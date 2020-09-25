@@ -21,7 +21,8 @@ import java.util.stream.Stream;
  * Note: The result may be very large, so you need to return a string instead of an integer.
  */
 public class Solution {
-    // tc O(nlogn), sc O(n)
+    // tc O(knlogn), where k is the average length of numbers in nums
+    // sc O(n)
     // 10 ms, faster than 28.70%; 38.9 MB, less than 88.88%
     public String largestNumber(int[] nums) {
         if (nums == null || nums.length == 0) return "";
