@@ -1,11 +1,6 @@
 package graph.EvaluateDivision_399;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 399. Evaluate Division
@@ -35,31 +30,85 @@ import java.util.Set;
  * result in no division by zero and there is no contradiction.
  */
 public class Solution {
-    double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
-        Map<String, Map<String, Double>> m = new HashMap<>();
+    // tc O(M * N), sc O(N),
+    // where N = equations.length, M - queries.length
+    // 1 ms, faster than 71.90%; 37.9 MB, less than 85.95%
+    public double[] calcEquation1(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        Map<String, Map<String, Double>> map = new HashMap<>();
         for (int i = 0; i < values.length; i++) {
-            m.putIfAbsent(equations.get(i).get(0), new HashMap<>());
-            m.putIfAbsent(equations.get(i).get(1), new HashMap<>());
-            m.get(equations.get(i).get(0)).put(equations.get(i).get(1), values[i]);
-            m.get(equations.get(i).get(1)).put(equations.get(i).get(0), 1 / values[i]);
+            List<String> eq = equations.get(i);
+            map.putIfAbsent(eq.get(0), new HashMap<>());
+            map.putIfAbsent(eq.get(1), new HashMap<>());
+            map.get(eq.get(0)).put(eq.get(1), values[i]);
+            map.get(eq.get(1)).put(eq.get(0), 1 / values[i]);
         }
 
-        double[] r = new double[queries.size()];
-        for (int i = 0; i < r.length; i++) {
-            r[i] = dfs(queries.get(i).get(0), queries.get(i).get(1), m, new HashSet<>(), 1.0);
+        double[] res = new double[queries.size()];
+        for (int i = 0; i < res.length; i++) {
+            List<String> q = queries.get(i);
+            res[i] = dfs(q.get(0), q.get(1), map, new HashSet<>());
         }
-        return r;
+
+        return res;
     }
 
-    private double dfs(String s, String t, Map<String, Map<String, Double>> m, Set<String> seen, double k) {
-        if (!m.containsKey(s) || !seen.add(s)) return -1;
-        if (s.equals(t)) return k;
-
-        Map<String, Double> map = m.get(s);
-        for (Entry<String, Double> e : map.entrySet()) {
-            double result = dfs(e.getKey(), t, m, seen, k * e.getValue());
-            if (result != -1) return result;
+    private double dfs(String s, String t, Map<String, Map<String, Double>> map, Set<String> seen) {
+        if (!map.containsKey(s) || seen.contains(s)) return -1;
+        if (s.equals(t)) return 1;
+        seen.add(s);
+        for (Map.Entry<String, Double> entry : map.get(s).entrySet()) {
+            double val = dfs(entry.getKey(), t, map, seen);
+            if (val != -1) return val * entry.getValue();
         }
         return -1;
+    }
+
+    // union-find approach
+    // tc O((M + N)log*N), sc O(N),
+    // where N = equations.length, M - queries.length
+    // 0 ms, faster than 100.00%; 37.8 MB, less than 90.75%
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        Map<String, String> root = new HashMap<>();
+        Map<String, Double> dist = new HashMap<>();
+        for (int i = 0; i < equations.size(); i++) {
+            String s = equations.get(i).get(0), t = equations.get(i).get(1);
+            String r1 = find(root, dist, s);
+            String r2 = find(root, dist, t);
+            root.put(r1, r2);
+            dist.put(r1, dist.get(t) * values[i] / dist.get(s));
+        }
+
+        double[] res = new double[queries.size()];
+        for (int i = 0; i < res.length; i++) {
+            String s = queries.get(i).get(0);
+            String t = queries.get(i).get(1);
+            if (!root.containsKey(s) || !root.containsKey(t)) {
+                res[i] = -1;
+                continue;
+            }
+            String rootS = find(root, dist, s);
+            String rootT = find(root, dist, t);
+            if (rootS.equals(rootT)) {
+                res[i] = dist.get(s) / dist.get(t);
+            } else {
+                res[i] = -1;
+            }
+        }
+
+        return res;
+    }
+
+    private String find(Map<String, String> root, Map<String, Double> dist, String s) {
+        if (!root.containsKey(s)) {
+            root.put(s, s);
+            dist.put(s, 1.0);
+            return s;
+        }
+        if (root.get(s).equals(s)) return s;
+        String rootS = root.get(s);
+        String rootRootS = find(root, dist, rootS);
+        root.put(s, rootRootS);
+        dist.put(s, dist.get(s) * dist.get(rootS));
+        return rootRootS;
     }
 }
