@@ -40,7 +40,7 @@ import java.util.Deque;
  * = 22
  */
 public class Solution {
-    // tc O(n), sc O(n)
+    // tc O(n^2), sc O(n)
     public int evalRPN(String[] tokens) {
         Deque<Integer> stack = new ArrayDeque<>();
         for (String token : tokens) {
