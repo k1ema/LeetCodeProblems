@@ -25,10 +25,10 @@ public class Solution {
     /*  tc O(A(9,k)* k) = O(9! * k / (9 - k)!),
         sc = O(k)
             During the backtracking, we used a list to keep the current combination, which
-            holds up to KK elements, i.e. O(K).
+            holds up to K elements, i.e. O(K).
 
             Since we employed recursion in the backtracking, we would need some additional
-            space for the function call stack, which could pile up to KK consecutive
+            space for the function call stack, which could pile up to K consecutive
             invocations, i.e. O(K).
 
             Hence, to sum up, the overall space complexity would be O(K).
