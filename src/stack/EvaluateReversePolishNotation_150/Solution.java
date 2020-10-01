@@ -40,22 +40,22 @@ import java.util.Deque;
  * = 22
  */
 public class Solution {
-    // tc O(n^2), sc O(n)
+    // tc O(n), sc O(n)
     public int evalRPN(String[] tokens) {
         Deque<Integer> stack = new ArrayDeque<>();
         for (String token : tokens) {
+            if (!"+-*/".contains(token)) {
+                stack.addFirst(Integer.valueOf(token));
+                continue;
+            }
+
+            int v2 = stack.pollFirst();
+            int v1 = stack.pollFirst();
             switch (token) {
-                case "+", "-", "*", "/" -> {
-                    int v1 = stack.pollFirst();
-                    int v2 = stack.pollFirst();
-                    switch (token) {
-                        case "+" -> stack.addFirst(v2 + v1);
-                        case "-" -> stack.addFirst(v2 - v1);
-                        case "*" -> stack.addFirst(v2 * v1);
-                        case "/" -> stack.addFirst(v2 / v1);
-                    }
-                }
-                default -> stack.addFirst(Integer.parseInt(token));
+                case "+" -> stack.addFirst(v1 + v2);
+                case "-" -> stack.addFirst(v1 - v2);
+                case "*" -> stack.addFirst(v1 * v2);
+                case "/" -> stack.addFirst(v1 / v2);
             }
         }
         return stack.pollFirst();
