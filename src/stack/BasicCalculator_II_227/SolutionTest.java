@@ -1,4 +1,4 @@
-package string.BasicCalculatorII_227;
+package stack.BasicCalculator_II_227;
 
 import org.junit.Test;
 

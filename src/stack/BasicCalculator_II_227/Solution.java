@@ -1,6 +1,7 @@
-package string.BasicCalculatorII_227;
+package stack.BasicCalculator_II_227;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 /**
  * 227. Basic Calculator II
@@ -29,35 +30,26 @@ import java.util.Stack;
  */
 public class Solution {
     // tc O(n), sc O(n)
-    int calculate(String s) {
-        int len;
-        if (s == null || (len = s.length()) == 0) {
-            return 0;
-        }
-        Stack<Integer> stack = new Stack<>();
-        int num = 0;
+    // 9 ms, faster than 76.85%; 39.5 MB, less than 84.12%
+    public int calculate(String s) {
+        if (s == null) return 0;
+        Deque<Integer> stack = new ArrayDeque<>();
         char sign = '+';
-        for (int i = 0; i < len; i++) {
-            if (Character.isDigit(s.charAt(i))) {
-                num = num * 10 + s.charAt(i) - '0';
+        int num = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                num = num * 10 + c - '0';
             }
-            if (!Character.isDigit(s.charAt(i)) && ' ' != s.charAt(i) || i == len - 1) {
+            if (!Character.isDigit(c) && c != ' ' || i == s.length() - 1) {
                 switch (sign) {
-                    case '+':
-                        stack.push(num);
-                        break;
-                    case '-':
-                        stack.push(-num);
-                        break;
-                    case '*':
-                        stack.push(stack.pop() * num);
-                        break;
-                    case '/':
-                        stack.push(stack.pop() / num);
-                        break;
+                    case '+' -> stack.push(num);
+                    case '-' -> stack.push(-num);
+                    case '*' -> stack.push(stack.pop() * num);
+                    case '/' -> stack.push(stack.pop() / num);
                 }
                 num = 0;
-                sign = s.charAt(i);
+                sign = c;
             }
         }
 
