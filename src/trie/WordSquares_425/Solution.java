@@ -75,7 +75,8 @@ import java.util.Set;
  * order of words in each word square matters).
  */
 public class Solution {
-    // O(26^L * L) in worst case, where N - words.length, L = word.length
+    // tc O(N * 26^L * L) in worst case, where N - words.length, L = word.length
+    // sc O(N * L)
     // 69 ms, faster than 43.75%; 41.9 MB, less than 92.27%
     public List<List<String>> wordSquares(String[] words) {
         TrieNode root = new TrieNode();
