@@ -45,6 +45,7 @@ public class Solution {
 
     // tc O(m * n), sc O(m), where m = amount, n = coins.length
     // 2 ms, faster than 100.00%; 36.7 MB, less than 92.02%
+    // same as #377 Combination Sum IV but different iteration order. Here we find only 1 permutation inside combination
     int change(int amount, int[] coins) {
         int[] dp = new int[amount + 1];
         dp[0] = 1;
