@@ -34,7 +34,8 @@ import java.util.*;
  * ]
  */
 public class Solution {
-    // tc O(2^n), sc O(n). For a specific index, there are only two choices that whether it is picked or not.
+    // tc O(nlogn + n^(t/m + 1)) = O(n^(t/m + 1)), sc O(t/m),
+    // where n - num of cand, t - target, m - min num value in candidates
     // 4 ms, faster than 69.79%; 39 MB, less than 68.42%
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         if (candidates == null) return new ArrayList<>();
@@ -59,7 +60,6 @@ public class Solution {
     }
 
     // my solution
-    // tc O(2^n*mlogm), sc O(n) where mlogm - time for sorting each combination with length m
     // 14 ms, faster than 12.58%; 39.6 MB, less than 48.42%
     public List<List<Integer>> combinationSum2_(int[] candidates, int target) {
         if (candidates == null) return new ArrayList<>();
