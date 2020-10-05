@@ -28,6 +28,22 @@ public class Solution {
     // tc O(1), sc O(1)
     public int findComplement(int num) {
         if (num == 0) return 1;
+        int res = 0;
+        boolean leftmostOneFound = false;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            if (leftmostOneFound) {
+                if (bit == 0) res |= (1 << i);
+            } else if (bit == 1) {
+                leftmostOneFound = true;
+            }
+        }
+        return res;
+    }
+
+    // tc O(1), sc O(1)
+    public int findComplement1(int num) {
+        if (num == 0) return 1;
         int res = ~num;
         for (int i = 31; i >= 0; i--) {
             if ((res & (1 << i)) != 0) {
@@ -39,7 +55,7 @@ public class Solution {
         return res;
     }
 
-    public int findComplement1(int num) {
+    public int findComplement2(int num) {
         int todo = num, bit = 1;
         while (todo != 0) {
             // flip current bit
@@ -51,7 +67,7 @@ public class Solution {
         return num;
     }
 
-    public int findComplement2(int num) {
+    public int findComplement3(int num) {
         // n is a length of num in binary representation
         int n = (int)( Math.log(num) / Math.log(2) ) + 1;
         // bitmask has the same length as num and contains only ones 1...1
