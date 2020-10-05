@@ -1,4 +1,4 @@
-package array.TaskScheduler_621;
+package greedy.TaskScheduler_621;
 
 import java.util.Arrays;
 import java.util.Comparator;
