@@ -39,12 +39,33 @@ import tree.utils.TreeNode;
  *           4
  */
 public class Solution {
+    // tc O(h), sc O(h), where h = logN in average and N in worst case
     public TreeNode insertIntoBST(TreeNode root, int val) {
         if (root == null) return new TreeNode(val);
         if (val < root.val) {
             root.left = insertIntoBST(root.left, val);
         } else {
             root.right = insertIntoBST(root.right, val);
+        }
+        return root;
+    }
+
+    // tc O(h), sc O(1), where h = logN in average and N in worst case
+    public TreeNode insertIntoBST1(TreeNode root, int val) {
+        if (root == null) return new TreeNode(val);
+        TreeNode tree = root, parent = null;
+        while (tree != null) {
+            parent = tree;
+            if (tree.val < val) {
+                tree = tree.right;
+            } else {
+                tree = tree.left;
+            }
+        }
+        if (val < parent.val) {
+            parent.left = new TreeNode(val);
+        } else {
+            parent.right = new TreeNode(val);
         }
         return root;
     }
