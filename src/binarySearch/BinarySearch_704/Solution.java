@@ -4,7 +4,9 @@ package binarySearch.BinarySearch_704;
  * 704. Binary Search
  * https://leetcode.com/problems/binary-search/
  *
- * Given a sorted (in ascending order) integer array nums of n elements and a target value, write a function to search target in nums. If target exists, then return its index, otherwise return -1.
+ * Given a sorted (in ascending order) integer array nums of n elements and a
+ * target value, write a function to search target in nums. If target exists,
+ * then return its index, otherwise return -1.
  *
  * Example 1:
  * Input: nums = [-1,0,3,5,9,12], target = 9
@@ -24,7 +26,7 @@ package binarySearch.BinarySearch_704;
  * The value of each element in nums will be in the range [-9999, 9999].
  */
 public class Solution {
-    // leftmost index of non-unique element. good numbers: nums[i] < target, bad numbers: nums[i] >= target
+    // leftmost index of non-unique element. bad numbers: nums[i] < target, good numbers: nums[i] >= target
     public int search(int[] nums, int target) {
         if (nums == null || nums.length == 0) return -1;
         int l = -1, r = nums.length;
