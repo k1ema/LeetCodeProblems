@@ -50,19 +50,19 @@ public class Solution {
     public TreeNode deserialize(String data) {
         if (data.isEmpty()) return null;
         int i = 0;
-        String[] ss = data.split(",");
+        String[] s = data.split(",");
         Queue<TreeNode> q = new LinkedList<>();
-        TreeNode root = new TreeNode(Integer.parseInt(ss[i++]));
+        TreeNode root = new TreeNode(Integer.parseInt(s[i++]));
         q.add(root);
-        while (!q.isEmpty() && i < ss.length) {
+        while (!q.isEmpty() && i < s.length) {
             TreeNode node = q.poll();
-            String val = ss[i++];
-            if (!"-".equals(val)) {
+            String val = s[i++];
+            if (!val.equals("-")) {
                 node.left = new TreeNode(Integer.parseInt(val));
                 q.add(node.left);
             }
-            val = ss[i++];
-            if (!"-".equals(val)) {
+            val = s[i++];
+            if (!val.equals("-")) {
                 node.right = new TreeNode(Integer.parseInt(val));
                 q.add(node.right);
             }
