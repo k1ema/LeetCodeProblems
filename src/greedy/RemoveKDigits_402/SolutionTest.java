@@ -1,4 +1,4 @@
-package stack.RemoveKDigits_402;
+package greedy.RemoveKDigits_402;
 
 import org.junit.Test;
 
@@ -8,6 +8,8 @@ public class SolutionTest {
     @Test
     public void test() {
         Solution s = new Solution();
+        assertEquals("199", s.removeKdigits("421999", 3));
+        assertEquals("1234", s.removeKdigits("1234567", 3));
         assertEquals("1219", s.removeKdigits("1432219", 3));
         assertEquals("200", s.removeKdigits("10200", 1));
         assertEquals("0", s.removeKdigits("10", 2));

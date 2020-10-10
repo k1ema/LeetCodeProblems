@@ -1,4 +1,4 @@
-package stack.RemoveKDigits_402;
+package greedy.RemoveKDigits_402;
 
 import java.util.LinkedList;
 
