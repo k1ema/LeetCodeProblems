@@ -1,8 +1,6 @@
-package dynamic.DailyTemperatures_739;
+package stack.DailyTemperatures_739;
 
 import org.junit.Test;
-
-import java.util.Arrays;
 
 import static org.junit.Assert.assertArrayEquals;
 
