@@ -16,5 +16,6 @@ public class SolutionTest {
         assertEquals("2", s.removeKdigits("827", 2));
         assertEquals("234563284563", s.removeKdigits("82734563284563", 2));
         assertEquals("2349", s.removeKdigits("88734658236549", 10));
+        assertEquals("0", s.removeKdigits("1234567890", 9));
     }
 }

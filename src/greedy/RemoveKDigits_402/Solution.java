@@ -1,6 +1,7 @@
 package greedy.RemoveKDigits_402;
 
-import java.util.LinkedList;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 /**
  * 402. Remove K Digits
@@ -29,32 +30,39 @@ import java.util.LinkedList;
  * Explanation: Remove all the digits from the number and it is left with nothing which is 0.
  */
 public class Solution {
+    /*
+        1. compare cur num with first in stack: if stack_num > cur && k > 0-> poll it from stack
+        2. add to stack num
+        3. if k > 0 poll k times nums from stack
+        4. build string form stack values
+    */
     // tc O(n), sc O(n)
     // https://leetcode.com/problems/remove-k-digits/solution/
     public String removeKdigits(String num, int k) {
-        LinkedList<Character> stack = new LinkedList<>();
-        for(char c : num.toCharArray()) {
-            while (!stack.isEmpty() && k > 0 && stack.peek() > c) {
-                stack.removeFirst();
+        Deque<Character> stack = new ArrayDeque<>();
+        for (char c : num.toCharArray()) {
+            while (!stack.isEmpty() && stack.peek() > c && k > 0) {
+                stack.pollFirst();
                 k--;
             }
             stack.addFirst(c);
         }
-
-        for (int i = 0; i < k; i++) {
-            stack.removeFirst();
+        while (k-- > 0) {
+            stack.pollFirst();
         }
-
         StringBuilder sb = new StringBuilder();
         boolean leadingZero = true;
         while (!stack.isEmpty()) {
-            char c = stack.removeLast();
-            if (leadingZero && c == '0') continue;
+            char c = stack.pollLast();
+            if (leadingZero && c == '0') {
+                continue;
+            }
             leadingZero = false;
             sb.append(c);
         }
         return sb.length() == 0 ? "0" : sb.toString();
     }
+
 
     // using backtracking tc O(C(n, k)) - TLE, sc O(C(n,k))
     public String removeKdigits1(String num, int k) {
