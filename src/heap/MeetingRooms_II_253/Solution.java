@@ -27,8 +27,8 @@ public class Solution {
     // 7 ms, faster than 49.27%; 42.8 MB, less than 5.12%
     int minMeetingRooms(int[][] intervals) {
         if (intervals == null || intervals.length == 0) return 0;
-        Arrays.sort(intervals, Comparator.comparingInt((int[] a) -> a[0]));
-        PriorityQueue<Integer> q = new PriorityQueue<>();
+        Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+        PriorityQueue<Integer> q = new PriorityQueue<>(Integer::compare);
         int count = 1;
         q.add(intervals[0][1]);
         for (int i = 1; i < intervals.length; i++) {

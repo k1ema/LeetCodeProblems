@@ -12,7 +12,8 @@ import java.util.*;
  *
  * (Here, the distance between two points on a plane is the Euclidean distance.)
  *
- * You may return the answer in any order. The answer is guaranteed to be unique (except for the order that it is in.)
+ * You may return the answer in any order. The answer is guaranteed to be unique (except
+ * for the order that it is in.)
  *
  * Example 1:
  * Input: points = [[1,3],[-2,2]], K = 1
@@ -37,13 +38,13 @@ public class Solution {
     // quickselect, tc O(n) in average
     // 3 ms, faster than 99.41%; 48.4 MB, less than 100.00%
     public int[][] kClosest(int[][] points, int K) {
-        int lo = 0, hi = points.length - 1;
-        while (lo < hi) {
-            int mid = partition(points, lo, hi);
-            if (mid < K) {
-                lo = mid + 1;
-            } else if (mid > K) {
-                hi = mid - 1;
+        int l = 0, r = points.length - 1;
+        while (l < r) {
+            int m = partition(points, l, r);
+            if (m < K) {
+                l = m + 1;
+            } else if (m > K) {
+                r = m - 1;
             } else {
                 break;
             }
@@ -51,27 +52,31 @@ public class Solution {
         return Arrays.copyOfRange(points, 0, K);
     }
 
-    private int partition(int[][] points, int lo, int hi) {
-        int[] pivot = points[lo];
-
-        int i = lo, j = hi;
+    private final static Random rnd = new Random();
+    private int partition(int[][] points, int l, int r) {
+        int pivotInd = l + rnd.nextInt(r - l + 1);
+        int[] pivot = points[pivotInd];
+        swap(points, l, pivotInd);
+        int i = l, j = r;
         while (i < j) {
-            while (i <= j && compare(points[i], pivot) < 1) i++;
-            while (i <= j && compare(points[j], pivot) > 0) j--;
-            if (i < j) swap(points, i, j);
+            while (i <= j && compare(points[i], pivot)) i++;
+            while (i <= j && compare(pivot, points[j])) j--;
+            if (i < j) {
+                swap(points, i, j);
+            }
         }
-        swap(points, lo, j);
+        swap(points, j, l);
         return j;
     }
 
-    private int compare(int[] p1, int[] p2) {
-        return p1[0] * p1[0] + p1[1] * p1[1] - p2[0] * p2[0] - p2[1] * p2[1];
+    private void swap(int[][] a, int i, int j) {
+        int[] tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
     }
 
-    private void swap(int[][] points, int i, int j) {
-        int[] tmp = points[i];
-        points[i] = points[j];
-        points[j] = tmp;
+    private boolean compare(int[] a, int[] b) {
+        return a[0] * a[0] + a[1] * a[1] <= b[0] * b[0] + b[1] * b[1];
     }
 
     // tc O(nlogk), sc O(k)
@@ -80,7 +85,7 @@ public class Solution {
         List<int[]> res = new ArrayList<>();
         PriorityQueue<Pair<Integer, int[]>> pq = new PriorityQueue<>((p1, p2) -> p2.getKey() - p1.getKey());
         for (int[] point : points) {
-            pq.add(new Pair(point[0] * point[0] + point[1] * point[1], point));
+            pq.add(new Pair<>(point[0] * point[0] + point[1] * point[1], point));
             if (pq.size() > K) {
                 pq.poll();
             }
