@@ -21,6 +21,7 @@ public class Solution {
     // tc O(n), sc O(n)
     // 10 ms, faster than 98.40%; 41.7 MB, less than 5.43%
     // https://leetcode.com/problems/subarray-sum-equals-k/solution/
+    // prefix sum
     public int subarraySum(int[] nums, int k) {
         var map = new HashMap<Integer, Integer>();
         map.put(0, 1);

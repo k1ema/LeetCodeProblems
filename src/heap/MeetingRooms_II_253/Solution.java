@@ -27,7 +27,6 @@ public class Solution {
     // 7 ms, faster than 49.27%; 42.8 MB, less than 5.12%
     int minMeetingRooms(int[][] intervals) {
         if (intervals == null || intervals.length == 0) return 0;
-        if (intervals.length == 1) return 1;
         Arrays.sort(intervals, Comparator.comparingInt((int[] a) -> a[0]));
         PriorityQueue<Integer> q = new PriorityQueue<>();
         int count = 1;
@@ -40,7 +39,6 @@ public class Solution {
                 q.poll();
             }
             q.add(intervals[i][1]);
-
         }
         return count;
     }
