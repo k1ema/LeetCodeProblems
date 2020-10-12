@@ -57,16 +57,14 @@ public class Solution {
     // DFS
     // tc O(V + E)
     // sc O(V + E): O(V + E) - build graph, O(V) - booleans, O(E) - max for recursion stack: O(2E + 3V) = O(E + V)
-    boolean canFinish2(int numCourses, int[][] prerequisites) {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
         if (numCourses == 0 || prerequisites == null) return false;
+        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
 
         boolean[] visited = new boolean[numCourses];
         boolean[] recStack = new boolean[numCourses];
-
-        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
-
         for (int i = 0; i < numCourses; i++) {
-            if (isCycle(graph, visited, recStack, i)) {
+            if (!visited[i] && isCycle(graph, visited, recStack, i)) {
                 return false;
             }
         }
@@ -90,10 +88,21 @@ public class Solution {
         return false;
     }
 
+    private List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
+        List<Integer>[] g = new ArrayList[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            g[i] = new ArrayList<>();
+        }
+        for (int[] p : prerequisites) {
+            g[p[0]].add(p[1]);
+        }
+        return g;
+    }
+
     // BFS
     // https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
     // tc O(V + E), sc O(V + E): O(V + E) for building grpah, O(V) for indegrees, O(V) for queue => O(3V + E) => O(V + E)
-    boolean canFinish(int numCourses, int[][] prerequisites) {
+    public boolean canFinish1(int numCourses, int[][] prerequisites) {
         List<Integer>[] adj = buildGraph(numCourses, prerequisites);
 
         int[] indegrees = new int[numCourses];
@@ -124,16 +133,5 @@ public class Solution {
         }
 
         return count == numCourses;
-    }
-
-    private List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
-        ArrayList<Integer>[] g = new ArrayList[numCourses];
-        for (int i = 0; i < numCourses; i++) {
-            g[i] = new ArrayList<>();
-        }
-        for (int i = 0; i < prerequisites.length; i++) {
-            g[prerequisites[i][0]].add(prerequisites[i][1]);
-        }
-        return g;
     }
 }
