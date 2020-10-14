@@ -1,9 +1,7 @@
-package hashtable.SnapshotArray_1146;
+package binarySearch.SnapshotArray_1146;
 
-import javafx.util.Pair;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * 1146. Snapshot Array
@@ -38,23 +36,23 @@ import java.util.List;
  * 0 <= snap_id < (the total number of times we call snap())
  * 0 <= val <= 10^9
  */
-public class SnapshotArrayBS {
+public class SnapshotArrayTreeMap {
     private int snap_id;
-    private List<Pair<Integer, Integer>>[] list; // pair: {snap_id, val}
+    private TreeMap<Integer, Integer>[] map;
 
-    // 30 ms, faster than 92.56%; 78.6 MB, less than 6.18%
+    // 36 ms, faster than 81.87%; 67 MB, less than 6.18%
     // tc O(n)
-    public SnapshotArrayBS(int length) {
+    public SnapshotArrayTreeMap(int length) {
         snap_id = 0;
-        list = new ArrayList[length];
-        for (int i = 0; i < list.length; i++) {
-            list[i] = new ArrayList<>();
+        map = new TreeMap[length];
+        for (int i = 0; i < map.length; i++) {
+            map[i] = new TreeMap<>();
         }
     }
 
-    // tc O(1)
+    // tc O(logSnap), where Snap = # of snaps
     public void set(int index, int val) {
-        list[index].add(new Pair<>(snap_id, val));
+        map[index].put(snap_id, val);
     }
 
     // tc O(1)
@@ -63,17 +61,9 @@ public class SnapshotArrayBS {
         return snap_id - 1;
     }
 
-    // tc O(logSnap), where Snap = # of snaps
+    // tc O(logSnap)
     public int get(int index, int snap_id) {
-        int l = -1, r = list[index].size();
-        while (r - l > 1) {
-            int m = (l + r) >>> 1;
-            if (list[index].get(m).getKey() <= snap_id) {
-                l = m;
-            } else {
-                r = m;
-            }
-        }
-        return l == -1 ? 0 : list[index].get(l).getValue();
+        Map.Entry<Integer, Integer> entry = map[index].floorEntry(snap_id);
+        return entry != null ? entry.getValue() : 0;
     }
 }

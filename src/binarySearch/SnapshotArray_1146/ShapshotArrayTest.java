@@ -1,4 +1,4 @@
-package hashtable.SnapshotArray_1146;
+package binarySearch.SnapshotArray_1146;
 
 import org.junit.Assert;
 import org.junit.Test;
