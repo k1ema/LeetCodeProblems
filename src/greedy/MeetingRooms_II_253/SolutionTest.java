@@ -1,4 +1,4 @@
-package heap.MeetingRooms_II_253;
+package greedy.MeetingRooms_II_253;
 
 import org.junit.Test;
 
