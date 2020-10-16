@@ -35,7 +35,7 @@ package binarySearch.SearchA2DMatrix_74;
  */
 public class Solution {
     /*
-        tc O(logm * logn), sc O(1) - 2d binary search
+        tc O(logm + logn) = O(log(mn)), sc O(1) - 2d binary search
         1. use bs to fetch proper row
         2. use bs to find if that row contains target
     */
