@@ -17,6 +17,7 @@ package array.MinimumSizeSubarraySum_209;
  * time complexity is O(n log n).
  */
 public class Solution {
+    // prefix sum
     // tc O(n), sc O(1)
     int minSubArrayLen(int s, int[] nums) {
         if (nums == null || nums.length == 0) {
