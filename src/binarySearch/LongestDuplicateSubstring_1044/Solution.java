@@ -42,8 +42,8 @@ public class Solution {
     // tc O(nlogn), sc O(n)
     // https://leetcode.com/problems/longest-duplicate-substring/discuss/292982/Java-version-with-comment
 
-    private int R = 26;
-    private long mod = (long) Math.pow(2, 32);
+    private int a = 26;
+    private long mod = (long) 1 << 32;
 
     public String longestDupSubstring(String S) {
         int n = S.length();
@@ -71,26 +71,24 @@ public class Solution {
     }
 
     private int findSubstring(int[] s, int len) {
-        long pow = 1;
-        for (int i = 1; i < len; i++) {
-            pow = (pow * R) % mod;
-        }
-
-        long h = 0;
+        long aL = 1;
         for (int i = 0; i < len; i++) {
-            h = (h * R + s[i]) % mod;
+            aL = aL * a % mod;
         }
-
         Set<Long> set = new HashSet<>();
-        set.add(h);
-
-        for (int i = 1; i <= s.length - len; i++) {
-            h = (h - s[i - 1] * pow % mod) % mod;
-            h = (h * R % mod + s[i + len - 1]) % mod;
+        long h = 0;
+        for (int i = 0; i < s.length - len + 1; i++) {
+            if (i == 0) {
+                for (int j = 0; j < len; j++) {
+                    h = (h * a + s[j]) % mod;
+                }
+            } else {
+                h = (h * a % mod + s[i + len - 1]) % mod;
+                h = (h - s[i - 1] * aL % mod) % mod;
+            }
             if (set.contains(h)) return i;
-            set.add(h);
+            else set.add(h);
         }
-
         return -1;
     }
 }
