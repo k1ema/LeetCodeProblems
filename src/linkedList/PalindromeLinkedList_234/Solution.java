@@ -19,48 +19,39 @@ import linkedList.utils.ListNode;
  */
 public class Solution {
     // tc O(n), sc O(1)
-    boolean isPalindrome(ListNode head) {
-        // check
-        if (head == null || head.next == null) {
-            return true;
-        }
-        if (head.next.next == null) {
-            return head.val == head.next.val;
-        }
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) return true;
 
-        // 1. move to center
-        ListNode fast = head;
-        ListNode slow = head;
+        // find midlle
+        ListNode slow = null, fast = head;
+        ListNode l1 = head;
+        boolean even = false;
         while (fast != null && fast.next != null) {
+            slow = slow == null ? head : slow.next;
             fast = fast.next.next;
-            slow = slow.next;
         }
-        if (fast != null) {
-            slow = slow.next;
+        if (fast == null) even = true;
+        ListNode l2 = slow.next;
+        slow.next = null;
+
+        // reverse l1: prev.next = null, cur.next = prev
+        ListNode prev = null, cur = l1;
+        while (cur != null) {
+            ListNode next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
+        }
+        l1 = prev;
+
+        // compare l1 and l2
+        if (!even) l2 = l2.next;
+        while (l1 != null && l2 != null) {
+            if (l1.val != l2.val) return false;
+            l1 = l1.next;
+            l2 = l2.next;
         }
 
-        // 2. reverse 2nd part
-        ListNode reversed = reverse(slow);
-
-        // 3. compare reversed and 1st part
-        while (reversed != null) {
-            if (reversed.val != head.val) {
-                return false;
-            }
-            reversed = reversed.next;
-            head = head.next;
-        }
-
-        return true;
-    }
-
-    private ListNode reverse(ListNode list) {
-        if (list.next == null) {
-            return list;
-        }
-        ListNode cur = reverse(list.next);
-        list.next.next = list;
-        list.next = null;
-        return cur;
+        return l1 == null && l2 == null;
     }
 }
