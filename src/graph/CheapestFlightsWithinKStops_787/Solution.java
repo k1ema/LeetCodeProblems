@@ -40,98 +40,65 @@ import java.util.*;
  * There will not be any duplicated flights or self cycles.
  */
 public class Solution {
-    // tc O(k*E*logV) ?, sc O(EV). Dijkstra
+    // tc O(k*E*logV) ?, sc O(max(V^2, EV))
+    // 3 ms, faster than 98.52%; 39 MB, less than 7.68%
+    // without if (curPrice + nextCity[1] < weight[nextCity[0]][curStops + 1]): 9 ms, faster than 70.67%; 41.1 MB, less than 7.68%
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
-        List<Edge>[] graph = new ArrayList[n];
+        List<int[]>[] graph = buildGraph(n, flights);
+        Queue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+        pq.add(new int[] {src, 0, 0});
+        int[] distTo = new int[n];
+        int[] stopsTo = new int[n];
+        Arrays.fill(distTo, Integer.MAX_VALUE);
+        Arrays.fill(stopsTo, Integer.MAX_VALUE);
+        distTo[src] = 0;
+        stopsTo[src] = 0;
+        while (!pq.isEmpty()) {
+            int[] nums = pq.poll();
+            int curCity = nums[0], curPrice = nums[1], curStops = nums[2];
+            if (curCity == dst) return curPrice;
+            if (curStops > K) continue;
+            for (int[] nextCity : graph[curCity]) {
+                if (curPrice + nextCity[1] < distTo[nextCity[0]] || curStops + 1 < stopsTo[nextCity[0]]) {
+                    distTo[nextCity[0]] = curPrice + nextCity[1];
+                    stopsTo[nextCity[0]] = curStops + 1;
+                    pq.add(new int[] {nextCity[0], curPrice + nextCity[1], curStops + 1});
+                }
+            }
+        }
+        return -1;
+    }
+
+    private List<int[]>[] buildGraph(int n, int[][] flights) {
+        List<int[]>[] graph = new ArrayList[n];
         for (int i = 0; i < n; i++) {
             graph[i] = new ArrayList<>();
         }
         for (int[] flight : flights) {
-            graph[flight[0]].add(new Edge(flight[0], flight[1], flight[2]));
+            graph[flight[0]].add(new int[] {flight[1], flight[2]});
         }
-
-        int[] distTo = new int[n];
-        int[] curStops = new int[n];
-        Arrays.fill(distTo, Integer.MAX_VALUE);
-        Arrays.fill(curStops, Integer.MAX_VALUE);
-        distTo[src] = 0;
-        curStops[src] = 0;
-
-        Queue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
-        pq.add(new int[] {src, 0, 0});
-
-        while (!pq.isEmpty()) {
-            int[] info = pq.poll();
-            int u = info[0];
-            int curWeight = info[1];
-            int stops = info[2];
-
-            if (u == dst) return curWeight;
-            if (stops > K) continue;
-
-            for (Edge e : graph[u]) {
-                if (curWeight + e.weight() < distTo[e.to()]) {
-                    distTo[e.to()] = curWeight + e.weight();
-                    pq.add(new int[] {e.to(), curWeight + e.weight(), stops + 1});
-                } else if (stops + 1 < curStops[e.to()]) {
-                    curStops[e.to()] = stops + 1;
-                    pq.add(new int[] {e.to(), curWeight + e.weight(), stops + 1});
-                }
-            }
-        }
-
-        return -1;
+        return graph;
     }
 
-    private class Edge {
-        private int u;
-        private int v;
-        private int w;
-
-        Edge(int u, int v, int w) {
-            this.u = u;
-            this.v = v;
-            this.w = w;
-        }
-
-        int from() {
-            return u;
-        }
-
-        int to() {
-            return v;
-        }
-
-        int weight() {
-            return w;
-        }
-    }
-
-
-    // tc O(k*E*logV) ?, sc O(max(V^2, EV))
     public int findCheapestPrice1(int n, int[][] flights, int src, int dst, int K) {
-        List<int[]>[] graph = new List[n];
-        for (int i = 0; i < n; i++) graph[i] = new LinkedList<>();
-        // a[0] - u, a[1] - v, a[2] - weight
-        for (int[] a : flights) {
-            graph[a[0]].add(new int[] {a[1], a[2]});
-        }
+        List<int[]>[] graph = buildGraph(n, flights);
+        Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+        pq.add(new int[] {src, 0, 0});
         int[][] weight = new int[n][n + 1];
         for (int i = 0; i < n; i++) {
             Arrays.fill(weight[i], Integer.MAX_VALUE);
         }
         weight[src][0] = 0;
 
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[1], b[1]));
-        pq.add(new int[] {src, 0, 0});
         while (!pq.isEmpty()) {
-            int[] a = pq.poll();
-            if (a[0] == dst) return a[1];
-            if (a[2] > K) continue;
-            for (int[] nei : graph[a[0]]) {
-                if (a[1] + nei[1] < weight[nei[0]][a[2] + 1]) {
-                    weight[nei[0]][a[2] + 1] = a[1] + nei[1];
-                    pq.add(new int[] {nei[0], a[1] + nei[1], a[2] + 1});
+            int[] nums = pq.poll();
+            int curCity = nums[0], curPrice = nums[1], curStops = nums[2];
+            if (curCity == dst) return curPrice;
+            if (curStops > K) continue;
+            for (int[] nextCity : graph[curCity]) {
+                if (curPrice + nextCity[1] < weight[nextCity[0]][curStops + 1]) {
+                    weight[nextCity[0]][curStops + 1] = curPrice + nextCity[1];
+                    pq.add(new int[] {nextCity[0], curPrice + nextCity[1], curStops + 1});
                 }
             }
         }
