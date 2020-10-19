@@ -1,4 +1,4 @@
-package array.MinimumDominoRotationsForEqualRow_1007;
+package greedy.MinimumDominoRotationsForEqualRow_1007;
 
 /**
  * 1007. Minimum Domino Rotations For Equal Row
@@ -33,27 +33,22 @@ package array.MinimumDominoRotationsForEqualRow_1007;
  * 2 <= A.length == B.length <= 20000
  */
 public class Solution {
+    // tc O(n), sc O(1)
+    // https://leetcode.com/problems/minimum-domino-rotations-for-equal-row/discuss/252242/JavaC%2B%2BPython-Different-Ideas
     public int minDominoRotations(int[] A, int[] B) {
-        int[][] arr = new int[6][4];
-        for (int i = 0; i < A.length; i++) {
-            arr[A[i] - 1][0]++;
-            arr[B[i] - 1][0]++;
-            if (A[i] == B[i]) arr[B[i] - 1][1]++;
-            arr[A[i] - 1][2]++;
-            arr[B[i] - 1][3]++;
+        int[] countA = new int[7], countB = new int[7], same = new int[7];
+        int n = A.length;
+        for (int i = 0; i < n; i++) {
+            countA[A[i]]++;
+            countB[B[i]]++;
+            if (A[i] == B[i]) same[A[i]]++;
         }
 
-        int min = Integer.MAX_VALUE;
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i][0] >= A.length) {
-                int n = arr[i][0] - A.length - arr[i][1];
-                if (n >= 0) {
-                    int value = arr[i][2] <= arr[i][3] ? arr[i][2] - arr[i][1] : arr[i][3] - arr[i][1];
-                    min = Math.min(min, value);
-                }
+        for (int i = 1; i < 7; i++) {
+            if (countA[i] + countB[i] - same[i] == n) {
+                return n - Math.max(countA[i], countB[i]);
             }
         }
-
-        return min == Integer.MAX_VALUE ? -1 : min;
+        return -1;
     }
 }
