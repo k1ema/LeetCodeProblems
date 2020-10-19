@@ -69,19 +69,18 @@ public class Solution {
 
     // tc O(n^2), sc O(1)
     public int maximumSum1(int[] arr) {
-        int max = arr[0];
-        int cur = arr[0];
-        for (int i=1; i<arr.length; i++) {
+        int cur = arr[0], max = arr[0];
+        for (int i = 1; i < arr.length; i++) {
             cur = Math.max(arr[i], cur + arr[i]);
             max = Math.max(max, cur);
         }
 
-        for (int j=0; j<arr.length; j++) {
-            if (arr[j] >= 0) continue;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] >= 0) continue;
             cur = 0;
-            for (int i=0; i<arr.length; i++) {
-                if (i == j) continue;
-                cur = Math.max(arr[i], cur + arr[i]);
+            for (int j = 0; j < arr.length; j++) {
+                if (j == i) continue;
+                cur = Math.max(arr[j], cur + arr[j]);
                 max = Math.max(max, cur);
             }
         }
