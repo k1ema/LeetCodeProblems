@@ -1,8 +1,11 @@
 package graph.CloneGraph_133;
 
-import java.util.*;
-
 import graph.utils.Node;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 133. Clone Graph
@@ -34,24 +37,20 @@ import graph.utils.Node;
  * You must return the copy of the given node as a reference to the cloned graph.
  */
 public class Solution {
-    private Map<Integer, Node> map = new HashMap<>();
-
     // DFS, tc O(V + E), sc O(V + E)
-    // https://leetcode.com/problems/clone-graph/discuss/42309/Depth-First-Simple-Java-Solution
     public Node cloneGraph(Node node) {
         if (node == null) return null;
+        Map<Integer, Node> map = new HashMap<>();
+        return dfs(node, map);
+    }
 
-        if (map.containsKey(node.val)) {
-            return map.get(node.val);
-        }
-
+    private Node dfs(Node node, Map<Integer, Node> map) {
+        if (map.containsKey(node.val)) return map.get(node.val);
         Node clone = new Node(node.val);
         map.put(node.val, clone);
-        clone.neighbors = new ArrayList<>();
-        for (Node nbr : node.neighbors) {
-            clone.neighbors.add(cloneGraph(nbr));
+        for (Node nei : node.neighbors) {
+            clone.neighbors.add(dfs(nei, map));
         }
-
         return clone;
     }
 
@@ -62,22 +61,23 @@ public class Solution {
                 2-----1         4------3
      */
     // BFS, tc O(V + E), sc O(V + E)
+    // 24 ms, faster than 99.60%; 39 MB, less than 10.59%
     public Node cloneGraph1(Node node) {
         if (node == null) return null;
-        Map<Integer, Node> visited = new HashMap<>();
-        Queue<Node> q = new LinkedList<>();
+        Map<Integer, Node> map = new HashMap<>();
+        Deque<Node> q = new ArrayDeque<>();
         q.add(node);
-        visited.put(node.val, new Node(node.val, new ArrayList<>()));
+        map.put(node.val, new Node(node.val));
         while (!q.isEmpty()) {
             Node n = q.poll();
-            for (Node neighbor : n.neighbors) {
-                if (!visited.containsKey(neighbor.val)) {
-                    visited.put(neighbor.val, new Node(neighbor.val, new ArrayList<>()));
-                    q.add(neighbor);
+            for (Node nei : n.neighbors) {
+                if (!map.containsKey(nei.val)) {
+                    q.add(nei);
+                    map.put(nei.val, new Node(nei.val));
                 }
-                visited.get(n.val).neighbors.add(visited.get(neighbor.val));
+                map.get(n.val).neighbors.add(map.get(nei.val));
             }
         }
-        return visited.get(node.val);
+        return map.get(node.val);
     }
 }
