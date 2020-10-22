@@ -20,12 +20,25 @@ import tree.utils.TreeNode;
  * return its minimum depth = 2.
  */
 class Solution {
-    int minDepth(TreeNode root) {
+    // tc O(n), sc O(n)
+    public int minDepth(TreeNode root) {
         if (root == null) {
             return 0;
         }
         int l = minDepth(root.left);
         int r = minDepth(root.right);
         return (l == 0 || r == 0) ? l + r + 1 : Math.min(l, r) + 1;
+    }
+
+    // tc O(n), sc O(n)
+    public int minDepth1(TreeNode root) {
+        if (root == null) return 0;
+        if (root.left != null && root.right != null) {
+            return 1 + Math.min(minDepth(root.left), minDepth(root.right));
+        } else if (root.left == null) {
+            return 1 + minDepth(root.right);
+        } else {
+            return 1 + minDepth(root.left);
+        }
     }
 }
