@@ -1,4 +1,4 @@
-package twoPointers.MinimumSizeSubarraySum_209;
+package slidingWindow.MinimumSizeSubarraySum_209;
 
 import org.junit.Test;
 
