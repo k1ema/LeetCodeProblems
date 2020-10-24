@@ -1,4 +1,4 @@
-package array.MinimumSizeSubarraySum_209;
+package twoPointers.MinimumSizeSubarraySum_209;
 
 /**
  * 209. Minimum Size Subarray Sum
