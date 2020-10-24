@@ -1,9 +1,6 @@
 package dynamic.PerfectSquares_279;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 279. Perfect Squares
@@ -23,35 +20,48 @@ import java.util.Set;
  * Explanation: 13 = 4 + 9.
  */
 public class Solution {
-    /*
-        use dp
-            int[] dp = new dp[n + 1];
-            for i = 0 .. n
-                for sqr : sqr_list
-                    if (num[i] is square)
-                        dp[i] = 1;
-                    else
-                        dp[i] = min(dp[i], dp[i - sqr] + 1)
-            return dp[n]
-
-     i    0 1 2 3 4 5 6 7 8 9 10 11 12 13
-  dp[i]   0 1 2 3 1 2 3 4 2 1  2  3  3  2
-    */
-    // tc O(n * sqrt(n)), sc O(n)
+    // top-down with memo
+    // tc O(n*sqrt(n)), sc O(n)
+    // 550 ms, faster than 8.35%; 57.3 MB, less than 5.01%
     public int numSquares(int n) {
+        Map<Integer, Integer> memo = new HashMap<>();
+        return bt(n, memo);
+    }
+
+    private int bt(int n, Map<Integer, Integer> memo) {
+        if (n == 0) return 0;
+        if (memo.containsKey(n)) return memo.get(n);
+        int res = n;
+        int i = 1;
+        while (i * i <= n) {
+            res = Math.min(res, 1 + bt(n - i * i, memo));
+            i++;
+        }
+        memo.put(n, res);
+        return res;
+    }
+
+    // bottom-up
+    // tc O(n * sqrt(n)), sc O(n)
+    // 66 ms, faster than 34.73%; 38.5 MB, less than 5.01%
+    /*
+        0 1 2 3 4 5 6 7 8 9 10 11 12 13
+    1   0 1 2 3 4 5 6 7 8 9 10 11 12 13
+    4   0 1 2 3 1 2 3 4 2 3  4  5  3  4
+    9   0 1 2 3 1 2 3 4 2 1  2  3  3  2
+    */
+    public int numSquares1(int n) {
         int[] dp = new int[n + 1];
-        for (int i = 0; i <= n; i++) {
+        for (int i = 1; i <= n; i++) {
             dp[i] = i;
         }
-        List<Integer> sqrList = new ArrayList<>();
         for (int i = 4; i <= n; i++) {
-            int sqrt = (int) Math.sqrt(i);
-            if (i - sqrt * sqrt == 0) {
-                dp[i] = 1;
-                sqrList.add(i);
-            } else {
-                for (int sqr : sqrList) {
-                    dp[i] = Math.min(dp[i], dp[i - sqr] + 1);
+            for (int j = 2; j * j <= i; j++) {
+                int s = j * j;
+                if (s % i == 0) {
+                    dp[i] = s / i;
+                } else {
+                    dp[i] = Math.min(dp[i], dp[s] + dp[i - s]);
                 }
             }
         }
@@ -60,7 +70,7 @@ public class Solution {
 
     // tc O(n^(h/2)) where h is the maximal number of recursion that could happen.
     // sc O(sqrt(n))
-    public int numSquares1(int n) {
+    public int numSquares12(int n) {
         Set<Integer> square_nums = new HashSet<>();
         for (int i = 1; i * i <= n; ++i) {
             square_nums.add(i * i);
@@ -89,7 +99,7 @@ public class Solution {
     // Greedy + BFS
     // tc O(n^(h/2)) where h is the height of the N-ary tree.
     // sc O(sqrt(n))
-    public int numSquares2(int n) {
+    public int numSquares3(int n) {
         ArrayList<Integer> square_nums = new ArrayList<>();
         for (int i = 1; i * i <= n; ++i) {
             square_nums.add(i * i);
