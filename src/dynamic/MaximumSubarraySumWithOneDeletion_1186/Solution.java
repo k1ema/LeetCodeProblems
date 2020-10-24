@@ -36,6 +36,20 @@ package dynamic.MaximumSubarraySumWithOneDeletion_1186;
  * -10^4 <= arr[i] <= 10^4
  */
 public class Solution {
+    // tc O(n), sc O(1)
+    // keep tracking of two variables:
+    //  withDel - max sum with one deletion
+    //  withoutDel - Kadane's algorithm for max sum without deletion
+    public int maximumSum(int[] arr) {
+        int res = arr[0], withDel = arr[0], withoutDel = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            withDel = Math.max(withDel + arr[i], withoutDel);
+            withoutDel = Math.max(withoutDel + arr[i], arr[i]);
+            res = Math.max(res, Math.max(withDel, withoutDel));
+        }
+        return res;
+    }
+
     /*
         [1,-1, 1, 1, 3]
       l [3, 2, 4, 3, 3]
@@ -48,7 +62,7 @@ public class Solution {
      */
     // tc O(n), sc O(n)
     // 2 ms, faster than 98.65%; 48 MB, less than 100.00%
-    public int maximumSum(int[] arr) {
+    public int maximumSum1(int[] arr) {
         int maxSum = arr[0];
         int[] left = new int[arr.length];
         int[] right = new int[arr.length];
@@ -68,7 +82,7 @@ public class Solution {
     }
 
     // tc O(n^2), sc O(1)
-    public int maximumSum1(int[] arr) {
+    public int maximumSum2(int[] arr) {
         int cur = arr[0], max = arr[0];
         for (int i = 1; i < arr.length; i++) {
             cur = Math.max(arr[i], cur + arr[i]);
