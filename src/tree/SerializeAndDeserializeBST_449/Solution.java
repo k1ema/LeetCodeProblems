@@ -2,6 +2,7 @@ package tree.SerializeAndDeserializeBST_449;
 
 import tree.utils.TreeNode;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -23,9 +24,48 @@ import java.util.Queue;
  * algorithms should be stateless.
  */
 public class Solution {
-    // tc O(n), sc O(n)
+    // DFS, preorder traversal
+    // 6 ms, faster than 69.60%; 39.8 MB, less than 6.49%
+
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        dfs(root, sb);
+        return sb.toString();
+    }
+
+    private void dfs(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+            sb.append("-,");
+            return;
+        }
+        sb.append(root.val).append(",");
+        dfs(root.left, sb);
+        dfs(root.right, sb);
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if (data == null) return null;
+        Queue<String> nodes = new LinkedList<>(Arrays.asList(data.split(",")));
+        return deserialize(nodes);
+    }
+
+    private TreeNode deserialize(Queue<String> nodes) {
+        String n = nodes.poll();
+        if (n.equals("-")) return null;
+        TreeNode root = new TreeNode(Integer.parseInt(n));
+        root.left = deserialize(nodes);
+        root.right = deserialize(nodes);
+        return root;
+    }
+
+    // BFS
+    // tc O(n), sc O(n)
+    // 10 ms, faster than 47.83%; 40.3 MB, less than 6.49%
+
+    // Encodes a tree to a single string.
+    public String serialize1(TreeNode root) {
         if (root == null) {
             return "";
         }
@@ -46,25 +86,28 @@ public class Solution {
         return sb.toString();
     }
 
-    // Decodes your encoded data to tree.
-    public TreeNode deserialize(String data) {
+    public TreeNode deserialize1(String data) {
         if (data.isEmpty()) return null;
-        int i = 0;
-        String[] s = data.split(",");
-        Queue<TreeNode> q = new LinkedList<>();
-        TreeNode root = new TreeNode(Integer.parseInt(s[i++]));
-        q.add(root);
-        while (!q.isEmpty() && i < s.length) {
-            TreeNode node = q.poll();
-            String val = s[i++];
-            if (!val.equals("-")) {
+
+        Queue<String> nodes = new LinkedList<>(Arrays.asList(data.split(",")));
+        String n = nodes.poll();
+        if ("-".equals(n)) return null;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        TreeNode root = new TreeNode(Integer.parseInt(n));
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            String val = nodes.poll();
+            if (!"-".equals(val)) {
                 node.left = new TreeNode(Integer.parseInt(val));
-                q.add(node.left);
+                queue.add(node.left);
             }
-            val = s[i++];
-            if (!val.equals("-")) {
+            val = nodes.poll();
+            if (!"-".equals(val)) {
                 node.right = new TreeNode(Integer.parseInt(val));
-                q.add(node.right);
+                queue.add(node.right);
             }
         }
 

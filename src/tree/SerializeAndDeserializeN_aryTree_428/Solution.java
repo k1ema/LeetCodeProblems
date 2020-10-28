@@ -60,7 +60,6 @@ public class Solution {
     public String serialize(Node root) {
         StringBuilder sb = new StringBuilder();
         dfs(root, sb);
-        System.out.println(sb.toString());
         return sb.toString();
     }
 
