@@ -18,8 +18,50 @@ package trie.Maximum_XOR_OfTwoNumbersInAnArray_421;
  */
 public class Solution {
     // tc O(n), sc O(n)
-    // 33 ms, faster than 80.00%; 49.3 MB, less than 46.72%
+    // 34 ms, faster than 85.28%; 49 MB, less than 5.05%
     public int findMaximumXOR(int[] nums) {
+        TrieNode root = new TrieNode();
+        for (int n : nums) {
+            TrieNode node = root;
+            for (int i = 31; i >= 0; i--) {
+                int v = (n >> i) & 1;
+                if (node.children[v] == null) {
+                    node.children[v] = new TrieNode();
+                }
+                node = node.children[v];
+            }
+            node.val = n;
+        }
+
+        int res = 0;
+        for (int n : nums) {
+            TrieNode node = root;
+            for (int i = 31; i >= 0; i--) {
+                int bit = (n >> i) & 1;
+                int toggleBit = (bit + 1) % 2;
+                if (node.children[toggleBit] != null) {
+                    node = node.children[toggleBit];
+                } else {
+                    node = node.children[bit];
+                }
+            }
+            int curXor = n ^ node.val;
+            res = Math.max(res, curXor);
+        }
+        return res;
+    }
+
+    private static class TrieNode {
+        Integer val;
+        TrieNode[] children;
+        TrieNode() {
+            children = new TrieNode[2];
+        }
+    }
+
+    // tc O(n), sc O(n)
+    // 33 ms, faster than 80.00%; 49.3 MB, less than 46.72%
+    public int findMaximumXOR2(int[] nums) {
         TrieNode root = new TrieNode();
         for (int num : nums) {
             TrieNode trie = root;
@@ -51,7 +93,7 @@ public class Solution {
         return maxXor;
     }
 
-    private class TrieNode {
+    private class TrieNode1 {
         private TrieNode[] children = new TrieNode[2];
     }
 
