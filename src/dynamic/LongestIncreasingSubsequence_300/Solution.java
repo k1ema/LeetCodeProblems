@@ -46,42 +46,44 @@ public class Solution {
     // tc O(n^2), sc O(n)
     // 10 ms, faster than 62.07%; 37.8 MB, less than 30.00%
     public int lengthOfLIS1(int[] nums) {
-        if (nums == null || nums.length == 0) return 0;
+        if (nums == null) return 0;
         int[] dp = new int[nums.length];
-        dp[0] = 1;
-        for (int i = 1; i < nums.length; i++) {
-            int maxVal = 0;
-            int j = i - 1;
-            while (j >= 0) {
-                if (nums[j] < nums[i]) {
-                    maxVal = Math.max(maxVal, dp[j]);
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) {
+            dp[i] = 1;
+            int j = 0;
+            while (j < i) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], 1 + dp[j]);
                 }
-                j--;
+                j++;
             }
-            dp[i] = maxVal + 1;
+            res = Math.max(res, dp[i]);
         }
-        Arrays.sort(dp);
-        return dp[nums.length - 1];
+        return res;
     }
 
     // tc O(n^2), sc O(n^2)
+    // 164 ms, faster than 5.05%; 91.9 MB, less than 5.01%
     public int lengthOfLIS2(int[] nums) {
-        int[][] memo = new int[nums.length + 1][nums.length];
+        if (nums == null) return 0;
+        int n = nums.length;
+        int[][] memo = new int[n + 1][n];
         for (int[] m : memo) {
             Arrays.fill(m, -1);
         }
         return bt(nums, -1, 0, memo);
     }
 
-    private int bt(int[] nums, int prevInd, int curInd, int[][] memo) {
-        if (curInd == nums.length) return 0;
-        if (memo[prevInd + 1][curInd] >= 0) return memo[prevInd + 1][curInd];
-        int taken = 0;
-        if (prevInd < 0 || nums[curInd] > nums[prevInd]) {
-            taken = 1 + bt(nums, curInd, curInd + 1, memo);
+    private int bt(int[] nums, int prev, int cur, int[][] memo) {
+        if (cur == nums.length) return 0;
+        if (memo[prev + 1][cur] >= 0) return memo[prev + 1][cur];
+        int res = 0;
+        if (prev == -1 || nums[cur] > nums[prev]) {
+            res = 1 + bt(nums, cur, cur + 1, memo);
         }
-        int nottaken = bt(nums, prevInd, curInd + 1, memo);
-        memo[prevInd + 1][curInd] = Math.max(taken, nottaken);
-        return memo[prevInd + 1][curInd];
+        res = Math.max(res, bt(nums, prev, cur + 1, memo));
+        memo[prev + 1][cur] = res;
+        return res;
     }
 }
