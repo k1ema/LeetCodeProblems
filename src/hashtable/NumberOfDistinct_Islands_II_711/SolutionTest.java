@@ -21,5 +21,11 @@ public class SolutionTest {
                 {0, 1, 0, 0, 1},
                 {0, 1, 1, 1, 0}
         }));
+
+        assertEquals(1, s.numDistinctIslands2(new int[][] {
+                {0, 0, 1},
+                {0, 0, 1},
+                {1, 1, 0},
+        }));
     }
 }
