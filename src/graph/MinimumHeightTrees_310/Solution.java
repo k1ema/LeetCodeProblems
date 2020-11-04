@@ -49,43 +49,79 @@ public class Solution {
     // tc O(n), sc O(n)
     // https://leetcode.com/problems/minimum-height-trees/discuss/76055/Share-some-thoughts
     List<Integer> findMinHeightTrees(int n, int[][] edges) {
-        if (n == 0) return Collections.emptyList();
         if (n == 1) return Collections.singletonList(0);
-
         Set<Integer>[] graph = buildGraph(n, edges);
-
         List<Integer> leaves = new ArrayList<>();
-        for (int i = 0; i < graph.length; i++) {
-            Set<Integer> vertices = graph[i];
-            if (vertices.size() == 1) leaves.add(i);
+        for (int i = 0; i < n; i++) {
+            if (graph[i].size() == 1) {
+                leaves.add(i);
+            }
         }
-
         while (n > 2) {
             List<Integer> newLeaves = new ArrayList<>();
             n -= leaves.size();
-            for (int i = 0; i < leaves.size(); i++) {
-                int l = leaves.get(i);
-                int v = graph[l].iterator().next();
-                graph[v].remove(l);
-                if (graph[v].size() == 1) newLeaves.add(v);
+            for (int i : leaves) {
+                for (int v : graph[i]) {
+                    graph[v].remove(i);
+                    if (graph[v].size() == 1) {
+                        newLeaves.add(v);
+                    }
+                }
             }
             leaves = newLeaves;
         }
-
         return leaves;
     }
 
     private Set<Integer>[] buildGraph(int n, int[][] edges) {
-        Set<Integer>[] graph = new HashSet[n];
+        Set<Integer>[] g = new HashSet[n];
         for (int i = 0; i < n; i++) {
-            graph[i] = new HashSet<>();
+            g[i] = new HashSet<>();
         }
-        for (int i = 0; i < edges.length; i++) {
-            int u = edges[i][0];
-            int v = edges[i][1];
-            graph[u].add(v);
-            graph[v].add(u);
+        for (int[] e : edges) {
+            g[e[0]].add(e[1]);
+            g[e[1]].add(e[0]);
         }
-        return graph;
+        return g;
+    }
+
+    // TLE, tc O(E*V), sc O(E*V). Since for each tree E = V - 1, tc O(n^2), sc O(n^2)
+    public List<Integer> findMinHeightTrees1(int n, int[][] edges) {
+        List<Integer>[] graph = buildGraph1(n, edges);
+        List<Integer> res = new ArrayList<>();
+        int min = Integer.MAX_VALUE;
+        List<int[]> pairs = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int curHeight = dfs(graph, i, new boolean[n]);
+            min = Math.min(min, curHeight);
+            pairs.add(new int[] {curHeight, i});
+        }
+        for (int[] p : pairs) {
+            if (p[0] == min) res.add(p[1]);
+        }
+        return res;
+    }
+
+    private int dfs(List<Integer>[] graph, int i, boolean[] visited) {
+        int res = 0;
+        visited[i] = true;
+        for (int nei : graph[i]) {
+            if (!visited[nei]) {
+                res = Math.max(res, 1 + dfs(graph, nei, visited));
+            }
+        }
+        return res;
+    }
+
+    private List<Integer>[] buildGraph1(int n, int[][] edges) {
+        List<Integer>[] g = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            g[i] = new ArrayList<>();
+        }
+        for (int[] e : edges) {
+            g[e[0]].add(e[1]);
+            g[e[1]].add(e[0]);
+        }
+        return g;
     }
 }
