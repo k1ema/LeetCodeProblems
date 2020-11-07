@@ -19,9 +19,28 @@ import linkedList.utils.ListNode;
  * Explanation: 342 + 465 = 807.
  */
 public class Solution {
-    // tc O(n), sc O(n)
-    // 1 ms, faster than 100.00%; 39.7 MB, less than 99.69%
+    // tc O(max(l1,l2)), sc O(max(l1,l2))
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode cur = new ListNode(0);
+        ListNode dummy = cur;
+        int carry = 0;
+        while (l1 != null || l2 != null) {
+            int v = (l1 != null ? l1.val : 0) + (l2 != null ? l2.val : 0) + carry;
+            carry = v / 10;
+            cur.next = new ListNode(v % 10);
+            cur = cur.next;
+            if (l1 != null) l1 = l1.next;
+            if (l2 != null) l2 = l2.next;
+        }
+        if (carry > 0) {
+            cur.next = new ListNode(carry);
+        }
+        return dummy.next;
+    }
+
+    // tc O(max(l1,l2)), sc O(max(l1,l2))
+    // 1 ms, faster than 100.00%; 39.7 MB, less than 99.69%
+    public ListNode addTwoNumbers1(ListNode l1, ListNode l2) {
         ListNode result = new ListNode(0);
         sum(result, l1, l2, 0);
         return result.next;
