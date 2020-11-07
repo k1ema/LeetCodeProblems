@@ -34,7 +34,7 @@ import java.util.Map;
  * cache.get(4);      // returns 4
  */
 public class LRUCache {
-    // 15 ms, faster than 63.96%; 50 MB, less than 41.49%
+    // 12 ms, faster than 95.31%; 47.5 MB, less than 8.83%
     private class ListNode {
         private int key, value;
         private ListNode prev;
@@ -48,51 +48,59 @@ public class LRUCache {
 
     private final int capacity;
     private Map<Integer, ListNode> map;
-    private ListNode head = new ListNode(-1, -1), tail = new ListNode(-1, -1);
+    private ListNode head, tail;
 
     public LRUCache(int capacity) {
         this.capacity = capacity;
         map = new HashMap<>();
+        head = new ListNode(-1, -1);
+        tail = new ListNode(-1, -1);
         head.next = tail;
         tail.prev = head;
     }
 
     // tc O(1)
     public int get(int key) {
-        int value = -1;
-        if (map.containsKey(key)) {
-            ListNode node = map.get(key);
-            value = node.value;
-            insert(node);
+        if (!map.containsKey(key)) {
+            return -1;
         }
-        return value;
+        ListNode node = map.get(key);
+        deleteFromList(node);
+        setListHead(node);
+        return node.value;
     }
 
     // tc O(1)
     public void put(int key, int value) {
-        if (!map.containsKey(key) && map.size() >= capacity) {
-            ListNode toRemove = tail.prev;
-            tail.prev = toRemove.prev;
-            toRemove.prev.next = tail;
-            map.remove(toRemove.key);
+        ListNode node;
+        if (map.containsKey(key)) {
+            node = map.get(key);
+            node.value = value;
+            deleteFromList(node);
+        } else {
+            if (map.size() == capacity) {
+                map.remove(tail.prev.key);
+                deleteFromList(tail.prev);
+            }
+            node = new ListNode(key, value);
+            map.put(key, node);
         }
-        ListNode node = new ListNode(key, value);
-        insert(node);
-        map.put(key, node);
+        setListHead(node);
     }
 
-    // tc O(1)
-    private void insert(ListNode node) {
-        if (map.containsKey(node.key)) {
-            ListNode toRemove = map.get(node.key);
-            toRemove.prev.next = toRemove.next;
-            toRemove.next.prev = toRemove.prev;
-        }
-        ListNode headNext = head.next;
+    private void deleteFromList(ListNode node) {
+        ListNode prev = node.prev;
+        ListNode next = node.next;
+        prev.next = next;
+        next.prev = prev;
+    }
+
+    private void setListHead(ListNode node) {
+        ListNode next = head.next;
         head.next = node;
         node.prev = head;
-        node.next = headNext;
-        headNext.prev = node;
+        node.next = next;
+        next.prev = node;
     }
 }
 
