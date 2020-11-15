@@ -24,7 +24,7 @@ package dynamic.CountingBits_338;
  */
 public class Solution {
     // tc O(n), sc O(n)
-    // 1 ms, faster than 99.74%; 37.6 MB, less than 5.88%
+    // 1 ms, faster than 99.78%; 43.4 MB, less than 29.79%
     // f[i] = f[i / 2] + i % 2.
     public int[] countBits(int num) {
         int[] f = new int[num + 1];
@@ -34,10 +34,31 @@ public class Solution {
         return f;
     }
 
+    // tc O(n), sc O(n)
+    // 2 ms, faster than 34.83%; 43.4 MB, less than 39.20%
+    public int[] countBits1(int num) {
+        int[] dp = new int[num + 1];
+        if (num == 0) return dp;
+        for (int i = 1; i <= num; i++) {
+            int x = lsb(i);
+            dp[i] = ((i & (i - 1)) == 0) ? 1 : 1 + dp[i - (1 << x)];
+        }
+        return dp;
+    }
+
+    private int lsb(int num) {
+        int x = 0;
+        while (num > 0) {
+            num >>= 1;
+            x++;
+        }
+        return x > 0 ? x - 1 : 0;
+    }
+
     // DFS!
     // tc O(n), sc O(n)
     // Runtime: 0 ms, faster than 100.00%
-    public int[] countBits11(int num) {
+    public int[] countBits2(int num) {
         int[] result = new int[num + 1];
         dfs(result, num, 1, 1);
         return result;
@@ -50,31 +71,9 @@ public class Solution {
         dfs(result, num, count + 1, val * 2 + 1);
     }
 
-    // tc O(n), sc O(n)
-    public int[] countBits1(int num) {
-        int[] res = new int[num + 1];
-        if (num == 0) return res;
-
-        for (int i = 1; i <= num; i++) {
-            int v = i & (mostSignificantBit(i) - 1);
-            res[i] = res[v] + 1;
-        }
-        return res;
-    }
-
-    private int mostSignificantBit(int n) {
-        if (n == 0) return n;
-        n |= (n >> 1);
-        n |= (n >> 2);
-        n |= (n >> 4);
-        n |= (n >> 8);
-        n |= (n >> 16);
-        return (n + 1) >> 1;
-    }
-
     // tc O(n * sizeof(int)), sc O(n)
     // 1ms, faster than 99.74%; 38.4 MB
-    public int[] countBits2(int num) {
+    public int[] countBits3(int num) {
         int[] result = new int[num + 1];
         for (int i = 0; i <= num; i++) {
             int tmp = i;
