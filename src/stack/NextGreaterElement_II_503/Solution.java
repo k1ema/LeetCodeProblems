@@ -1,6 +1,7 @@
 package stack.NextGreaterElement_II_503;
 
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
 
 /**
@@ -23,8 +24,8 @@ import java.util.Deque;
  * Note: The length of given array won't exceed 10000.
  */
 public class Solution {
-    // tc O(n), sc O(n)
-    public int[] nextGreaterElements(int[] nums) {
+    // tc O(n), sc O(n), right-to-left
+    public int[] nextGreaterElements1(int[] nums) {
         if (nums == null || nums.length == 0) return new int[] {};
         Deque<Integer> stack = new ArrayDeque<>();
         int n = nums.length;
@@ -34,6 +35,22 @@ public class Solution {
                 stack.poll();
             }
             res[i % n] = stack.isEmpty() ? -1 : nums[stack.peek()];
+            stack.push(i % n);
+        }
+        return res;
+    }
+
+    // tc O(n), sc O(n), left-to-right
+    public int[] nextGreaterElements(int[] nums) {
+        if (nums == null || nums.length == 0) return new int[] {};
+        Deque<Integer> stack = new ArrayDeque<>();
+        int n = nums.length;
+        int[] res = new int[n];
+        Arrays.fill(res, -1);
+        for (int i = 0; i < 2 * n; i++) {
+            while (!stack.isEmpty() && nums[stack.peek()] < nums[i % n]) {
+                res[stack.poll()] = nums[i % n];
+            }
             stack.push(i % n);
         }
         return res;
