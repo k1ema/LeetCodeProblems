@@ -25,7 +25,7 @@ import java.util.Deque;
  */
 public class Solution {
     // tc O(n), sc O(n), right-to-left
-    public int[] nextGreaterElements1(int[] nums) {
+    public int[] nextGreaterElements(int[] nums) {
         if (nums == null || nums.length == 0) return new int[] {};
         Deque<Integer> stack = new ArrayDeque<>();
         int n = nums.length;
@@ -41,7 +41,7 @@ public class Solution {
     }
 
     // tc O(n), sc O(n), left-to-right
-    public int[] nextGreaterElements(int[] nums) {
+    public int[] nextGreaterElements1(int[] nums) {
         if (nums == null || nums.length == 0) return new int[] {};
         Deque<Integer> stack = new ArrayDeque<>();
         int n = nums.length;
