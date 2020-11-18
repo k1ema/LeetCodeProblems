@@ -76,7 +76,6 @@ public class Solution {
     // brute-force, TLE
     // tc O(3^(mn)), sc O(mn)
     public int minimumEffortPath1(int[][] heights) {
-        List<Integer> path = new ArrayList<>();
         int m = heights.length, n = heights[0].length;
         return dfs(heights, 0, 0, 0, 0, m, n, 0, new boolean[m][n]);
     }
