@@ -1,6 +1,7 @@
 package stack.DecodeString_394;
 
-import javafx.util.Pair;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 /**
  * 394. Decode String
@@ -23,76 +24,37 @@ import javafx.util.Pair;
  * s = "2[abc]3[cd]ef", return "abcabccdcdcdef".
  */
 public class Solution {
-    private int pos = 0;
     // tc O(n), sc O(n)
-    // https://leetcode.com/problems/decode-string/discuss/87615/Simple-Java-DFS-Solution
-    String decodeString(String s) {
-        String num = "";
-        StringBuilder sb = new StringBuilder();
-        for (int i = pos; i < s.length(); i++) {
-            if (Character.isDigit(s.charAt(i))) {
-                num += s.charAt(i);
-            } else if (s.charAt(i) == '[') {
-                pos = i + 1;
-                String sub = decodeString(s);
-                int v = Integer.parseInt(num);
-                for (int j = 0; j < v; j++) {
-                    sb.append(sub);
-                }
-                i = pos;
-                num = "";
-            } else if (s.charAt(i) == ']') {
-                pos = i;
-                return sb.toString();
-            } else {
-                sb.append(s.charAt(i));
-            }
-        }
-        pos = 0; // for next test
-        return sb.toString();
-    }
-
-    // tc O(n), sc O(n)
-    String decodeString1(String s) {
+    // Time Complexity: O(maxK⋅n), where maxK is the maximum value of k and n is the length of a given string s.
+    // We traverse a string of size n and iterate k times to decode each pattern of form k[string]. This gives us
+    // worst case time complexity as O(maxK⋅n).
+    // Space Complexity: O(m+n), where m is the number of letters(a-z) and n is the number of digits(0-9) in string s.
+    // In worst case, the maximum size of stringStack and countStack could be m and n respectively.
+    public String decodeString(String s) {
+        Deque<String> stack = new ArrayDeque<>();
+        int num = 0;
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
-            if (Character.isDigit(s.charAt(i))) {
-                Pair<String, Integer> pair = decodeBracket(i, s);
-                sb.append(pair.getKey());
-                i = pair.getValue();
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                num = num * 10 + c - '0';
+            } else if (c == '[') {
+                stack.push(sb.toString());
+                stack.push("" + num);
+                sb = new StringBuilder();
+                num = 0;
+            } else if (c == ']') {
+                int curNum = Integer.parseInt(stack.poll());
+                String prevString = stack.poll();
+                String curString = sb.toString();
+                while (curNum-- > 1) {
+                    sb.append(curString);
+                }
+                sb.insert(0, prevString);
             } else {
-                sb.append(s.charAt(i));
+                sb.append(c);
             }
         }
         return sb.toString();
-    }
-
-    /**
-     * Decodes string starting from number
-     * @param start index of number
-     * @param s input string
-     * @return key - decoded string, value - index of closed bracket
-     */
-    private Pair<String, Integer> decodeBracket(int start, String s) {
-        int openBracket = s.indexOf('[', start);
-        int v = Integer.parseInt(s.substring(start, openBracket));
-        StringBuilder sb = new StringBuilder();
-        for (int i = openBracket + 1; i < s.length(); i++) {
-            if (s.charAt(i) == ']') {
-                String sub = sb.toString();
-                for (int j = 1; j < v; j++) {
-                    sb.append(sub);
-                }
-                return new Pair<>(sb.toString(), i);
-            }
-            if (Character.isDigit(s.charAt(i))) {
-                Pair<String, Integer> pair = decodeBracket(i, s);
-                sb.append(pair.getKey());
-                i = pair.getValue();
-            } else {
-                sb.append(s.charAt(i));
-            }
-        }
-        return null;
     }
 }
