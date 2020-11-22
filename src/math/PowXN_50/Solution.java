@@ -27,17 +27,20 @@ package math.PowXN_50;
 public class Solution {
     // tc O(logn), sc O(1)
     public double myPow(double x, int n) {
+        double res = 1d;
         long N = n;
+        if (N == 0) return res;
         if (N < 0) {
-            x = 1 / x;
             N = -N;
+            x = 1 / x;
         }
-        double res = 1, cur = x;
-        for (long i = N; i > 0; i /= 2) {
-            if ((i % 2) == 1) {
-                res = res * cur;
+        double mult = x;
+        while (N != 0) {
+            if (N % 2 == 1) {
+                res *= mult;
             }
-            cur = cur * cur;
+            mult *= mult;
+            N >>= 1;
         }
         return res;
     }

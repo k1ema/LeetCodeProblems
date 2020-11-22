@@ -16,5 +16,6 @@ public class SolutionTest {
         assertEquals(0.00002, s.myPow(8.84372, -5), 0.00001);
         assertEquals(0.5, s.myPow(2, -1), 0.00001);
         assertEquals(0.00000, s.myPow(0.00001, 2147483647), 0.00001);
+        assertEquals(0.00000, s.myPow(2d, -2147483648), 0.00001);
     }
 }
