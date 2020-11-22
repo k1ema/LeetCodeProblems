@@ -25,40 +25,30 @@ package binarySearch.SearchInRotatedSortedArray_33;
 public class Solution {
     // find shift (min element index), then use classic binary search considering this shift
     // tc O(logn), sc O(1)
-    // 0 ms, faster than 100.00%; 38.1 MB, less than 47.17%
+    // 0 ms, faster than 100.00%; 38.6 MB, less than 35.38%
     public int search(int[] nums, int target) {
         int n = nums.length;
-        int minInd = 0;
-        if (nums[0]> nums[n - 1]) {
-            minInd = findMinIndex(nums);
-        }
-        int lo = minInd, hi = n - 1 + minInd;
-        while (lo <= hi) {
-            int mid = lo + (hi - lo) / 2;
-            if (nums[mid % n] < target) {
-                lo = mid + 1;
-            } else if (nums[mid % n] > target) {
-                hi = mid - 1;
+        int l = -1, r = n;
+        while (r - l > 1) {
+            int m = (l + r) >>> 1;
+            if (nums[m] >= nums[Math.max(0, l)]) {
+                l = m;
             } else {
-                return mid % n;
+                r = m;
             }
         }
-        return -1;
-    }
-
-    private int findMinIndex(int[] nums) {
-        int lo = 0, hi = nums.length - 1;
-        while (lo <= hi) {
-            int mid = lo + (hi - lo) / 2;
-            if (mid + 1 < nums.length && nums[mid + 1] < nums[mid]) {
-                return mid + 1;
-            } else if (nums[mid] > nums[lo]) {
-                lo = mid + 1;
+        int shift_index = r;
+        // System.out.println(shift_index);
+        l = shift_index - 1; r = shift_index + n;
+        while (r - l > 1) {
+            int m = (l + r) >>> 1;
+            if (nums[m % n] < target) {
+                l = m;
             } else {
-                hi = mid;
+                r = m;
             }
         }
-        return lo;
+        return nums[r % n] == target ? r % n : -1;
     }
 
     // one pass, https://leetcode.com/problems/search-in-rotated-sorted-array/solution/
