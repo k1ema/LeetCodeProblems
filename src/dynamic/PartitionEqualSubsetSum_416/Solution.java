@@ -25,9 +25,7 @@ import java.util.stream.IntStream;
  */
 public class Solution {
     // top-down recursion with memoization
-    // tc O(2^n), The calculated sum maybe always unique. If the sub-problems are not repeated,
-    // the worst-case time complexity would be the same as the non-memoized version.
-    // sc O(n*s), where n - nums.length and s = total sum
+    // tc O(2^n) w/o memo, O(n*s) with memo; sc O(n*s), where n - nums.length and s = total sum
     // 3 ms, faster than 88.98%; 43.1 MB, less than 22.22%
     public boolean canPartition(int[] nums) {
         if (nums == null || nums.length < 2) return false;
@@ -55,23 +53,22 @@ public class Solution {
     // tc O(n*s), sc O(n*s)
     // 33 ms, faster than 41.40%; 39.2 MB, less than 69.84%
     public boolean canPartition1(int[] nums) {
-        int sum = IntStream.of(nums).sum();
-        if ((sum & 1) == 1) return false;
+        int m = nums.length;
+        int sum = IntStream.of(nums).map(i -> i).sum();
+        if (sum % 2 == 1) return false;
         sum /= 2;
-        boolean[][] dp = new boolean[nums.length][sum + 1];
-        for (int i = 0; i < dp.length; i++) {
-            dp[i][0] = true;
-        }
-        for (int i = 0; i < dp.length; i++) {
+        boolean[][] dp = new boolean[m][sum + 1];
+        for (int i = 0; i < nums.length; i++) {
             for (int j = 0; j < dp[i].length; j++) {
-                if (j < nums[i]) {
-                    dp[i][j] = i != 0 && dp[i - 1][j];
+                if (j < nums[i]) continue;
+                if (j == nums[i]) {
+                    dp[i][j] = true;
                 } else {
-                    dp[i][j] = i == 0 ? j == nums[i] : dp[i - 1][j] | dp[i - 1][j - nums[i]];
+                    dp[i][j] = (i != 0 && dp[i - 1][j]) || (i != 0 && dp[i - 1][j - nums[i]]);
                 }
             }
         }
-        return dp[dp.length - 1][sum];
+        return dp[m - 1][sum];
     }
 
     // tc O(n*s), sc O(sum)
