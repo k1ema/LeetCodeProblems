@@ -1,5 +1,7 @@
 package array.DiagonalTraverse_498;
 
+import java.util.*;
+
 /**
  * 498. Diagonal Traverse
  * https://leetcode.com/problems/diagonal-traverse/
@@ -22,8 +24,39 @@ package array.DiagonalTraverse_498;
  * The total number of elements of the given matrix will not exceed 10,000.
  */
 public class Solution {
-    // tc O(mn), sc O(1)
+    // the sum of indices on all diagonals are equal
+    // tc O(mn), sc O(mn)
     public int[] findDiagonalOrder(int[][] matrix) {
+        if (matrix == null || matrix.length == 0) return new int[0];
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int[] res = new int[m * n];
+        Map<Integer, List<Integer>> dict = new HashMap<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int sum = i + j;
+                dict.putIfAbsent(sum, new ArrayList<>());
+                dict.get(sum).add(matrix[i][j]);
+            }
+        }
+        int idx = 0;
+        for (Map.Entry<Integer, List<Integer>> entry : dict.entrySet()) {
+            List<Integer> tempList;
+            if (entry.getKey() % 2 == 0) {
+                tempList = entry.getValue();
+                Collections.reverse(tempList);
+            } else {
+                tempList = entry.getValue();
+            }
+            for (int i = 0; i < tempList.size(); i++) {
+                res[idx++] = tempList.get(i);
+            }
+        }
+        return res;
+    }
+
+    // tc O(mn), sc O(1)
+    public int[] findDiagonalOrder1(int[][] matrix) {
         if (matrix == null || matrix.length == 0) return new int[] {};
 
         int m = matrix.length, n = matrix[0].length;
