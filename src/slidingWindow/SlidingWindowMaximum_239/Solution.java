@@ -55,9 +55,9 @@ public class Solution {
         if (n * k == 0) return new int[0];
         if (k == 1) return nums;
 
-        int[] res = new int[nums.length - k + 1];
+        int[] res = new int[n - k + 1];
         Deque<Integer> q = new ArrayDeque<>();
-        for (int i = 0; i < nums.length; i++) {
+        for (int i = 0; i < n; i++) {
             if (!q.isEmpty() && q.peekFirst() == i - k) {
                 q.pollFirst();
             }
