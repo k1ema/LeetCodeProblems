@@ -37,20 +37,19 @@ import tree.utils.TreeNode;
  */
 
 class Solution {
-    private boolean isBalanced = true;
-
+    private boolean isBalanced;
     boolean isBalanced(TreeNode root) {
         isBalanced = true;
         depth(root);
         return isBalanced;
     }
 
-    private int depth(TreeNode tn) {
-        if (tn == null) {
+    private int depth(TreeNode root) {
+        if (!isBalanced || root == null) {
             return 0;
         }
-        int l = depth(tn.left);
-        int r = depth(tn.right);
+        int l = depth(root.left);
+        int r = depth(root.right);
         if (Math.abs(l - r) > 1) {
             isBalanced = false;
         }
