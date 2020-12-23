@@ -25,10 +25,10 @@ import java.util.List;
  *
  * Constraints:
  * 1 <= n <= 2^31 - 1
- *
  */
 public class Solution {
     // tc O(n), sc O(n), where n - number of digits
+    // same as 31. Next Permutation
     // 0 ms, faster than 100.00%; 35.4 MB, less than 95.27%
     public int nextGreaterElement(int n) {
         char[] nums = Integer.toString(n).toCharArray();
