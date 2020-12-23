@@ -23,7 +23,7 @@ import java.util.List;
  * ]
  */
 public class Solution {
-    // tc O(n^2*n!), sc O(n)
+    // tc O(n*n!), sc O(n*n!)
     List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> list = new ArrayList<>();
         backtrack(list, new ArrayList<>(), nums);

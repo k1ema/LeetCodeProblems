@@ -21,7 +21,7 @@ import java.util.List;
  * ]
  */
 public class Solution {
-    // tc O(n*n!), sc O(n)
+    // tc O(n*n!), sc O(n*n!)
     // https://leetcode.com/problems/permutations-ii/discuss/18594/Really-easy-Java-solution-much-easier-than-the-solutions-with-very-high-vote
     // https://leetcode.com/problems/permutations/discuss/18239/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partioning
     List<List<Integer>> permuteUnique(int[] nums) {
