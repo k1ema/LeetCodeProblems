@@ -27,29 +27,22 @@ public class Solution {
     // the sum of indices on all diagonals are equal
     // tc O(mn), sc O(mn)
     public int[] findDiagonalOrder(int[][] matrix) {
-        if (matrix == null || matrix.length == 0) return new int[0];
-        int m = matrix.length;
-        int n = matrix[0].length;
-        int[] res = new int[m * n];
-        Map<Integer, List<Integer>> dict = new HashMap<>();
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return new int[0];
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        int m = matrix.length, n = matrix[0].length;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                int sum = i + j;
-                dict.putIfAbsent(sum, new ArrayList<>());
-                dict.get(sum).add(matrix[i][j]);
+                map.putIfAbsent(i + j, new ArrayList<>());
+                map.get(i + j).add(matrix[i][j]);
             }
         }
+        int[] res = new int[m * n];
         int idx = 0;
-        for (Map.Entry<Integer, List<Integer>> entry : dict.entrySet()) {
-            List<Integer> tempList;
-            if (entry.getKey() % 2 == 0) {
-                tempList = entry.getValue();
-                Collections.reverse(tempList);
-            } else {
-                tempList = entry.getValue();
-            }
-            for (int i = 0; i < tempList.size(); i++) {
-                res[idx++] = tempList.get(i);
+        for (int i = 0; i <= m + n - 2; i++) {
+            List<Integer> diagonal = map.get(i);
+            if (i % 2 == 0) Collections.reverse(diagonal);
+            for (int num : diagonal) {
+                res[idx++] = num;
             }
         }
         return res;

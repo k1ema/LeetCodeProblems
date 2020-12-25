@@ -4,6 +4,8 @@ import java.util.*;
 
 /**
  * 1424. Diagonal Traverse II
+ * https://leetcode.com/problems/diagonal-traverse-ii/
+ *
  * Given a list of lists of integers, nums, return all elements of nums in diagonal order as shown in the below images.
  *
  * Example 1:
@@ -36,17 +38,13 @@ public class Solution {
         Map<Integer, List<Integer>> map = new HashMap<>();
         for (int i = 0; i < nums.size(); i++) {
             for (int j = 0; j < nums.get(i).size(); j++) {
-                int index = i + j;
-                List<Integer> list = map.getOrDefault(index, new ArrayList<>());
-                list.add(0, nums.get(i).get(j));
-                map.put(index, list);
+                map.putIfAbsent(i + j, new LinkedList<>());
+                map.get(i + j).add(0, nums.get(i).get(j));
             }
         }
 
-        int len = map.keySet().stream().max(Comparator.comparingInt(a -> a)).orElse(0);
-
         List<Integer> res = new ArrayList<>();
-        for (int i = 0; i <= len; i++) {
+        for (int i = 0; i < map.size(); i++) {
             res.addAll(map.get(i));
         }
 
