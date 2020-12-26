@@ -26,49 +26,44 @@ import java.util.Map;
  * Explanation: It could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).
  */
 public class Solution {
-    // dynamic approach
+    // bottom-up approach
     // tc O(n), sc O(n)
-    // 2 ms, faster than 55.98%; 36.1 MB, less than 72.64%
+    // 1 ms, faster than 93.50%; 37.9 MB, less than 20.13%
     // https://leetcode.com/problems/decode-ways/discuss/30358/Java-clean-DP-solution-with-explanation
     public int numDecodings(String s) {
         int n = s.length();
         int[] dp = new int[n + 1];
         dp[0] = 1;
-        dp[1] = s.charAt(0) != '0' ? 1 : 0;
+        dp[1] = s.charAt(0) == '0' ? 0 : 1;
         for (int i = 2; i <= n; i++) {
-            int first = Integer.parseInt(s.substring(i - 1, i));
-            int second = Integer.parseInt(s.substring(i - 2, i));
-            if (first >= 1 && first <= 9) dp[i] += dp[i - 1];
-            if (second >= 10 && second <= 26) dp[i] += dp[i - 2];
+            if (s.charAt(i - 1) > '0') dp[i] = dp[i - 1];
+            int twoDigits = Integer.parseInt(s.substring(i - 2, i));
+            if (twoDigits >= 10 && twoDigits <= 26) {
+                dp[i] += dp[i - 2];
+            }
         }
         return dp[n];
     }
 
-    // backtracking approach
+    // top-down approach with memoization - same as finding Fibonacci number
     // tc O(n), sc O(n)
-    // 2 ms, faster than 60.11%; 39 MB, less than 5.66%
-    // we should use memoization map for avoiding 2^n time complexity - same as finding Fibonacci number
-    private Map<Integer, Integer> map;
+    // 1 ms, faster than 93.50%; 37.6 MB, less than 45.70%
     public int numDecodings1(String s) {
-        map = new HashMap<>();
-        return bt(s, 0);
+        return helper(s, 0, new HashMap<>());
     }
 
-    private int bt(String s, int ind) {
-        if (ind == s.length()) return 1;
-        if (s.charAt(ind) == '0') return 0;
-        if (ind == s.length() - 1) return 1;
-
-        if (map.containsKey(ind)) return map.get(ind);
-
-        int res = bt(s, ind + 1);
-        int val = Integer.parseInt(s.substring(ind, ind + 2));
-        if (10 <= val && val <= 26) {
-            res += bt(s, ind + 2);
+    private int helper(String s, int idx, Map<Integer, Integer> memo) {
+        if (memo.containsKey(idx)) return memo.get(idx);
+        if (idx == s.length()) return 1;
+        if (s.charAt(idx) == '0') return 0;
+        int res = helper(s, idx + 1, memo);
+        if (idx < s.length() - 1) {
+            int num = Integer.parseInt(s.substring(idx, idx + 2));
+            if (num >= 10 && num <= 26) {
+                res += helper(s, idx + 2, memo);
+            }
         }
-
-        map.put(ind, res);
-
+        memo.put(idx, res);
         return res;
     }
 }
