@@ -6,8 +6,7 @@ import java.util.Arrays;
  * 188. Best Time to Buy and Sell Stock IV
  * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/
  *
- * You are given an integer array prices where prices[i] is the price
- * of a given stock on the ith day.
+ * You are given an integer array prices where prices[i] is the price of a given stock on the ith day.
  *
  * Design an algorithm to find the maximum profit. You may complete at most k transactions.
  *
@@ -31,8 +30,28 @@ import java.util.Arrays;
  * 0 <= prices[i] <= 1000
  */
 public class Solution {
-    // tc O(n*k), sc O(k), MLE
+    // tc O(n * k), sc O(n * k)
     public int maxProfit(int k, int[] prices) {
+        return f(0, k, false, prices, new Integer[prices.length][k + 1][2]);
+    }
+
+    private int f(int i, int k, boolean hasStock, int[] prices, Integer[][][] memo) {
+        if (i == prices.length) return 0;
+        int has_stock = hasStock ? 1 : 0;
+        if (memo[i][k][has_stock] != null) return memo[i][k][has_stock];
+        int res = f(i + 1, k, hasStock, prices, memo);
+        if (k > 0 && hasStock) {
+            res = Math.max(res, f(i + 1, k - 1, false, prices, memo) + prices[i]);
+        }
+        if (k > 0 && !hasStock) {
+            res = Math.max(res, f(i + 1, k, true, prices, memo) - prices[i]);
+        }
+        memo[i][k][has_stock] = res;
+        return res;
+    }
+
+    // tc O(n * k), sc O(n * k)
+    public int maxProfit1(int k, int[] prices) {
         if (k == 0) return 0;
         if (k >= prices.length / 2) return quickSolve(prices); // you can buy/sell on each day
         int[] cost = new int[k];
