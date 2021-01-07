@@ -1,7 +1,9 @@
 package hashtable.LongestSubstringWithoutRepeatingCharacters_3;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 3. Longest Substring Without Repeating Characters
@@ -26,9 +28,37 @@ import java.util.Map;
  *              Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
  */
 public class Solution {
+    /*
+        sliding window
+        1. init l, r int variables, Set dict
+        2. move r ptr and check if cur char in the dict
+            if it is
+                continue removing from dict left char and increment it while dict does not contain right char
+            add right char to dict
+            increment r
+            update result
+    */
+    // tc O(n), sc O(n)
+    public int lengthOfLongestSubstring(String s) {
+        Set<Character> dict = new HashSet<>();
+        int res = 0, l = 0, r = 0;
+        while (r < s.length()) {
+            char c = s.charAt(r);
+            if (dict.contains(c)) {
+                while (l < r && dict.contains(c)) {
+                    dict.remove(s.charAt(l++));
+                }
+            }
+            dict.add(c);
+            r++;
+            res = Math.max(res, r - l);
+        }
+        return res;
+    }
+
     // https://leetcode.com/problems/longest-substring-without-repeating-characters/discuss/1729/11-line-simple-Java-solution-O(n)-with-explanation
     // tc O(n), sc O(n)
-    int lengthOfLongestSubstring(String s) {
+    int lengthOfLongestSubstring1(String s) {
         if (s.length() == 0) return 0;
         Map<Character, Integer> map = new HashMap<>();
         int max = 0;
@@ -40,24 +70,5 @@ public class Solution {
             max = Math.max(max, i - j + 1);
         }
         return max;
-    }
-
-    // tc O(n^2), sc O(1)
-    int lengthOfLongestSubstring1(String s) {
-        if (s == null) {
-            return 0;
-        } else if (s.length() == 1) {
-            return 1;
-        }
-        int longest = 0;
-        for (int j = 1, i = 0; j < s.length(); j++) {
-            char ss = s.charAt(j);
-            while (s.substring(i, j).indexOf(ss) > -1) {
-                longest = Math.max(longest, s.substring(i, j).length());
-                i++;
-            }
-            longest = Math.max(longest, s.substring(i, j + 1).length());
-        }
-        return longest;
     }
 }
