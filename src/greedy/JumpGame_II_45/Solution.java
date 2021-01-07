@@ -1,5 +1,7 @@
 package greedy.JumpGame_II_45;
 
+import java.util.Arrays;
+
 /**
  * 45. Jump Game II
  * https://leetcode.com/problems/jump-game-ii/
@@ -26,7 +28,79 @@ package greedy.JumpGame_II_45;
  * 0 <= nums[i] <= 10^5
  */
 public class Solution {
+    // tc O(nlogn), sc O(n)
+    // 34 ms, faster than 24.90%; 46.4 MB, less than 5.64%
+    // https://www.youtube.com/watch?v=hWVTOr6phl8
+    // https://www.youtube.com/watch?v=tmv7W9Xw3lo
     public int jump(int[] nums) {
+        int n = nums.length;
+        SegmentTree st = new SegmentTree(n);
+
+        st.update(n - 1, 0);
+
+        int L, R;
+        for (int i = n - 2; i >= 0; i--) {
+            L = i + 1;
+            R = Math.min(n - 1, i + nums[i]);
+
+            int r = st.getMin(L, R) + 1;
+            st.update(i, r);
+        }
+
+        return st.getMin(0, 0);
+    }
+
+    private static class SegmentTree {
+        private final int INF = (int) 1e9;
+        private final int n;
+        private final int[] a;
+        private final int offset;
+
+        SegmentTree(int n) {
+            int k = 1;
+            while ((1 << k) < n) {
+                k++;
+            }
+            n = 1 << k;
+            a = new int[2 * n - 1];
+            Arrays.fill(a, INF);
+            offset = a.length - n;
+            this.n = n;
+        }
+
+        int getMin(int L, int R) {
+            return getMin(0, 0, n - 1, L, R);
+        }
+
+        int getMin(int v, int l, int r, int L, int R) {
+            if (r < L || l > R)
+                return INF;
+
+            if (l >= L && r <= R)
+                return a[v];
+
+            return Math.min(
+                    getMin(v * 2 + 1, l, l + (r - l) / 2, L, R),
+                    getMin(v * 2 + 2, l + (r - l) / 2 + 1, r, L, R)
+            );
+        }
+
+        void update(int i, int v) {
+            a[offset + i] = v;
+
+            int index = offset + i;
+            while (index != 0) {
+                int parent = (index - 1) / 2;
+                a[parent] = Math.min(a[2 * parent + 1], a[2 * parent + 2]);
+                index /= 2;
+            }
+        }
+    }
+
+    // tc O(n), sc O(1)
+    // 1ms; 40.8 MB
+    // https://www.youtube.com/watch?v=vBdo7wtwlXs
+    public int jump4(int[] nums) {
         if (nums.length == 1) return 0;
         int ladder = nums[0], stairs = nums[0], jump = 1;
         for (int i = 1; i < nums.length - 1; i++) {
@@ -43,6 +117,7 @@ public class Solution {
     }
 
     // Greedy tc O(n), sc O(1)
+    // https://leetcode.com/problems/jump-game-ii/discuss/18014/Concise-O(n)-one-loop-JAVA-solution-based-on-Greedy
     public int jump3(int[] nums) {
         int jumps = 0, curEnd = 0, curFarthest = 0;
         for (int i = 0; i < nums.length - 1; i++) {
