@@ -1,4 +1,4 @@
-package graph.WordLadder_127;
+package dfs_bfs.WordLadder_127;
 
 import javafx.util.Pair;
 

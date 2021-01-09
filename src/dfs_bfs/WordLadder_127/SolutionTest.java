@@ -1,4 +1,4 @@
-package graph.WordLadder_127;
+package dfs_bfs.WordLadder_127;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +25,7 @@ public class SolutionTest {
         assertEquals(0, s.ladderLength("hit", "cog",
                 Arrays.asList("hot", "dot", "dog", "lot", "log")));
         assertEquals(2, s.ladderLength("a", "c", Arrays.asList("a", "b", "c")));
+        assertEquals(5, s.ladderLength("kiss", "tusk", Arrays.asList("miss", "dusk", "kiss", "musk", "tusk", "diss", "disk", "sang", "ties", "muss")));
         assertEquals(5, s.ladderLength("qa", "sq",
                 Arrays.asList("si", "go", "se", "cm", "so", "ph", "mt", "db", "mb", "sb", "kr", "ln", "tm",
                         "le", "av", "sm", "ar", "ci", "ca", "br", "ti", "ba", "to", "ra", "fa", "yo", "ow",
