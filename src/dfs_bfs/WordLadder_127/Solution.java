@@ -79,7 +79,7 @@ public class Solution implements ISolution {
         return 0;
     }
 
-    // tc O(m^2 * n), m - word length, n - wordList size; sc O(m * n)
+    // tc O(m^2 * n), m - word length, n - wordList size; sc O(m^2 * n)
     // 40 ms, faster than 88.87%; 47.1 MB, less than 32.44%
     public int ladderLength2(String beginWord, String endWord, List<String> wordList) {
         Map<String, List<String>> map = new HashMap<>();
@@ -117,35 +117,4 @@ public class Solution implements ISolution {
 
         return 0;
     }
-
-    // Wrong answer
-    public int ladderLength3(String beginWord, String endWord, List<String> wordList) {
-        Set<String> dict = new HashSet<>(wordList);
-        int res = f(beginWord, endWord, dict, new HashSet<>(), new HashMap<>());
-        return res == 1e9 ? 0 : res;
-    }
-
-    private int f(String begin, String end, Set<String> dict, Set<String> used, Map<String, Integer> memo) {
-        if (begin.equals(end)) {
-            return 1;
-        }
-        if (memo.containsKey(begin)) {
-            return memo.get(begin);
-        }
-        int res = (int) 1e9;
-        used.add(begin);
-        for (int i = 0; i < begin.length(); i++) {
-            for (int j = 0; j < 26; j++) {
-                char c = (char) ('a' + j);
-                String newWord = begin.substring(0, i) + c + begin.substring(i + 1);
-                if (!newWord.equals(begin) && dict.contains(newWord) && !used.contains(newWord)) {
-                    res = Math.min(res, 1 + f(newWord, end, dict, used, memo));
-                }
-            }
-        }
-        used.remove(begin);
-        memo.put(begin, res);
-        return res;
-    }
-
 }
