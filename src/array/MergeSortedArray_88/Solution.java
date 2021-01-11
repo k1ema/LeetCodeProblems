@@ -35,23 +35,23 @@ public class Solution {
         }
     }
 
-    // tc O(m*n), sc O(1)
+    // tc O(m + n), sc O(m + n)
     public void merge1(int[] nums1, int m, int[] nums2, int n) {
-        int j = 0;
-        for (int i = 0; i < nums1.length; i++) {
-            while (j < n && nums2[j] < nums1[i]) {
-                insert(nums1, i++, nums2[j++]);
+        int[] copy = new int[m];
+        System.arraycopy(nums1, 0, copy, 0, m);
+        int i = 0, j = 0, k = 0;
+        while (i < m && j < n) {
+            if (copy[i] <= nums2[j]) {
+                nums1[k++] = copy[i++];
+            } else {
+                nums1[k++] = nums2[j++];
             }
         }
+        while (i < m) {
+            nums1[k++] = copy[i++];
+        }
         while (j < n) {
-            nums1[m + j] = nums2[j++];
+            nums1[k++] = nums2[j++];
         }
-    }
-
-    private void insert(int[] nums, int ind, int val) {
-        for (int i = nums.length - 1; i > ind; i--) {
-            nums[i] = nums[i - 1];
-        }
-        nums[ind] = val;
     }
 }
