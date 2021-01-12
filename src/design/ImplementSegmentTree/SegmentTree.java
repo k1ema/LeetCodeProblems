@@ -26,8 +26,9 @@ public class SegmentTree {
     private int getSum(int i, int l, int r, int L, int R) {
         if (l > R || r < L) return 0;
         if (l >= L && r <= R) return nums[i];
-        int leftChild = getSum(2 * i + 1, l, l + (r - l) / 2, L, R);
-        int rightChild = getSum(2 * i + 2, l + (r - l) / 2 + 1, r, L, R);
+        int mid = l + (r - l) / 2;
+        int leftChild = getSum(2 * i + 1, l, mid, L, R);
+        int rightChild = getSum(2 * i + 2, mid + 1, r, L, R);
         return leftChild + rightChild;
     }
 
