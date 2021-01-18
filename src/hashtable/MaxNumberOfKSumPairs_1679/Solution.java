@@ -58,17 +58,13 @@ public class Solution {
         int l = 0, r = n - 1;
         int res = 0;
         while (l < r) {
-            if (nums[r] >= k) {
+            if (nums[l] + nums[r] > k) {
                 r--;
+            } else if (nums[l] + nums[r] < k) {
+                l++;
             } else {
-                if (nums[l] + nums[r] > k) {
-                    r--;
-                } else if (nums[l] + nums[r] < k) {
-                    l++;
-                } else {
-                    res++;
-                    l++; r--;
-                }
+                res++;
+                l++; r--;
             }
         }
         return res;
