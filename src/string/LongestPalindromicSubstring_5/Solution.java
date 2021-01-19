@@ -68,7 +68,7 @@ public class Solution {
 
     // Manacher's algorithm - O(n)
     // http://e-maxx.ru/algo/palindromes_count
-    // Most of the people in Leetcode use O(n^2) solition
+    // Most of the people in Leetcode use O(n^2) solution
     String longestPalindrome(String s) {
         if (s == null || s.length() <= 1) return s;
         int left = 0, right = -1;
