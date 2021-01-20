@@ -1,6 +1,7 @@
 package string.ValidParentheses_20;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 /**
  * 20. Valid Parentheses
@@ -36,22 +37,25 @@ import java.util.Stack;
  * Output: true
  */
 public class Solution {
-    boolean isValid(String s) {
-        if (s == null) {
-            return true;
-        }
-        Stack<Character> stack = new Stack<>();
-        for (char c : s.toCharArray()) {
-            if (c == '(') {
-                stack.push(')');
-            } else if (c == '[') {
-                stack.push(']');
-            } else if (c == '{') {
-                stack.push('}');
-            } else if (stack.isEmpty() || stack.pop() != c) {
-                return false;
+    /*
+       init stack
+       traverse string,
+           if open -> put to stack.
+           else -> get from stack and check with curr
+       tc O(n), sc O(n)
+   */
+    public boolean isValid(String s) {
+        Deque<Character> stack = new ArrayDeque<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '(' -> stack.push(')');
+                case '[' -> stack.push(']');
+                case '{' -> stack.push('}');
+                default -> {
+                    if (stack.isEmpty() || stack.pop() != c) return false;
+                }
             }
-
         }
         return stack.isEmpty();
     }
