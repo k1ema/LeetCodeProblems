@@ -2,8 +2,10 @@ package heap.MergeKSortedLists_23;
 
 import linkedList.utils.ListNode;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -11,17 +13,37 @@ import java.util.PriorityQueue;
  * 23. Merge k Sorted Lists
  * https://leetcode.com/problems/merge-k-sorted-lists/
  *
- * Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+ * You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
  *
- * Example:
+ * Merge all the linked-lists into one sorted linked-list and return it.
  *
- * Input:
+ * Example 1:
+ * Input: lists = [[1,4,5],[1,3,4],[2,6]]
+ * Output: [1,1,2,3,4,4,5,6]
+ * Explanation: The linked-lists are:
  * [
  *   1->4->5,
  *   1->3->4,
  *   2->6
  * ]
- * Output: 1->1->2->3->4->4->5->6
+ * merging them into one sorted list:
+ * 1->1->2->3->4->4->5->6
+ *
+ * Example 2:
+ * Input: lists = []
+ * Output: []
+ *
+ * Example 3:
+ * Input: lists = [[]]
+ * Output: []
+ *
+ * Constraints:
+ *      k == lists.length
+ *      0 <= k <= 10^4
+ *      0 <= lists[i].length <= 500
+ *      -10^4 <= lists[i][j] <= 10^4
+ *      lists[i] is sorted in ascending order.
+ *      The sum of lists[i].length won't exceed 10^4.
  */
 public class Solution {
     // PriorityQueue solution
@@ -111,5 +133,39 @@ public class Solution {
 
     private static boolean less(int[] a, int i, int j) {
         return a[i] < a[j];
+    }
+
+    // tc O(k*n^2) [k * (n + n-1 + n-2 + ... + 1)]=k*n^2
+    // sc O(kn), where n - max/avg number of nodes in lists
+    public ListNode mergeKLists2(ListNode[] lists) {
+        if (lists.length == 0) return null;
+        ListNode dummy = new ListNode();
+        ListNode cur = dummy;
+        Deque<ListNode> q = new ArrayDeque<>();
+        for (ListNode list : lists) {
+            if (list != null) q.add(list);
+        }
+        while (!q.isEmpty()) {
+            int size = q.size();
+            int min = (int) 1e5;
+            for (int i = 0; i < size; i++) {
+                ListNode list = q.poll();
+                min = Math.min(min, list.val);
+                q.add(list);
+            }
+            for (int i = 0; i < size; i++) {
+                ListNode list = q.poll();
+                if (list.val == min) {
+                    cur.next = new ListNode(list.val);
+                    list = list.next;
+                    cur = cur.next;
+                }
+                if (list != null) {
+                    q.add(list);
+                }
+            }
+        }
+
+        return dummy.next;
     }
 }
