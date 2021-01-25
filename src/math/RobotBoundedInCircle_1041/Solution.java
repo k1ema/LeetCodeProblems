@@ -47,13 +47,14 @@ public class Solution {
     // 0 ms, faster than 100.00%; 37.4 MB, less than 54.55%
     public boolean isRobotBounded(String instructions) {
         int x = 0, y = 0;
-        int[][] dirs = new int[][] {{0, 1}, {1, 0}, {0, -1}, {-1,0}};
+        int[][] dirs = new int[][] {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
         int curInd = 0;
         for (char instr : instructions.toCharArray()) {
             if (instr == 'L') {
-                curInd = Math.floorMod(curInd - 1, 4);
+                // 1 turn to the left = 3 turns to the right
+                curInd = (curInd + 3) % 4;
             } else if (instr == 'R') {
-                curInd = Math.floorMod(curInd + 1, 4);
+                curInd = (curInd + 1) % 4;
             } else {
                 x += dirs[curInd][0];
                 y += dirs[curInd][1];
