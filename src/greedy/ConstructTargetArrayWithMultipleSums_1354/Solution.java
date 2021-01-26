@@ -38,24 +38,26 @@ import java.util.PriorityQueue;
  */
 public class Solution {
     public boolean isPossible(int[] target) {
+        if (target.length == 1) return target[0] == 1;
+
         PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
-        long sum = 0;
+        long total = 0;
         for (int num : target) {
-            sum += num;
+            total += num;
             pq.add(num);
         }
-        while (true) {
-            int val = pq.poll();
-            sum -= val;
-            if (val == 1 || sum == 1) {
-                return true;
-            }
-            if (val < sum || sum == 0 || val % sum == 0) {
-                return false;
-            }
-            val %= sum;
-            sum += val;
-            pq.add(val);
+
+        while (pq.peek() > 1) {
+            int largest = pq.poll();
+            long rest = total - largest;
+            if (rest == 1) return true;
+
+            int x = (int) (largest % rest);
+            if (x == 0 || x == largest) return false;
+
+            pq.add(x);
+            total = total - largest + x;
         }
+        return true;
     }
 }
