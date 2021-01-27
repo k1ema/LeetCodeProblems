@@ -1,6 +1,10 @@
 package dfs_bfs.PathWithMinimumEffort_1631;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
  * 1631. Path With Minimum Effort
@@ -37,12 +41,12 @@ import java.util.*;
  * rows == heights.length
  * columns == heights[i].length
  * 1 <= rows, columns <= 100
- * 1 <= heights[i][j] <= 106
+ * 1 <= heights[i][j] <= 10^6
  */
 public class Solution {
     // Dijkstra, tc O(m*n*log(m*n)), sc O(m * n)
     // 68 ms, faster than 51.32%; 39.6 MB, less than 67.93%
-    public int minimumEffortPath(int[][] heights) {
+    public int minimumEffortPath1(int[][] heights) {
         int m = heights.length, n = heights[0].length;
         int res = 0;
         Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
@@ -73,9 +77,52 @@ public class Solution {
         return -1;
     }
 
+    // Binary search + BFS, same could be written using DFS
+    // tc O(mn), sc O(mn)
+    // 206 ms, faster than 11.54%; 114.4 MB, less than 5.05%
+    public int minimumEffortPath(int[][] heights) {
+        int l = -1, r = (int) 1e6;
+        while (r - l > 1) {
+            int m = (l + r) >>> 1;
+            if (canReachDestination(heights, m)) {
+                r = m;
+            } else {
+                l = m;
+            }
+        }
+        return r;
+    }
+
+    private boolean canReachDestination(int[][] heights, int k) {
+        int m = heights.length, n = heights[0].length;
+        Deque<int[]> q = new ArrayDeque<>();
+        boolean[][] visited = new boolean[m][n];
+        q.add(new int[] {0, 0});
+        visited[0][0] = true;
+        int[][] dirs = new int[][] {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+        while (!q.isEmpty()) {
+            int[] node = q.poll();
+            int i = node[0], j = node[1];
+            if (i == m - 1 && j == n - 1) {
+                return true;
+            }
+            for (int[] dir : dirs) {
+                int newI = i + dir[0], newJ = j + dir[1];
+                if (newI >= 0 && newI < m && newJ >= 0 && newJ < n && !visited[newI][newJ]) {
+                    int nextEffort = Math.abs(heights[i][j] - heights[newI][newJ]);
+                    if (nextEffort <= k) {
+                        visited[newI][newJ] = true;
+                        q.add(new int[] {newI, newJ, nextEffort});
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     // brute-force, TLE
     // tc O(3^(mn)), sc O(mn)
-    public int minimumEffortPath1(int[][] heights) {
+    public int minimumEffortPath2(int[][] heights) {
         return dfs(heights, 0, 0, 0);
     }
 
