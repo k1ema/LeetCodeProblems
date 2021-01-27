@@ -32,6 +32,15 @@ public class SolutionTest {
                 {5, 1, 3, 1, 1, 3, 1, 9},
                 {6, 4, 10, 6, 10, 9, 4, 6}
         }));
+        assertEquals(6, s.minimumEffortPath(new int[][] {
+                {10, 8},
+                {10, 8},
+                {1, 2},
+                {10, 3},
+                {1, 3},
+                {6, 3},
+                {5, 2}
+        }));
     }
 }
 

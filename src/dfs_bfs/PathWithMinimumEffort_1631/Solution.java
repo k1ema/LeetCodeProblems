@@ -76,28 +76,24 @@ public class Solution {
     // brute-force, TLE
     // tc O(3^(mn)), sc O(mn)
     public int minimumEffortPath1(int[][] heights) {
-        int m = heights.length, n = heights[0].length;
-        return dfs(heights, 0, 0, 0, 0, m, n, 0, new boolean[m][n]);
+        return dfs(heights, 0, 0, 0);
     }
 
-    private int dfs(int[][] heights, int i, int j, int prevI, int prevJ, int m, int n, int maxEffort, boolean[][] visited) {
-        if (visited[i][j]) return Integer.MAX_VALUE;
-        maxEffort = Math.max(maxEffort, Math.abs(heights[i][j] - heights[prevI][prevJ]));
-        if (i == m - 1 && j == n - 1) {
-            return maxEffort;
+    private int dfs(int[][] heights, int i, int j, int curMax) {
+        if (i == heights.length - 1 && j == heights[i].length - 1) {
+            return curMax;
         }
-        visited[i][j] = true;
         int[][] dirs = new int[][] {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
-        int res = Integer.MAX_VALUE;
-        for (int[] dir: dirs) {
-            int newI = i + dir[0];
-            int newJ = j + dir[1];
-            if (newI >= 0 && newI < m && newJ >= 0 && newJ < n && !visited[newI][newJ]) {
-                res = Math.min(res, dfs(heights, newI, newJ, i, j, m, n, maxEffort, visited));
+        int curHeight = heights[i][j];
+        heights[i][j] = 0;
+        int res = (int) 1e6;
+        for (int[] dir : dirs) {
+            int newI = i +  dir[0], newJ = j + dir[1];
+            if (newI >= 0 && newI < heights.length && newJ >= 0 && newJ < heights[i].length && heights[newI][newJ] != 0) {
+                res = Math.min(res, dfs(heights, newI, newJ, Math.max(curMax, Math.abs(curHeight - heights[newI][newJ]))));
             }
         }
-        visited[i][j] = false;
+        heights[i][j] = curHeight;
         return res;
     }
-
 }
