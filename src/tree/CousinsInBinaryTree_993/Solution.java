@@ -2,7 +2,10 @@ package tree.CousinsInBinaryTree_993;
 
 import tree.utils.TreeNode;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
 
 /**
  * 993. Cousins in Binary Tree

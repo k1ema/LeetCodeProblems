@@ -1,8 +1,8 @@
 package array.RangeSumOfSortedSubarraySums_1508;
 
-import javafx.util.Pair;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 1508. Range Sum of Sorted Subarray Sums

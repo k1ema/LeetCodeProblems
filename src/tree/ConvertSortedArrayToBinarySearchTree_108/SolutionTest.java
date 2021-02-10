@@ -1,11 +1,10 @@
 package tree.ConvertSortedArrayToBinarySearchTree_108;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import tree.utils.Parser;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class SolutionTest {
     @Test

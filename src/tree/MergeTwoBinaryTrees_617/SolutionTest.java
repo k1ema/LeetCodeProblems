@@ -1,11 +1,10 @@
 package tree.MergeTwoBinaryTrees_617;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import tree.utils.Parser;
 import tree.utils.TreeNode;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SolutionTest {
     @Test

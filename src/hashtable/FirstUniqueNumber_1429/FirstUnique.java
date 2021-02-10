@@ -1,6 +1,9 @@
 package hashtable.FirstUniqueNumber_1429;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 1429. First Unique Number

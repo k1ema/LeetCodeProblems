@@ -1,15 +1,14 @@
 package linkedList.SortList_148;
 
-import java.util.Arrays;
-
-import org.junit.Test;
-
 import linkedList.utils.ListNode;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 import static linkedList.utils.Parser.listNodeToString;
 import static linkedList.utils.Parser.stringToIntegerArray;
 import static linkedList.utils.Parser.stringToListNode;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SolutionTest {
     private final String[] ss = new String[] {

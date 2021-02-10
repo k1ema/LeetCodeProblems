@@ -1,6 +1,11 @@
 package graph.ParallelCourses_II_1494;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
  * 1494. Parallel Courses II
@@ -44,16 +49,52 @@ import java.util.*;
  * The given graph is a directed acyclic graph.
  */
 public class Solution {
+    public int minNumberOfSemesters(int n, int[][] deps, int k) {
+        int[] preq = new int[n];
+        for (int[] dep : deps) {
+            // to study j, what are the prerequisites? each set bit is a class that we need to take. ith bit means ith class
+            // -1 because classes are 1 to n
+            preq[dep[1] - 1] |= 1 << (dep[0] - 1);
+        }
+        int[] dp = new int[1 << n];
+        Arrays.fill(dp, n);
+        dp[0] = 0;
+        for (int i = 0; i < (1 << n); i++) {
+            // we are now at status i. we can "influence" a later status from this status
+            int canStudy = 0; // what are the classes we can study?
+            for (int j = 0; j < n; j++) {
+                // a & b == b means b is a's subset
+                // so if preq[j] is i's subset, we can now study j given status i
+                if ((i & preq[j]) == preq[j]) {
+                    canStudy |= (1 << j);
+                }
+            }
+            canStudy &= ~i;
+            // take out i, so that we only enumerate a subset canStudy without i.
+            // note we will | later so here we need a set that has no intersection with i to reduce the enumeration cost
+            for (int sub = canStudy; sub > 0; sub = (sub - 1) & canStudy) {
+                // we can study one or more courses indicated by set "canStudy". we need to enumerate all non empty subset of it.
+                // This for loop is a typical way to enumerate all subsets of a given set "canStudy"
+                // we studied i using dp[i] semesters. now if we also study the subset sub, we need dp [i ]+1 semesters,
+                // and the status we can "influence" is dp[ i | sub] because at that state, we studied what we want to study in "sub"
+                if (Integer.bitCount(sub) <= k) {
+                    dp[i | sub] = Math.min(dp[i | sub], dp[i] + 1);
+                }
+            }
+        }
+        return dp[(1 << n) - 1];
+    }
+
     // https://leetcode.com/problems/parallel-courses-ii/discuss/708120/Java-Solution-Priority-Queue-%2B-Topological-Sort
     // https://leetcode.com/problems/parallel-courses-ii/discuss/708164/Java-Topological-Sort-%2B-PriorityQueue-of-outdegrees
 
     // this problem is very similar to Course Schedule which is straightforward implementation of Topological sorting.
-    // In this case the only difference is we have a constraint on how many courses can be taken parallely during a semester
+    // In this case the only difference is we have a constraint on how many courses can be taken in parallel during a semester
     // and to handle that I used PQ of outdegrees and greedily choosing the course with highest outdegree to do next
     // (i.e the course that will free up most number of dependent courses).
 
     // 2 ms, faster than 100.00%; 37.4 MB, less than 100.00%
-    public int minNumberOfSemesters(int n, int[][] dependencies, int k) {
+    public int minNumberOfSemesters1(int n, int[][] dependencies, int k) {
         List<Integer>[] graph = buildGraph(n, dependencies);
         int[] indegree = new int[n + 1];
         int[] outdegree = new int[n + 1];
@@ -139,6 +180,4 @@ public class Solution {
 //
 //        depth[ind] = Math.max(depth[ind], 1);
 //    }
-
-
 }

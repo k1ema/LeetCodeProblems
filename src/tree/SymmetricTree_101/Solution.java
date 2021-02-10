@@ -1,9 +1,9 @@
 package tree.SymmetricTree_101;
 
+import tree.utils.TreeNode;
+
 import java.util.LinkedList;
 import java.util.Queue;
-
-import tree.utils.TreeNode;
 
 /**
  * 101. Symmetric Tree

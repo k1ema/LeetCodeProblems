@@ -1,9 +1,9 @@
 package tree.ConstructBinaryTreeFromPreorderAndPostorderTraversal_889;
 
+import tree.utils.TreeNode;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import tree.utils.TreeNode;
 
 /**
  * 889. Construct Binary Tree from Preorder and Postorder Traversal

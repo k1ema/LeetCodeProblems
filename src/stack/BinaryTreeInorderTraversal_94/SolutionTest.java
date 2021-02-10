@@ -1,12 +1,11 @@
 package stack.BinaryTreeInorderTraversal_94;
 
-import java.util.Arrays;
-
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import tree.utils.Parser;
 
-import static org.junit.Assert.assertEquals;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SolutionTest {
     @Test

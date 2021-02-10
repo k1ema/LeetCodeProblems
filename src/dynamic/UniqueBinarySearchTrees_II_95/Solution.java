@@ -1,10 +1,10 @@
 package dynamic.UniqueBinarySearchTrees_II_95;
 
+import tree.utils.TreeNode;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import tree.utils.TreeNode;
 
 /**
  * 95. Unique Binary Search Trees II

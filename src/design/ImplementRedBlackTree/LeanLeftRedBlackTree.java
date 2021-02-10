@@ -3,7 +3,9 @@ package design.ImplementRedBlackTree;
 import java.util.LinkedList;
 import java.util.List;
 
-import static design.ImplementRedBlackTree.Node.*;
+import static design.ImplementRedBlackTree.Node.BLACK;
+import static design.ImplementRedBlackTree.Node.RED;
+import static design.ImplementRedBlackTree.Node.isRed;
 
 public class LeanLeftRedBlackTree<Key extends Comparable<Key>, Value> {
     private Node root;

@@ -1,26 +1,26 @@
 package design.DesignInMemoryFileSystem_588;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(Parameterized.class)
 public class FileSystemTest {
-    @Parameterized.Parameters(name = "fs: {0}")
-    public static Object[] data() {
-        return new Object[] {new FileSystem(), new FileSystem2()};
+    private static Stream<Arguments> data() {
+        return Stream.of(
+                Arguments.of(new FileSystem()),
+                Arguments.of(new FileSystem2())
+        );
     }
 
-    @Parameterized.Parameter
-    public IFileSystem fs;
-
-    @Test
-    public void test() {
+    @ParameterizedTest
+    @MethodSource("data")
+    public void test(IFileSystem fs) {
         List<String> ls = fs.ls("/");
         System.out.println(ls);
 

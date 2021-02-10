@@ -1,6 +1,8 @@
 package math.ValidSquare_593;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 593. Valid Square

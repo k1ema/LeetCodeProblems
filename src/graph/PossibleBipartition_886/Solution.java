@@ -1,6 +1,9 @@
 package graph.PossibleBipartition_886;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 886. Possible Bipartition

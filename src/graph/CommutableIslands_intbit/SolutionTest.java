@@ -1,27 +1,25 @@
 package graph.CommutableIslands_intbit;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(Parameterized.class)
 public class SolutionTest {
-    @Parameterized.Parameters(name = "Algorithm: {0}")
-    public static Object[] data() {
-        return new Object[] {
-                new SolutionPrimLazy(), new SolutionKruskal()
-        };
+    private static Stream<Arguments> data() {
+        return Stream.of(
+                Arguments.of(new SolutionPrimLazy()),
+                Arguments.of(new SolutionKruskal())
+        );
     }
 
-    @Parameterized.Parameter
-    public Solution s;
-
-    @Test
-    public void test() {
+    @ParameterizedTest
+    @MethodSource("data")
+    public void test(Solution s) {
         assertEquals(6, s.solve(4, Arrays.asList(
                 Arrays.asList(1, 2, 1),
                 Arrays.asList(2, 3, 4),

@@ -1,15 +1,16 @@
 package sorting.MergeSort;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class MergeSortTest {
     private MergeSort mergeSort;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         mergeSort = new MergeSort();
     }
@@ -24,6 +25,6 @@ public class MergeSortTest {
     private void testSort(int[] nums, int[] expectedNums) {
         mergeSort.sort(nums);
         System.out.println(Arrays.toString(nums));
-        Assert.assertArrayEquals(expectedNums, nums);
+        assertArrayEquals(expectedNums, nums);
     }
 }

@@ -58,6 +58,4 @@ public class Solution {
 
         return (int) ((maxHor * maxVer) % mod);
     }
-
-
 }

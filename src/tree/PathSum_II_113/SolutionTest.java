@@ -1,11 +1,11 @@
 package tree.PathSum_II_113;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import tree.utils.Parser;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SolutionTest {
     @Test

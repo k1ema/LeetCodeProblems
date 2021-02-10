@@ -2,7 +2,12 @@ package hashtable.KDiffPairsInAnArray_532;
 
 import javafx.util.Pair;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * 532. K-diff Pairs in an Array

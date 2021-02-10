@@ -1,13 +1,12 @@
 package dynamic.UniqueBinarySearchTrees_II_95;
 
+import org.junit.jupiter.api.Test;
+import tree.utils.Parser;
+
 import java.util.Arrays;
 import java.util.Collections;
 
-import org.junit.Test;
-
-import tree.utils.Parser;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SolutionTest {
     @Test

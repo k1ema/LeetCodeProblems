@@ -45,6 +45,7 @@ public class Solution {
        tc O(n), sc O(n)
    */
     public boolean isValid(String s) {
+        if (s == null) return true;
         Deque<Character> stack = new ArrayDeque<>();
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);

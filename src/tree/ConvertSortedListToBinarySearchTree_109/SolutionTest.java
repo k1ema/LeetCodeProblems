@@ -1,12 +1,12 @@
 package tree.ConvertSortedListToBinarySearchTree_109;
 
 import linkedList.utils.ListNode;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import tree.utils.Parser;
 import tree.utils.TreeNode;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class SolutionTest {
     @Test

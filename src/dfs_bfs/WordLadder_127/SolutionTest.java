@@ -1,25 +1,25 @@
 package dfs_bfs.WordLadder_127;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(Parameterized.class)
 public class SolutionTest {
-    @Parameterized.Parameters(name = "s: {0}")
-    public static Object[] data() {
-        return new Object[] {new Solution(), new BidirectionalSolution()};
+    private static Stream<Arguments> data() {
+        return Stream.of(
+                Arguments.of(new Solution()),
+                Arguments.of(new BidirectionalSolution())
+        );
     }
 
-    @Parameterized.Parameter
-    public ISolution s;
-
-    @Test
-    public void test() {
+    @ParameterizedTest
+    @MethodSource("data")
+    public void test(ISolution s) {
         assertEquals(5, s.ladderLength("hit", "cog",
                 Arrays.asList("hot", "dot", "dog", "lot", "log", "cog")));
         assertEquals(0, s.ladderLength("hit", "cog",

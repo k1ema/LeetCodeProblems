@@ -1,6 +1,10 @@
 package dynamic.NumbersWithSameConsecutiveDifferences_967;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 967. Numbers With Same Consecutive Differences
@@ -55,7 +59,6 @@ public class Solution {
         dfs(N - 1, K, num, (num % 10) - K, set);
         dfs(N - 1, K, num, (num % 10) + K, set);
     }
-
 
     // tc O(10*10^(N-1)) = O(10^N), sc O(10*2^(N-1))
     // 5 ms, 39.8 MB

@@ -1,7 +1,6 @@
 package string.ReformatDate_1507;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * 1507. Reformat Date

@@ -1,9 +1,9 @@
 package linkedList.CopyListWithRandomPointer_138;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static linkedList.CopyListWithRandomPointer_138.Solution.Node;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SolutionTest {
     @Test

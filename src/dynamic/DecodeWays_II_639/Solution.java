@@ -39,7 +39,7 @@ public class Solution {
     // tc O(n), sc O(n)
     // 0 ms, faster than 100.00%; 36.8 MB, less than 97.95%
     // https://leetcode.com/problems/decode-ways-ii/discuss/105258/Java-O(N)-by-General-Solution-for-all-DP-problems
-    public int numDecodings(String s) {
+    public int numDecodings1(String s) {
         int mod = (int) 1e9 + 7;
         int n = s.length();
         long[] dp = new long[n + 1];
@@ -81,7 +81,7 @@ public class Solution {
 
     // my solution
     // 549 ms, faster than 5.02%; 222.7 MB, less than 7.14%
-    public int numDecodings1(String s) {
+    public int numDecodings(String s) {
         int M = (int) 1e9 + 7;
         return (int) (recursive(s, 0, new HashMap<>()) % M);
     }

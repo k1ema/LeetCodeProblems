@@ -1,9 +1,9 @@
 package tree.ConstructBinaryTreeFromInorderAndPostorderTraversal_106;
 
+import tree.utils.TreeNode;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import tree.utils.TreeNode;
 
 /**
  * 106. Construct Binary Tree from Inorder and Postorder Traversal

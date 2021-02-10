@@ -1,6 +1,11 @@
 package hashtable.TopKFrequentElements_347;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Random;
 
 /**
  * 347. Top K Frequent Elements
@@ -45,10 +50,10 @@ public class Solution {
             bucket[ind].add(e.getKey());
         }
         int[] res = new int[k];
-        for (int i = bucket.length - 1; i >=0 && k > 0; i--) {
+        for (int i = bucket.length - 1, j = 0; i >=0 && j < k; i--) {
             if (bucket[i] == null) continue;
             for (int n : bucket[i]) {
-                res[--k] = n;
+                res[j++] = n;
             }
         }
         return res;
@@ -80,9 +85,9 @@ public class Solution {
         }
 
         int[] res = new int[pq.size()];
-        int i = 0;
+        int i = k;
         while (!pq.isEmpty()) {
-            res[i++] = pq.poll().getKey();
+            res[--i] = pq.poll().getKey();
         }
 
         return res;

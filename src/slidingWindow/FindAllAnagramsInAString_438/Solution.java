@@ -58,7 +58,6 @@ public class Solution {
                 result.add(i - p.length());
             }
 
-
             count[s.charAt(i - p.length()) - 'a']--;
             if (i < s.length()) {
                 count[s.charAt(i) - 'a']++;
@@ -97,7 +96,6 @@ public class Solution {
             if (compare(sc, pc)) {
                 result.add(i - p.length());
             }
-
 
             sc[s.charAt(i - p.length()) - 'a']--;
             if (i < s.length()) {

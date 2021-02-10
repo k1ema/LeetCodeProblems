@@ -1,12 +1,12 @@
 package tree.BinaryTreeLevelOrderTraversal_102;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import tree.utils.TreeNode;
 
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static tree.utils.Parser.stringToTreeNode;
 
 public class SolutionTest {

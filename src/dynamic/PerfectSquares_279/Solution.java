@@ -1,6 +1,10 @@
 package dynamic.PerfectSquares_279;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 279. Perfect Squares

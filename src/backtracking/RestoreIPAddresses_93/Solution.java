@@ -49,7 +49,6 @@ public class Solution {
         return Integer.parseInt(s) < 256 && (s.charAt(0) != '0' || s.length() == 1);
     }
 
-
     // 4 ms, faster than 66.27%; 39.6 MB, less than 66.27%
     public List<String> restoreIpAddresses1(String s) {
         List<String> res = new ArrayList<>();

@@ -1,6 +1,10 @@
 package design.ImplementTarjan;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.List;
 
 /**
  * Allows finding a strongly connected components in a directed graph

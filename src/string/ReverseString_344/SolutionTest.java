@@ -1,9 +1,11 @@
 package string.ReverseString_344;
 
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
+@DisplayName("Reverse string test")
 public class SolutionTest {
     @Test
     public void test() {

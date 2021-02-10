@@ -1,11 +1,11 @@
 package graph.EvaluateDivision_399;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
-
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class SolutionTest {
     @Test

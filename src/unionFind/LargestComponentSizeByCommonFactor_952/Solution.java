@@ -1,6 +1,8 @@
 package unionFind.LargestComponentSizeByCommonFactor_952;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 952. Largest Component Size by Common Factor

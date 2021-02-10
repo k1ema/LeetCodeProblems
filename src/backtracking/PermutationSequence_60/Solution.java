@@ -2,7 +2,6 @@ package backtracking.PermutationSequence_60;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * 60. Permutation Sequence

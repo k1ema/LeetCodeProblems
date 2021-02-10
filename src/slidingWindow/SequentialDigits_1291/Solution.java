@@ -1,6 +1,10 @@
 package slidingWindow.SequentialDigits_1291;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.List;
 
 /**
  * 1291. Sequential Digits

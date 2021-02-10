@@ -44,7 +44,7 @@ public class Solution {
         TreeNode node = new TreeNode(val);
         curInd++;
         node.left = helper(preorder, min, node.val);
-        node.right = helper(preorder, min, node.val);
+        node.right = helper(preorder, node.val, max);
         return node;
     }
 

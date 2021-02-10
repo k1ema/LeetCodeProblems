@@ -1,15 +1,16 @@
 package sorting.QuickSort;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class QuickSortTest {
     private QuickSort quickSort;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         quickSort = new QuickSort();
     }
@@ -24,6 +25,6 @@ public class QuickSortTest {
     private void testSort(int[] nums, int[] expectedNums) {
         quickSort.sort(nums);
         System.out.println(Arrays.toString(nums));
-        Assert.assertArrayEquals(expectedNums, nums);
+        assertArrayEquals(expectedNums, nums);
     }
 }

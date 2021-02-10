@@ -1,6 +1,6 @@
 package sorting.SortTheMatrixDiagonally_1329;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 

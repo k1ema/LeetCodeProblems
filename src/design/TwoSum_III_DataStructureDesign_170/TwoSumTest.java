@@ -1,7 +1,9 @@
 package design.TwoSum_III_DataStructureDesign_170;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TwoSumTest {
     @Test
@@ -10,7 +12,7 @@ public class TwoSumTest {
         t.add(1);
         t.add(3);
         t.add(5);
-        Assert.assertTrue(t.find(4));
-        Assert.assertFalse(t.find(7));
+        assertTrue(t.find(4));
+        assertFalse(t.find(7));
     }
 }

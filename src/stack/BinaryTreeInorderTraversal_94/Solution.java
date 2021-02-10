@@ -1,11 +1,11 @@
 package stack.BinaryTreeInorderTraversal_94;
 
+import tree.utils.TreeNode;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
-
-import tree.utils.TreeNode;
 
 /**
  * 94. Binary Tree Inorder Traversal
@@ -81,7 +81,6 @@ public class Solution {
         }
         return res;
     }
-
 
     // https://leetcode.com/problems/binary-tree-inorder-traversal/discuss/31213/Iterative-solution-in-Java-simple-and-readable
     public List<Integer> inorderTraversal1(TreeNode root) {

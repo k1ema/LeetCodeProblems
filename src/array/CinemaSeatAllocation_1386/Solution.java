@@ -1,6 +1,9 @@
 package array.CinemaSeatAllocation_1386;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 1386. Cinema Seat Allocation

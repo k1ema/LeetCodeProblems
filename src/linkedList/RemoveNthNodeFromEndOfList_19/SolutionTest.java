@@ -1,10 +1,10 @@
 package linkedList.RemoveNthNodeFromEndOfList_19;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static linkedList.utils.Parser.stringToListNode;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class SolutionTest {
     @Test
