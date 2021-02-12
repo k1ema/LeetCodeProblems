@@ -29,9 +29,7 @@ public class Solution {
         int res = 0, ps = 0;
         for (int n : nums) {
             ps += n;
-            if (map.containsKey(ps - k)) {
-                res += map.get(ps - k);
-            }
+            res += map.getOrDefault(ps - k, 0);
             map.put(ps, map.getOrDefault(ps, 0) + 1);
         }
         return res;
