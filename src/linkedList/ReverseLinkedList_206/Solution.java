@@ -16,6 +16,18 @@ import linkedList.utils.ListNode;
  * A linked list can be reversed either iteratively or recursively. Could you implement both?
  */
 public class Solution {
+    // tc O(n), sc O(1)
+    public ListNode reverseList1(ListNode head) {
+        ListNode prev = null, cur = head;
+        while (cur != null) {
+            ListNode next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
+        }
+        return prev;
+    }
+
     // tc O(n), sc O(n)
     public ListNode reverseList2(ListNode head) {
         if (head == null || head.next == null) {
@@ -49,20 +61,5 @@ public class Solution {
         ListNode head = reverseList(cur, cur.next);
         cur.next = prev;
         return head;
-    }
-
-    // tc O(n), sc O(1)
-    public ListNode reverseList1(ListNode head) {
-        ListNode prev = null;
-        ListNode curr = head;
-
-        // next ... curr.next ... curr.next ... prev
-        while (curr != null) {
-            ListNode next = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = next;
-        }
-        return prev;
     }
 }
