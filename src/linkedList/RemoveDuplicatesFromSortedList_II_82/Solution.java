@@ -23,7 +23,31 @@ import linkedList.utils.ListNode;
  * The list is guaranteed to be sorted in ascending order.
  */
 public class Solution {
+    // my solution
+    // tc O(n), sc O(1)
     public ListNode deleteDuplicates(ListNode head) {
+        ListNode dummy = new ListNode();
+        ListNode prev = dummy, cur = head;
+        boolean isBanned = false;
+        while (cur != null) {
+            while (cur.next != null && cur.next.val == cur.val) {
+                cur = cur.next;
+                isBanned = true;
+            }
+            if (isBanned) {
+                isBanned = false;
+                prev.next = null;
+            } else {
+                prev.next = cur;
+                prev = prev.next;
+            }
+            cur = cur.next;
+        }
+
+        return dummy.next;
+    }
+
+    public ListNode deleteDuplicates1(ListNode head) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
         ListNode prev = dummy, cur = head;
@@ -38,32 +62,6 @@ public class Solution {
             }
             cur = cur.next;
         }
-        return dummy.next;
-    }
-
-    // my solution
-    public ListNode deleteDuplicates1(ListNode head) {
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
-        ListNode prev = dummy, cur = head;
-        boolean skip = false;
-        while (cur != null) {
-            if (cur.next != null && cur.val == cur.next.val) {
-                while (cur.next != null && cur.val == cur.next.val) {
-                    cur = cur.next;
-                    skip = true;
-                }
-                prev.next = cur.next;
-            } else {
-                prev.next = cur;
-                prev = prev.next;
-            }
-            cur = cur.next;
-            if (cur != null) {
-                skip = false;
-            }
-        }
-        if (skip) prev.next = null;
         return dummy.next;
     }
 }
