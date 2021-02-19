@@ -1,7 +1,7 @@
 package graph.CourseSchedule_207;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -9,7 +9,7 @@ import java.util.Queue;
  * 207. Course Schedule
  * https://leetcode.com/problems/course-schedule/
  *
- * here are a total of n courses you have to take, labeled from 0 to n-1.
+ * There are a total of n courses you have to take, labeled from 0 to n-1.
  *
  * Some courses may have prerequisites, for example to take course 0 you have to first take
  * course 1, which is expressed as a pair: [0,1]
@@ -61,30 +61,24 @@ public class Solution {
         if (numCourses == 0 || prerequisites == null) return false;
         List<Integer>[] graph = buildGraph(numCourses, prerequisites);
 
-        boolean[] visited = new boolean[numCourses];
-        boolean[] recStack = new boolean[numCourses];
+        int[] state = new int[numCourses];
         for (int i = 0; i < numCourses; i++) {
-            if (!visited[i] && isCycle(graph, visited, recStack, i)) {
+            if (state[i] != 2 && isCycle(graph, i, state)) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean isCycle(List<Integer>[] graph, boolean[] visited, boolean[] recStack, int ind) {
-        if (recStack[ind]) return true;
-        if (visited[ind]) return false;
-
-        visited[ind] = true;
-        recStack[ind] = true;
-
+    private boolean isCycle(List<Integer>[] graph, int ind, int[] state) {
+        if (state[ind] == 1) return true;
+        state[ind] = 1;
         for (int i : graph[ind]) {
-            if (isCycle(graph, visited, recStack, i)) {
+            if (state[i] != 2 && isCycle(graph, i, state)) {
                 return true;
             }
         }
-
-        recStack[ind] = false;
+        state[ind] = 2;
         return false;
     }
 
@@ -103,31 +97,35 @@ public class Solution {
     // https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
     // tc O(V + E), sc O(V + E): O(V + E) for building grpah, O(V) for indegrees, O(V) for queue => O(3V + E) => O(V + E)
     public boolean canFinish1(int numCourses, int[][] prerequisites) {
-        List<Integer>[] adj = buildGraph(numCourses, prerequisites);
+        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
 
-        int[] indegrees = new int[numCourses];
+        int[] indegree = new int[numCourses];
         for (int[] edge : prerequisites) {
-            indegrees[edge[1]]++;
+            indegree[edge[1]]++;
         }
 
-        Queue<Integer> queue = new LinkedList<>();
+        Queue<Integer> q = new ArrayDeque<>();
         int count = 0; // counter of visited vertices.
+        boolean[] visited = new boolean[numCourses];
 
-        for (int i = 0; i < indegrees.length; i++) {
-            if (indegrees[i] == 0) {
-                indegrees[i] = -1; // mark as viewed
-                queue.add(i);
+        for (int i = 0; i < indegree.length; i++) {
+            if (indegree[i] == 0) {
+                q.add(i);
                 count++;
             }
         }
 
-        while (!queue.isEmpty()) {
-            int u = queue.poll();
-            for (int v : adj[u]) {
-                indegrees[v]--;
-                if (indegrees[v] == 0) {
-                    count++;
-                    queue.add(v);
+        while (!q.isEmpty()) {
+            int u = q.poll();
+            visited[u] = true;
+
+            for (int v : graph[u]) {
+                if (!visited[v]) {
+                    indegree[v]--;
+                    if (indegree[v] == 0) {
+                        count++;
+                        q.add(v);
+                    }
                 }
             }
         }
