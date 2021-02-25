@@ -21,26 +21,35 @@ import java.util.Arrays;
  */
 public class Solution {
     // tc O(nlogn), sc O(n)
-    // 1 ms, faster than 87.28%; 37.7 MB, less than 34.00%
-    // https://leetcode.com/problems/longest-increasing-subsequence/discuss/74824/JavaPython-Binary-search-O(nlogn)-time-with-explanation
+    // 2 ms, faster than 99.07%; 38.1 MB, less than 99.53%
+    // https://leetcode.com/problems/longest-increasing-subsequence/solution/
+    // input: [0, 8, 4, 12, 2]
+    // dp: [0]
+    // dp: [0, 8]
+    // dp: [0, 4]
+    // dp: [0, 4, 12]
+    // and we use BS to find the proper index to insert cur num into dp
     public int lengthOfLIS(int[] nums) {
         if (nums == null) return 0;
-        int[] tails = new int[nums.length];
-        int size = 0;
-        for (int x : nums) {
-            int i = 0, j = size - 1;
-            while (i <= j) {
-                int m = (i + j) >>> 1;
-                if (x <= tails[m]) {
-                    j = m - 1;
+        int[] dp = new int[nums.length];
+        int len = 0;
+        for (int num : nums) {
+            int l = -1, r = len;
+            while (r - l > 1) {
+                int m = l + (r - l) / 2;
+                // our 'good' function returns true when dp[m]==num and result will be in r
+                if (dp[m] < num) {
+                    l = m;
                 } else {
-                    i = m + 1;
+                    r = m;
                 }
             }
-            tails[i] = x;
-            if (i == size) size++;
+            dp[r] = num;
+            if (r == len) {
+                len++;
+            }
         }
-        return size;
+        return len;
     }
 
     // tc O(n^2), sc O(n)
