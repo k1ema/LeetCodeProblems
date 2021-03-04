@@ -17,40 +17,38 @@ import linkedList.utils.ListNode;
  * Your code should preferably run in O(n) time and use only O(1) memory.
  */
 public class Solution {
-    // tc O(m+n), sc O(m+n)
-    ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        if (headA == null || headB == null) {
-            return null;
+    // tc O(max(m,n)), sc O(1)
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) return null;
+        int lenA = calcLen(headA);
+        int lenB = calcLen(headB);
+
+        ListNode a = headA, b = headB;
+        while (lenA > lenB) {
+            a = a.next;
+            lenA--;
         }
-        int na = 0;
-        ListNode tmpA = headA;
-        while (tmpA != null) {
-            tmpA = tmpA.next;
-            na++;
+        while (lenB > lenA) {
+            b = b.next;
+            lenB--;
         }
-        int nb = 0;
-        ListNode tmpB = headB;
-        while (tmpB != null) {
-            tmpB = tmpB.next;
-            nb++;
+        while (a != null) {
+            if (a.equals(b)) {
+                return a;
+            }
+            a = a.next;
+            b = b.next;
         }
-        ListNode tmp = null;
-        if (na > nb) {
-            tmp = headA;
-        } else if (nb > na) {
-            tmp = headB;
-        }
-        for (int i = 0; i < Math.abs(na - nb); i++) {
-            tmp = tmp.next;
-        }
-        return goDeeper(na > nb ? tmp : headA, nb > na ? tmp : headB);
+        return null;
     }
 
-    private ListNode goDeeper(ListNode headA, ListNode headB) {
-        while (headA != null && !headA.equals(headB)) {
-            headA = headA.next;
-            headB = headB.next;
+    private int calcLen(ListNode list) {
+        int len = 0;
+        ListNode tmp = list;
+        while (tmp != null) {
+            tmp = tmp.next;
+            len++;
         }
-        return headA;
+        return len;
     }
 }
