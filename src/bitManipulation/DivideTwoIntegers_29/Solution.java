@@ -36,30 +36,32 @@ package bitManipulation.DivideTwoIntegers_29;
  * divisor != 0
  */
 public class Solution {
-    // tc O(logn)
+    // tc O(logn), sc O(1)
+    // 1 ms, faster than 99.98%; 35.9 MB, less than 92.13%
     public int divide(int dividend, int divisor) {
-        if (divisor == -1 && dividend == Integer.MIN_VALUE) return Integer.MAX_VALUE;
-        int sign = 1;
-        if (dividend < 0 && divisor > 0 || dividend > 0 && divisor < 0) {
-            sign = -1;
-        }
-        long dvd = Math.abs((long) dividend), dvs = Math.abs((long) divisor);
-        int res = 0;
-        while (dvs <= dvd) {
-            long temp = dvs;
-            int count = 1;
-            while ((temp << 1) <= dvd) {
+        boolean negative = (dividend < 0) ^ (divisor < 0);
+        long a = Math.abs((long) dividend);
+        long b = Math.abs((long) divisor);
+
+        long res = 0;
+        while (a >= b) {
+            long temp = b, count = 1;
+            while (a >= (temp << 1)) {
                 temp <<= 1;
                 count <<= 1;
             }
-            dvd -= temp;
+            a -= temp;
             res += count;
         }
-        return res * sign;
+
+        if (negative) res = -res;
+        res = Math.min(res, Integer.MAX_VALUE);
+        res = Math.max(res, Integer.MIN_VALUE);
+        return (int) res;
     }
 
     // TLE, tc O(n)
-    public int divide1(int dividend, int divisor) {
+    public int divide2(int dividend, int divisor) {
         if (divisor == -1 && dividend == Integer.MIN_VALUE) return Integer.MAX_VALUE;
         int sign = 1;
         if (dividend < 0 && divisor > 0 || dividend > 0 && divisor < 0) {
