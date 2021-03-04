@@ -56,29 +56,27 @@ public class Solution {
     // tc O(m*n), sc O(m*n)
     // without memo tc O(2^(m+n)), sc O(m*n)
     public boolean isInterleave1(String s1, String s2, String s3) {
-        int m = s1.length();
-        int n = s2.length();
-        if (s3.length() != m + n) return false;
-        int[][] memo = new int[m][n];
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                memo[i][j] = -1;
-            }
-        }
-        return bt(s1, s2, s3, 0, 0, 0, memo);
+        return isInterleave(s1, s2, s3, 0, 0, 0, new Boolean[s1.length() + 1][s2.length() + 1]);
     }
 
-    private boolean bt(String s1, String s2, String s3, int i, int j, int k, int[][] memo) {
-        if (i == s1.length()) return s3.substring(k).equals(s2.substring(j));
-        if (j == s2.length()) return s3.substring(k).equals(s1.substring(i));
-
-        if (memo[i][j] >= 0) return memo[i][j] == 1;
-
-        boolean res = (s3.charAt(k) == s1.charAt(i)) && bt(s1, s2, s3, i + 1, j, k + 1, memo)
-                || (s3.charAt(k) == s2.charAt(j)) && bt(s1, s2, s3, i, j + 1, k + 1, memo);
-
-        memo[i][j] = res ? 1 : 0;
-
+    private boolean isInterleave(String s1, String s2, String s3, int i, int j, int k, Boolean[][] memo) {
+        if (i == s1.length() && j == s2.length() && k == s3.length()) {
+            return true;
+        }
+        if (k == s3.length()) {
+            return false;
+        }
+        if (memo[i][j] != null) {
+            return memo[i][j];
+        }
+        boolean res = false;
+        if (i < s1.length() && s1.charAt(i) == s3.charAt(k)) {
+            res = isInterleave(s1, s2, s3, i + 1, j, k + 1, memo);
+        }
+        if (j < s2.length() && s2.charAt(j) == s3.charAt(k)) {
+            res |= isInterleave(s1, s2, s3, i, j + 1, k + 1, memo);
+        }
+        memo[i][j] = res;
         return res;
     }
 }
