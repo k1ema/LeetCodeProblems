@@ -1,5 +1,6 @@
 package trie.ShortEncodingOfWords_820;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -108,5 +109,17 @@ public class Solution {
 
         private TrieNode1() {
         }
+    }
+
+    // tc O(n*k*k), sc O(n*k) where n = words.length, k = max word len
+    // 29 ms, faster than 29.80%; 51.8 MB, less than 15.23%
+    public int minimumLengthEncoding2(String[] words) {
+        Set<String> set = new HashSet<>(Arrays.asList(words));
+        for (String w : words) {
+            for (int i = 1; i < w.length(); i++) {
+                set.remove(w.substring(i));
+            }
+        }
+        return set.stream().mapToInt(s -> s.length() + 1).sum();
     }
 }
