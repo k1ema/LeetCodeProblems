@@ -82,4 +82,48 @@ public class SolutionDFS implements Solution {
         dfs(root.left, K, length + 1, res);
         dfs(root.right, K, length + 1, res);
     }
+
+
+    // my solution
+    private boolean found;
+    public List<Integer> distanceK1(TreeNode root, TreeNode target, int K) {
+        found = false;
+        List<Integer> res = new ArrayList<>();
+        dfs(root, target, K, -1, res);
+        return res;
+    }
+
+    private int dfs(TreeNode node, TreeNode target, int k, int depth, List<Integer> res) {
+        if (node == null) return 0;
+
+        if (node.val == target.val) {
+            found = true;
+            depth = 0;
+        }
+
+        int left = dfs(node.left, target, k, processDepth(depth), res);
+        if (left > 0 && depth == -1) {
+            depth = left;
+        }
+        boolean foundInLeft = found;
+
+        int right = dfs(node.right, target, k, processDepth(depth), res);
+        if (right > 0 && depth == -1) {
+            depth = right;
+        }
+
+        if (depth == k) {
+            res.add(node.val);
+        }
+        // if we found target in right side we have to go to the left children one more time
+        if (!foundInLeft && found) {
+            dfs(node.left, target, k, processDepth(depth), res);
+        }
+
+        return processDepth(depth);
+    }
+
+    private int processDepth(int depth) {
+        return depth == -1 ? depth : depth + 1;
+    }
 }

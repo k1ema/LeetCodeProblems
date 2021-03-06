@@ -49,55 +49,13 @@ public class SolutionBFS implements Solution {
     // BFS + map child - parent
     // 10 ms, faster than 83.94%; 39.4 MB, less than 5.26%
     // https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/discuss/143752/JAVA-Graph-%2B-BFS
-    Map<TreeNode, TreeNode> childParent;
+    Map<TreeNode, List<TreeNode>> map;
     public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
         List<Integer> res = new ArrayList<>();
         if (root == null || K < 0) return res;
 
-        childParent = new HashMap<>();
-        buildMap(root, null);
-        if (!childParent.containsKey(target)) return res;
-
-        Set<TreeNode> visited = new HashSet<>();
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(target);
-        while (!q.isEmpty()) {
-            int size = q.size();
-            if (K == 0) {
-                for (int i = 0; i < size; i++) {
-                    res.add(q.poll().val);
-                }
-                return res;
-            }
-            for (int i = 0; i < size; i++) {
-                TreeNode node = q.poll();
-                visited.add(node);
-                if (node.left != null && !visited.contains(node.left)) q.add(node.left);
-                if (node.right != null && !visited.contains(node.right)) q.add(node.right);
-                TreeNode parentNode = childParent.get(node);
-                if (parentNode != null && !visited.contains(parentNode)) q.add(parentNode);
-            }
-            K--;
-        }
-
-        return res;
-    }
-
-    private void buildMap(TreeNode node, TreeNode parent) {
-        if (node == null) return;
-        childParent.put(node, parent);
-        buildMap(node.left, node);
-        buildMap(node.right, node);
-    }
-
-    // same approach but different map structure
-    Map<TreeNode, List<TreeNode>> map;
-    public List<Integer> distanceK1(TreeNode root, TreeNode target, int K) {
-        List<Integer> res = new ArrayList<>();
-        if (root == null || K < 0) return res;
-
         map = new HashMap<>();
-        buildMap1(root, null);
+        buildMap(root, null);
         if (!map.containsKey(target)) return res;
 
         Set<TreeNode> visited = new HashSet<>();
@@ -126,7 +84,7 @@ public class SolutionBFS implements Solution {
         return res;
     }
 
-    private void buildMap1(TreeNode node, TreeNode parent) {
+    private void buildMap(TreeNode node, TreeNode parent) {
         if (node == null) return;
         if (!map.containsKey(node)) {
             map.put(node, new ArrayList<>());
@@ -134,8 +92,8 @@ public class SolutionBFS implements Solution {
                 map.get(node).add(parent);
                 map.get(parent).add(node);
             }
-            buildMap1(node.left, node);
-            buildMap1(node.right, node);
+            buildMap(node.left, node);
+            buildMap(node.right, node);
         }
     }
 }

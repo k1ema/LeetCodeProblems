@@ -5,6 +5,7 @@ import tree.utils.Parser;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,5 +32,9 @@ public class SolutionTest {
         assertEquals(Collections.singletonList(5),
                 s.distanceK(Parser.stringToTreeNode("[0,1,6,2,3,null,null,7,4,null,null,null,null,null,5]"),
                         Parser.stringToTreeNode("[1,2,3,7,4,null,null,null,null,null,5]"), 3));
+
+        List<Integer> actual = s.distanceK(Parser.stringToTreeNode("[5,0,null,1,2,null,null,3]"), Parser.stringToTreeNode("[3]"), 3);
+        Collections.sort(actual);
+        assertEquals(List.of(1, 5), actual);
     }
 }
