@@ -43,16 +43,16 @@ public class Solution {
 
     public int pickIndex() {
         double target = Math.random() * indSum;
-        int lo = 0, hi = indexes.length;
-        while (lo < hi) {
-            int mid = lo + (hi - lo) / 2;
-            if (target > indexes[mid]) {
-                lo = mid + 1;
+        int l = -1, r = indexes.length - 1;
+        while (r - l > 1) {
+            int m = l + (r - l) / 2;
+            if (indexes[m] < target) {
+                l = m;
             } else {
-                hi = mid;
+                r = m;
             }
         }
 
-        return lo;
+        return r;
     }
 }
