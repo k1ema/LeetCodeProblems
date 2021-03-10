@@ -55,25 +55,9 @@ import java.util.Map;
  * Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
  */
 
-public class Main {
-    private static final String[] DATA = {
-            "III",
-            "IV",
-            "IX",
-            "LVIII",
-            "MCMXCIV"
-    };
-
-    public static void main(String[] args) {
-        Main m = new Main();
-        for (String s : DATA) {
-            int i = m.romanToInt(s);
-            System.out.println(i);
-        }
-    }
-
+public class Solution {
     // O(n)
-    private int romanToInt(String s) {
+    public int romanToInt(String s) {
         Map<String, Integer> m = new HashMap<>();
         m.put("I", 1);
         m.put("V", 5);
