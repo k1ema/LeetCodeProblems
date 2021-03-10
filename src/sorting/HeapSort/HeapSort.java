@@ -7,18 +7,20 @@ public class HeapSort {
             sink(a, i, n);
         }
         while (n > 0) {
-            swap(a, 0, n--);
-            sink(a, 0, n);
+            swap(a, 0, n);
+            sink(a, 0, --n);
         }
     }
 
-    private static void sink(Comparable[] a, int i, int n) {
-        while (2 * i <= n) {
-            int j = 2 * i;
-            if (j < n && less(a, j, j + 1)) j++;
-            if (!less(a, i, j)) break;
-            swap(a, i, j);
-            i = j;
+    private static void sink(Comparable[] a, int i, int last) {
+        while (2 * i <= last) {
+            int childInd = 2 * i;
+            if (childInd < last && less(a, childInd, childInd + 1)) {
+                childInd++;
+            }
+            if (!less(a, i, childInd)) break;
+            swap(a, i, childInd);
+            i = childInd;
         }
     }
 
@@ -27,8 +29,8 @@ public class HeapSort {
     }
 
     private static void swap(Comparable[] a, int i, int j) {
-        Comparable tmp = a[i];
+        Comparable t = a[i];
         a[i] = a[j];
-        a[j] = tmp;
+        a[j] = t;
     }
 }
