@@ -1,5 +1,6 @@
 package unionFind.SwimInRisingWater_778;
 
+import java.util.ArrayDeque;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -118,10 +119,52 @@ public class Solution {
         }
     }
 
-    // binary search
+    // binary search, bfs
+    // tc O(n^2*logn), sc O(n^2)
+    // 6 ms, faster than 82.26%; 39 MB, less than 54.65%
+    public int swimInWater1(int[][] grid) {
+        int n = grid.length;
+        int l = -1, r = n * n - 1;
+        while (r - l > 1) {
+            int m = l + (r - l) / 2;
+            if (canReach(grid, m)) {
+                r = m;
+            } else {
+                l = m;
+            }
+        }
+        return r;
+    }
+
+    private boolean canReach(int[][] grid, int depth) {
+        if (grid[0][0] > depth) return false;
+        int n = grid.length;
+        Queue<int[]> q = new ArrayDeque<>();
+        q.add(new int[] {0, 0});
+        boolean[][] visited = new boolean[n][n];
+        visited[0][0] = true;
+        int[][] dirs = new int[][] {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+        while (!q.isEmpty()) {
+            int[] coord = q.poll();
+            int x = coord[0], y = coord[1];
+            if (x == n - 1 && y == n - 1) {
+                return true;
+            }
+            for (int[] dir : dirs) {
+                int newX = x + dir[0], newY = y + dir[1];
+                if (newX >= 0 && newX < n && newY >= 0 && newY < n && !visited[newX][newY] && grid[newX][newY] <= depth) {
+                    q.add(new int[] {newX, newY});
+                    visited[newX][newY] = true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // binary search, dfs
     // tc O(n^2*logn), sc O(n^2)
     // 6 ms, faster than 82.34%; 39.5 MB, less than 26.27%
-    public int swimInWater1(int[][] grid) {
+    public int swimInWater2(int[][] grid) {
         int n = grid.length;
         int l = -1, r = n * n - 1;
         while (r - l > 1) {
@@ -152,7 +195,7 @@ public class Solution {
     }
 
     // classic Kruskal
-    public int swimInWater2(int[][] grid) {
+    public int swimInWater3(int[][] grid) {
         int n = grid.length;
         UnionFind uf = new UnionFind(n * n);
 
