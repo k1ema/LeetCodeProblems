@@ -41,7 +41,9 @@ import java.util.Set;
  * 1 <= k <= 20
  */
 public class Solution {
+    // tc O(n*k), sc O(2^k)
     public boolean hasAllCodes(String s, int k) {
+        if (s.length() < (1 << k)) return false;
         Set<String> set = new HashSet<>();
         for (int i = k; i <= s.length(); i++) {
             set.add(s.substring(i - k, i));
