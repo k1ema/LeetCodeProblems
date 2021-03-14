@@ -79,10 +79,8 @@ public class Solution {
             if (l >= L && r <= R)
                 return a[v];
 
-            return Math.min(
-                    getMin(v * 2 + 1, l, l + (r - l) / 2, L, R),
-                    getMin(v * 2 + 2, l + (r - l) / 2 + 1, r, L, R)
-            );
+            int m = l + (r - l) / 2;
+            return Math.min(getMin(v * 2 + 1, l, m, L, R), getMin(v * 2 + 2, m + 1, r, L, R));
         }
 
         void update(int i, int v) {
