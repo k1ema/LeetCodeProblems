@@ -45,6 +45,41 @@ import java.net.InetAddress;
  */
 public class Solution {
     public String validIPAddress(String IP) {
+        return ipv4(IP) ? "IPv4" : ipv6(IP) ? "IPv6" : "Neither";
+    }
+
+    private boolean ipv4(String ip) {
+        if (ip == null || ip.isEmpty()) return false;
+        String[] parts = ip.split("\\.", -1);
+        if (parts.length != 4) return false;
+        for (String part : parts) {
+            if (part.isEmpty()) return false;
+            try {
+                Integer num = Integer.parseInt(part);
+                if (num == 0 && part.length() > 1 || num > 0 && part.charAt(0) == '0' || num > 255) return false;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean ipv6(String ip) {
+        if (ip == null || ip.isEmpty()) return false;
+        String[] parts = ip.split("\\:", -1);
+        if (parts.length != 8) return false;
+        for (String part : parts) {
+            if (part.isEmpty() || part.length() > 4) return false;
+            part = part.toLowerCase();
+            for (int i = 0; i < part.length(); i++) {
+                char c = part.charAt(i);
+                if (Character.isAlphabetic(c) && c > 'f') return false;
+            }
+        }
+        return true;
+    }
+
+    public String validIPAddress1(String IP) {
         if (IP == null || IP.isEmpty()) return "Neither";
         IP = IP.toLowerCase();
         String s0_255 = "[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]";
@@ -54,7 +89,7 @@ public class Solution {
         return IP.matches(ipv4) ? "IPv4" : (IP.matches(ipv6) ? "IPv6" : "Neither");
     }
 
-    public String validIPAddress1(String IP) {
+    public String validIPAddress2(String IP) {
         try {
             return (InetAddress.getByName(IP) instanceof Inet6Address) ? "IPv6": "IPv4";
         } catch(Exception e) {}
