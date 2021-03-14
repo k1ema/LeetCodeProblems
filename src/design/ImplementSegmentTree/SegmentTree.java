@@ -4,6 +4,7 @@ public class SegmentTree {
     private int n, offset;
     private int[] nums;
 
+    // tc O(nlogn), sc O(n)
     public SegmentTree(int[] arr) {
         int k = 1, n = arr.length;
         while ((1 << k) < n) {
@@ -19,6 +20,7 @@ public class SegmentTree {
         }
     }
 
+    // tc O(logn)
     public int getSum(int L, int R) {
         return getSum(0, 0, n - 1, L, R);
     }
@@ -32,6 +34,7 @@ public class SegmentTree {
         return leftChild + rightChild;
     }
 
+    // tc O(logn)
     public void update(int i, int v) {
         int index = i + offset;
         nums[index] = v;
