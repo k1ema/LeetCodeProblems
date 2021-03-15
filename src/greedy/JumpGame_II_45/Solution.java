@@ -32,66 +32,66 @@ public class Solution {
     // 34 ms, faster than 24.90%; 46.4 MB, less than 5.64%
     // https://www.youtube.com/watch?v=hWVTOr6phl8
     // https://www.youtube.com/watch?v=tmv7W9Xw3lo
+    /*
+                -
+            -       -
+          -   -   -   -
+         - - - - - - - -
+         ^
+         offset
+         n = 8, arr.len = 15, offset = 15 - 8 = 7
+    */
     public int jump(int[] nums) {
         int n = nums.length;
         SegmentTree st = new SegmentTree(n);
-
         st.update(n - 1, 0);
-
-        int L, R;
         for (int i = n - 2; i >= 0; i--) {
-            L = i + 1;
-            R = Math.min(n - 1, i + nums[i]);
-
-            int r = st.getMin(L, R) + 1;
+            int r = st.getMin(i + 1, Math.min(i + nums[i], n - 1)) + 1;
             st.update(i, r);
         }
-
         return st.getMin(0, 0);
     }
 
     private static class SegmentTree {
-        private final int INF = (int) 1e9;
-        private final int n;
-        private final int[] a;
-        private final int offset;
+        private static final int INF = (int) 1e9;
+        private int[] arr;
+        private int n, offset;
 
         SegmentTree(int n) {
             int k = 1;
-            while ((1 << k) < n) {
+            while (1 << k < n) {
                 k++;
             }
             n = 1 << k;
-            a = new int[2 * n - 1];
-            Arrays.fill(a, INF);
-            offset = a.length - n;
+
+            arr = new int[2 * n - 1];
+            Arrays.fill(arr, INF);
+
+            this.offset = arr.length - n;
             this.n = n;
+        }
+
+        void update(int i, int val) {
+            int index = offset + i;
+            arr[index] = val;
+            while (index > 0) {
+                int parent = (index - 1) / 2;
+                arr[parent] = Math.min(arr[2 * parent + 1], arr[2 * parent + 2]);
+                index = parent;
+            }
         }
 
         int getMin(int L, int R) {
             return getMin(0, 0, n - 1, L, R);
         }
 
-        int getMin(int v, int l, int r, int L, int R) {
-            if (r < L || l > R)
-                return INF;
-
-            if (l >= L && r <= R)
-                return a[v];
-
+        private int getMin(int ind, int l, int r, int L, int R) {
+            if (l > R || r < L) return INF;
+            if (l >= L && r <= R) return arr[ind];
             int m = l + (r - l) / 2;
-            return Math.min(getMin(v * 2 + 1, l, m, L, R), getMin(v * 2 + 2, m + 1, r, L, R));
-        }
-
-        void update(int i, int v) {
-            a[offset + i] = v;
-
-            int index = offset + i;
-            while (index != 0) {
-                int parent = (index - 1) / 2;
-                a[parent] = Math.min(a[2 * parent + 1], a[2 * parent + 2]);
-                index /= 2;
-            }
+            int left = getMin(2 * ind + 1, l, m, L, R);
+            int right = getMin(2 * ind + 2, m + 1, r, L, R);
+            return Math.min(left, right);
         }
     }
 
