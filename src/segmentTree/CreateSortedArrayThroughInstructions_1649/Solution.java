@@ -1,7 +1,8 @@
-package binarySearch.CreateSortedArrayThroughInstructions_1649;
+package segmentTree.CreateSortedArrayThroughInstructions_1649;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * 1649. Create Sorted Array through Instructions
@@ -60,6 +61,63 @@ import java.util.List;
  * 1 <= instructions[i] <= 10^5
  */
 public class Solution {
+    // segment tree solution
+    // https://leetcode.com/problems/create-sorted-array-through-instructions/discuss/1010681/C%2B%2B-Solution-using-Segment-Tree-or-Simplified
+    // tc O(nlogn), sc O(n)
+    // 416 ms, faster than 19.76%; 54.3 MB, less than 86.01%
+    public int createSortedArray(int[] instructions) {
+        final int mod = (int) 1e9 + 7;
+        final int MAX = IntStream.of(instructions).max().orElse((int) 1e5) + 1;
+        SegmentTree st = new SegmentTree(MAX);
+        int res = 0;
+        for (int num : instructions) {
+            int countLeft = st.getSum(0, num - 1);
+            int countRight = st.getSum(num + 1, MAX);
+            st.update(num);
+            res = (res + Math.min(countLeft, countRight)) % mod;
+        }
+        return res;
+    }
+
+    private static class SegmentTree {
+        private int[] tree;
+        private int n, offset;
+
+        private SegmentTree(int n) {
+            int k = 1;
+            while (1 << k < n) {
+                k++;
+            }
+            n = 1 << k;
+            tree = new int[2 * n - 1];
+            offset = tree.length - n;
+            this.n = n;
+        }
+
+        public int getSum(int L, int R) {
+            return getSum(0, 0, n - 1, L, R);
+        }
+
+        private int getSum(int i, int l, int r, int L, int R) {
+            if (l > R || r < L) return 0;
+            if (l >= L && r <= R) return tree[i];
+            int mid = l + (r - l) / 2;
+            int leftChild = getSum(2 * i + 1, l, mid, L, R);
+            int rightChild = getSum(2 * i + 2, mid + 1, r, L, R);
+            return leftChild + rightChild;
+        }
+
+        public void update(int i) {
+            int index = offset + i;
+            tree[index]++;
+            while (index > 0) {
+                int parent = (index - 1) / 2;
+                tree[parent] = tree[2 * parent + 1] + tree[2 * parent + 2];
+                index = parent;
+            }
+        }
+    }
+
     // tc O(nlogn), sc O(n)
     // Binary Indexed Tree (Fenwick Tree)
     // https://leetcode.com/problems/create-sorted-array-through-instructions/discuss/927531/JavaC%2B%2BPython-Binary-Indexed-Tree
@@ -90,61 +148,6 @@ public class Solution {
         while (i < c.length) {
             c[i]++;
             i += i & -i;
-        }
-    }
-
-    // segment tree solution
-    // https://leetcode.com/problems/create-sorted-array-through-instructions/discuss/1010681/C%2B%2B-Solution-using-Segment-Tree-or-Simplified
-    // tc O(nlogn), sc O(n)
-    // 617 ms, faster than 16.50%; 55.6 MB, less than 32.67%
-    public int createSortedArray(int[] instructions) {
-        final int mod = (int) 1e9 + 7;
-        final int MAX = (int) 1e5;
-        SegmentTree st = new SegmentTree();
-        int res = 0;
-        for (int num : instructions) {
-            int countLeft = st.getSum(0, num - 1);
-            int countRight = st.getSum(num + 1, MAX);
-            st.update(0, 0, MAX, num);
-            res = (res + Math.min(countLeft, countRight)) % mod;
-        }
-        return res;
-    }
-
-    private static class SegmentTree {
-        private int[] tree;
-        private SegmentTree() {
-            tree = new int[400000];
-        }
-
-        public int getSum(int L, int R) {
-            return getSum(0, 0, (int) 1e5, L, R);
-        }
-
-        private int getSum(int i, int l, int r, int L, int R) {
-            if (l > R || r < L) return 0;
-            if (l >= L && r <= R) return tree[i];
-            int mid = l + (r - l) / 2;
-            int leftChild = getSum(2 * i + 1, l, mid, L, R);
-            int rightChild = getSum(2 * i + 2, mid + 1, r, L, R);
-            return leftChild + rightChild;
-        }
-
-        public void update(int index, int s, int e, int pos) {
-            if (s == e) {
-                tree[index]++;
-                return;
-            }
-
-            int mid = s + (e - s) / 2;
-
-            if (pos <= mid) {
-                update(2 * index + 1, s, mid, pos);
-            } else {
-                update(2 * index + 2, mid + 1, e, pos);
-            }
-
-            tree[index] = tree[2 * index + 1] + tree[2 * index + 2];
         }
     }
 

@@ -1,4 +1,4 @@
-package binarySearch.CreateSortedArrayThroughInstructions_1649;
+package segmentTree.CreateSortedArrayThroughInstructions_1649;
 
 import org.junit.jupiter.api.Test;
 
