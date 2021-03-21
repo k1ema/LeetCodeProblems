@@ -15,38 +15,15 @@ package bitManipulation.SumOfTwoIntegers_371;
  * Output: 1
  */
 public class Solution {
-    // my solution
-    int getSum2(int a, int b) {
-        if (a == 0) return b;
-        if (b == 0) return a;
-
-        int sum = 0;
-        int s = 0;
-        for (int i = 0; i < 32; i++) {
-            int aa = (a & (1 << i)) >>> i;
-            int bb = (b & (1 << i)) >>> i;
-            if ((aa & bb) == 1) {
-                if (s == 1) {
-                    sum |= 1 << i;
-                } else {
-                    s = 1;
-                }
-                continue;
-            }
-            if (s == 1) {
-                if (aa == 0 && bb == 0) {
-                    sum |= 1 << i;
-                    s = 0;
-                }
-            } else {
-                sum |= (aa | bb) << i;
-            }
+    public int getSum(int a, int b) {
+        if ((a & b) == 0) {
+            return a ^ b;
         }
-        return sum;
+        return getSum(a ^ b, (a & b) << 1);
     }
 
     // https://leetcode.com/problems/sum-of-two-integers/discuss/84290/Java-simple-easy-understand-solution-with-explanation
-    int getSum(int a, int b) {
+    int getSum1(int a, int b) {
         if (a == 0) return b;
         if (b == 0) return a;
 
