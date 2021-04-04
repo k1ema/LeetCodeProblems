@@ -1,4 +1,4 @@
-package stack.LongestValidParentheses_32;
+package dynamic.LongestValidParentheses_32;
 
 import org.junit.jupiter.api.Test;
 
