@@ -1,4 +1,4 @@
-package dynamic.LongestIncreasingSubsequence_300;
+package binarySearch.LongestIncreasingSubsequence_300;
 
 import org.junit.jupiter.api.Test;
 
