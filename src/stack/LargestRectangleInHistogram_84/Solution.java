@@ -139,7 +139,7 @@ public class Solution {
                 } else {
                     nums[parentInd] = nums[rightChildInd];
                 }
-                ind = (ind - 1) / 2;
+                ind = parentInd;
             }
         }
     }
