@@ -12,5 +12,6 @@ public class SolutionTest {
         assertTrue(s.isAlienSorted(new String[] {"hello", "leetcode"}, "hlabcdefgijkmnopqrstuvwxyz"));
         assertFalse(s.isAlienSorted(new String[] {"word", "world", "row"}, "worldabcefghijkmnpqstuvxyz"));
         assertFalse(s.isAlienSorted(new String[] {"apple", "app"}, "abcdefghijklmnopqrstuvwxyz"));
+        assertTrue(s.isAlienSorted(new String[] {"kuvp", "q"}, "ngxlkthsjuoqcpavbfdermiywz"));
     }
 }
