@@ -85,45 +85,38 @@ public class SolutionDFS implements Solution {
 
 
     // my solution
-    private boolean found;
     public List<Integer> distanceK1(TreeNode root, TreeNode target, int K) {
-        found = false;
         List<Integer> res = new ArrayList<>();
-        dfs(root, target, K, -1, res);
+        dfs(root, target, K, null, res);
         return res;
     }
 
-    private int dfs(TreeNode node, TreeNode target, int k, int depth, List<Integer> res) {
-        if (node == null) return 0;
-
-        if (node.val == target.val) {
-            found = true;
-            depth = 0;
+    private int dfs(TreeNode root, TreeNode target, int k, Integer dist, List<Integer> list) {
+        if (root == null) return 0;
+        Integer nextDist = null;
+        if (dist != null || root.equals(target)) {
+            nextDist = (dist == null ? 0 : dist) + 1;
         }
-
-        int left = dfs(node.left, target, k, processDepth(depth), res);
-        if (left > 0 && depth == -1) {
-            depth = left;
+        int left = dfs(root.left, target, k, nextDist, list);
+        if (left > 0) {
+            nextDist = left + 1;
         }
-        boolean foundInLeft = found;
-
-        int right = dfs(node.right, target, k, processDepth(depth), res);
-        if (right > 0 && depth == -1) {
-            depth = right;
+        int right = dfs(root.right, target, k, nextDist, list);
+        if (dist != null && dist == k || k == 0 && root.equals(target) || left > 0 && left == k || right > 0 && right == k) {
+            list.add(root.val);
         }
-
-        if (depth == k) {
-            res.add(node.val);
+        if (right > 0 && left == 0) {
+            nextDist = right + 1;
+            dfs(root.left, target, k, nextDist, list);
         }
-        // if we found target in right side we have to go to the left children one more time
-        if (!foundInLeft && found) {
-            dfs(node.left, target, k, processDepth(depth), res);
+        int res = 0;
+        if (root.equals(target)) {
+            res = 1;
+        } else if (left > 0) {
+            res = left + 1;
+        } else if (right > 0) {
+            res = right + 1;
         }
-
-        return processDepth(depth);
-    }
-
-    private int processDepth(int depth) {
-        return depth == -1 ? depth : depth + 1;
+        return res;
     }
 }
