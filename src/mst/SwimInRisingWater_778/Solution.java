@@ -1,6 +1,7 @@
-package unionFind.SwimInRisingWater_778;
+package mst.SwimInRisingWater_778;
 
 import java.util.ArrayDeque;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -45,7 +46,7 @@ import java.util.Queue;
  * grid[i][j] is a permutation of [0, ..., N*N - 1].
  */
 public class Solution {
-    // union-find, Kruskal's algorithm
+    // union-find
     // tc O(n^2*logn), sc O(n^2)
     // 4 ms, faster than 87.89%; 39.1 MB, less than 49.86%
     public int swimInWater(int[][] grid) {
@@ -74,6 +75,40 @@ public class Solution {
             if (uf.connected(0, n * n - 1)) {
                 return time;
             }
+        }
+
+        return -1;
+    }
+
+    // classic Kruskal
+    public int swimInWater3(int[][] grid) {
+        int n = grid.length;
+        UnionFind uf = new UnionFind(n * n);
+
+        Queue<int[]> q = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                q.offer(new int[] {i, j, grid[i][j]});
+            }
+        }
+
+        int[][] dirs = new int[][] {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+        int time = 0;
+        while (!q.isEmpty()) {
+            int[] arr = q.poll();
+            int i = arr[0], j = arr[1];
+
+            for (int[] dir : dirs) {
+                int newI = i + dir[0], newJ = j + dir[1];
+                if (newI >= 0 && newI < n && newJ >= 0 && newJ < n && grid[newI][newJ] <= time) {
+                    int idx1 = i * n + j, idx2 = newI * n + newJ;
+                    uf.union(idx1, idx2);
+                }
+            }
+            if (uf.connected(0, n * n - 1)) {
+                return time;
+            }
+            time++;
         }
 
         return -1;
@@ -192,39 +227,5 @@ public class Solution {
             }
         }
         return false;
-    }
-
-    // classic Kruskal
-    public int swimInWater3(int[][] grid) {
-        int n = grid.length;
-        UnionFind uf = new UnionFind(n * n);
-
-        Queue<int[]> q = new PriorityQueue<>((a, b) -> a[2] - b[2]);
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                q.offer(new int[] {i, j, grid[i][j]});
-            }
-        }
-
-        int[][] dirs = new int[][] {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
-        int time = 0;
-        while (!q.isEmpty()) {
-            int[] arr = q.poll();
-            int i = arr[0], j = arr[1];
-
-            for (int[] dir : dirs) {
-                int newI = i + dir[0], newJ = j + dir[1];
-                if (newI >= 0 && newI < n && newJ >= 0 && newJ < n && grid[newI][newJ] <= time) {
-                    int idx1 = i * n + j, idx2 = newI * n + newJ;
-                    uf.union(idx1, idx2);
-                }
-            }
-            if (uf.connected(0, n * n - 1)) {
-                return time;
-            }
-            time++;
-        }
-
-        return -1;
     }
 }

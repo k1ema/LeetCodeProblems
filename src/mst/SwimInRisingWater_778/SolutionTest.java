@@ -1,4 +1,4 @@
-package unionFind.SwimInRisingWater_778;
+package mst.SwimInRisingWater_778;
 
 import org.junit.jupiter.api.Test;
 

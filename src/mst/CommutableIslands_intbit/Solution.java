@@ -1,4 +1,4 @@
-package graph.CommutableIslands_intbit;
+package mst.CommutableIslands_intbit;
 
 import java.util.List;
 
