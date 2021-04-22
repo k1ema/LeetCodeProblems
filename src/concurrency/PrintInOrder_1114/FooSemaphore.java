@@ -2,11 +2,11 @@ package concurrency.PrintInOrder_1114;
 
 import java.util.concurrent.Semaphore;
 
-public class Foo2 {
+public class FooSemaphore implements Foo {
     // 9 ms, faster than 88.66%; 35.5 MB, less than 100.00%
     private Semaphore s2, s3;
 
-    public Foo2() {
+    public FooSemaphore() {
         s2 = new Semaphore(0);
         s3 = new Semaphore(0);
     }

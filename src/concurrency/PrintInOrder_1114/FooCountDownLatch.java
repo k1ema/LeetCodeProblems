@@ -2,11 +2,11 @@ package concurrency.PrintInOrder_1114;
 
 import java.util.concurrent.CountDownLatch;
 
-public class Foo3 {
+public class FooCountDownLatch implements Foo {
     private final CountDownLatch l2;
     private final CountDownLatch l3;
 
-    public Foo3() {
+    public FooCountDownLatch() {
         l2 = new CountDownLatch(1);
         l3 = new CountDownLatch(1);
     }

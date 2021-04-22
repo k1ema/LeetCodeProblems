@@ -1,86 +1,103 @@
 package concurrency.PrintInOrder_1114;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 class FooTest {
-    private Thread t1, t2, t3;
+    private static class Helper {
+        private final Thread t1, t2, t3;
 
-    @BeforeEach
-    void setUp() {
-        Foo foo = new Foo();
-        t1 = new Thread(() -> {
-            try {
-                foo.first(() -> System.out.print("first"));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                Thread.currentThread().interrupt();
-            }
-        });
-        t2 = new Thread(() -> {
-            try {
-                foo.second(() -> System.out.print("second"));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                Thread.currentThread().interrupt();
-            }
-        });
-        t3 = new Thread(() -> {
-            try {
-                foo.third(() -> System.out.print("third"));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                Thread.currentThread().interrupt();
-            }
-        });
+        public Helper(Foo foo) {
+            t1 = new Thread(() -> {
+                try {
+                    foo.first(() -> System.out.print("first"));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
+                }
+            });
+            t2 = new Thread(() -> {
+                try {
+                    foo.second(() -> System.out.print("second"));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
+                }
+            });
+            t3 = new Thread(() -> {
+                try {
+                    foo.third(() -> System.out.println("third"));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
+                }
+            });
+        }
     }
 
-    @Test
+    private static Stream<Helper> fooProvider() {
+        return Stream.of(
+                new Helper(new FooSynchronized()),
+                new Helper(new FooSemaphore()),
+                new Helper(new FooCountDownLatch()),
+                new Helper(new FooVolatile())
+        );
+    }
+    
     @DisplayName("1-2-3")
-    void test1() {
-        t1.start();
-        t2.start();
-        t3.start();
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("fooProvider")
+    void test1(Helper helper) {
+        helper.t1.start();
+        helper.t2.start();
+        helper.t3.start();
     }
 
-    @Test
     @DisplayName("1-3-2")
-    void test2() {
-        t1.start();
-        t3.start();
-        t2.start();
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("fooProvider")
+    void test2(Helper helper) {
+        helper.t1.start();
+        helper.t3.start();
+        helper.t2.start();
     }
 
-    @Test
     @DisplayName("2-1-3")
-    void test3() {
-        t2.start();
-        t1.start();
-        t3.start();
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("fooProvider")
+    void test3(Helper helper) {
+        helper.t2.start();
+        helper.t1.start();
+        helper.t3.start();
     }
 
-    @Test
     @DisplayName("2-3-1")
-    void test4() {
-        t2.start();
-        t3.start();
-        t1.start();
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("fooProvider")
+    void test4(Helper helper) {
+        helper.t2.start();
+        helper.t3.start();
+        helper.t1.start();
     }
 
-    @Test
     @DisplayName("3-1-2")
-    void test5() {
-        t3.start();
-        t1.start();
-        t2.start();
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("fooProvider")
+    void test5(Helper helper) {
+        helper.t3.start();
+        helper.t1.start();
+        helper.t2.start();
     }
 
-    @Test
     @DisplayName("3-2-1")
-    void test6() {
-        t3.start();
-        t2.start();
-        t1.start();
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("fooProvider")
+    void test6(Helper helper) {
+        helper.t3.start();
+        helper.t2.start();
+        helper.t1.start();
     }
 }

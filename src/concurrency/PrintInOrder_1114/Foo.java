@@ -32,34 +32,8 @@ package concurrency.PrintInOrder_1114;
  * in the input seems to imply the ordering. The input format you see is mainly to ensure our tests'
  * comprehensiveness.
  */
-public class Foo {
-    // 8 ms, faster than 97.06%, 35.8 MB, less than 100.00%
-    private boolean first, second;
-
-    public Foo() {
-        first = false;
-        second = false;
-    }
-
-    public synchronized void first(Runnable printFirst) throws InterruptedException {
-        first = true;
-        // printFirst.run() outputs "first". Do not change or remove this line.
-        printFirst.run();
-        notifyAll();
-    }
-
-    public synchronized void second(Runnable printSecond) throws InterruptedException {
-        while (!first) wait();
-        // printSecond.run() outputs "second". Do not change or remove this line.
-        printSecond.run();
-        second = true;
-        notifyAll();
-    }
-
-    public synchronized void third(Runnable printThird) throws InterruptedException {
-        while (!second) wait();
-        // printThird.run() outputs "third". Do not change or remove this line.
-        printThird.run();
-        notifyAll();
-    }
+public interface Foo {
+    void first(Runnable printFirst) throws InterruptedException;
+    void second(Runnable printFirst) throws InterruptedException;
+    void third(Runnable printFirst) throws InterruptedException;
 }
