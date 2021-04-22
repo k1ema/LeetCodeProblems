@@ -11,24 +11,28 @@ public class FooBarVolatile implements FooBar {
 
     public void foo(Runnable printFoo) throws InterruptedException {
         for (int i = 0; i < n; i++) {
-            synchronized (this) {
-                if (flag == 1) wait();
-                // printFoo.run() outputs "foo". Do not change or remove this line.
-                printFoo.run();
-                flag = 1;
-                notify();
+            while (true) {
+                if (flag == 0) {
+                    // printFoo.run() outputs "foo". Do not change or remove this line.
+                    printFoo.run();
+                    flag = 1;
+                    break;
+                }
+                Thread.sleep(1);
             }
         }
     }
 
     public void bar(Runnable printBar) throws InterruptedException {
         for (int i = 0; i < n; i++) {
-            synchronized (this) {
-                if (flag == 0) wait();
-                // printBar.run() outputs "bar". Do not change or remove this line.
-                printBar.run();
-                flag = 0;
-                notify();
+            while (true) {
+                if (flag == 1) {
+                    // printBar.run() outputs "bar". Do not change or remove this line.
+                    printBar.run();
+                    flag = 0;
+                    break;
+                }
+                Thread.sleep(1);
             }
         }
     }

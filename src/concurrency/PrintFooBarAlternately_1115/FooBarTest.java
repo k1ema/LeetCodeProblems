@@ -10,7 +10,7 @@ class FooBarTest {
 
     @Test
     void testSynchronized() {
-        test(new FooBarSynchronized(3));
+        test(new FooBarSynchronized(5));
     }
 
     @Test
@@ -20,7 +20,7 @@ class FooBarTest {
 
     @Test
     void testVolatile() {
-        test(new FooBarVolatile(4));
+        test(new FooBarVolatile(7));
     }
 
     private void test(FooBar fb) {

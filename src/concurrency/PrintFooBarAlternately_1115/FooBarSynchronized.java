@@ -11,24 +11,24 @@ class FooBarSynchronized implements FooBar {
 
     public void foo(Runnable printFoo) throws InterruptedException {
         for (int i = 0; i < n; i++) {
-            // printFoo.run() outputs "foo". Do not change or remove this line.
             synchronized (this) {
-                if (flag != 0) wait();
+                while (flag == 1) wait();
+                // printFoo.run() outputs "foo". Do not change or remove this line.
                 printFoo.run();
                 flag = 1;
-                notify();
+                this.notifyAll();
             }
         }
     }
 
     public void bar(Runnable printBar) throws InterruptedException {
         for (int i = 0; i < n; i++) {
-            // printBar.run() outputs "bar". Do not change or remove this line.
             synchronized (this) {
-                if (flag != 1) wait();
+                while (flag == 0) wait();
+                // printBar.run() outputs "bar". Do not change or remove this line.
                 printBar.run();
                 flag = 0;
-                notify();
+                this.notifyAll();
             }
         }
     }
