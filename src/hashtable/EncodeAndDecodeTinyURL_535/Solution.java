@@ -16,16 +16,17 @@ import java.util.Map;
  * URL and the tiny URL can be decoded to the original URL.
  */
 public class Solution {
-    private static final String abc = "abcdefghijklmnopqrstuvwxyz0123456789";
+    private static final String abc = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private final Map<String, String> decoder = new HashMap<>();
     private int id = 1;
 
     // Encodes a URL to a shortened URL.
     public String encode(String longUrl) {
         StringBuilder sb = new StringBuilder();
-        while (id > 0) {
-            sb.append(abc.charAt(id % 36));
-            id /= 26;
+        int i = id;
+        while (i > 0) {
+            sb.append(abc.charAt(i % 62));
+            i /= 62;
         }
         id++;
         String shortUrl = sb.toString();
