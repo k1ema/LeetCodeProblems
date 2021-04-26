@@ -43,7 +43,7 @@ public class Solution {
     // BFS
     // tc O(mn), sc O(mn)
     // 14 ms, faster than 72.67%; 41.9 MB, less than 79.89%
-    public int[][] updateMatrix1(int[][] matrix) {
+    public int[][] updateMatrix(int[][] matrix) {
         int m = matrix.length, n = matrix[0].length;
         int[][] res = new int[m][n];
         for (int[] row : res) {
@@ -78,7 +78,7 @@ public class Solution {
     // Start dfs search from positions whose value is 1
     // tc O(mn), sc O(mn)
     // 10 ms, faster than 87.41%; 43 MB, less than 62.52%
-    public int[][] updateMatrix(int[][] matrix) {
+    public int[][] updateMatrix1(int[][] matrix) {
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {
                 if (matrix[i][j] == 1 && !hasNeighbourZero(matrix, i, j)) {
