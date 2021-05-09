@@ -13,18 +13,16 @@ package math.CountPrimes_204;
  */
 public class Solution {
     // tc O(nlog(logn)), sc O(n)
-    int countPrimes(int n) {
+    public int countPrimes(int n) {
         boolean[] marked = new boolean[n];
         for (int i = 2; i * i < n; i++) {
-            if (marked[i]) {
-                continue;
-            }
-            for (int j = i * i; j < n && j > 0; j += i) {
+            if (marked[i]) continue;
+            for (int j = i * i; j < n; j += i) {
                 marked[j] = true;
             }
         }
         int count = 0;
-        for (int i = 2; i < marked.length; i++) {
+        for (int i = 2; i < n; i++) {
             if (!marked[i]) count++;
         }
         return count;
