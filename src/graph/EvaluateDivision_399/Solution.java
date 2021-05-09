@@ -1,9 +1,11 @@
 package graph.EvaluateDivision_399;
 
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -34,10 +36,9 @@ import java.util.Set;
  * result in no division by zero and there is no contradiction.
  */
 public class Solution {
-    // tc O(M * N), sc O(N),
-    // where N = equations.length, M - queries.length
+    // DFS, tc O(M * N), sc O(N), where N = equations.length, M - queries.length
     // 1 ms, faster than 71.90%; 37.9 MB, less than 85.95%
-    public double[] calcEquation1(List<List<String>> equations, double[] values, List<List<String>> queries) {
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
         Map<String, Map<String, Double>> map = new HashMap<>();
         for (int i = 0; i < values.length; i++) {
             List<String> eq = equations.get(i);
@@ -67,11 +68,56 @@ public class Solution {
         return -1;
     }
 
+    // BFS, tc O(M * N), sc O(N), where N = equations.length, M - queries.length
+    public double[] calcEquation1(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        Map<String, Map<String, Double>> graph = new HashMap<>();
+        for (int i = 0; i < equations.size(); i++) {
+            List<String> eq = equations.get(i);
+            String ai = eq.get(0), bi = eq.get(1);
+            graph.putIfAbsent(ai, new HashMap<>());
+            graph.get(ai).put(bi, values[i]);
+            graph.putIfAbsent(bi, new HashMap<>());
+            graph.get(bi).put(ai, 1 / values[i]);
+        }
+        double[] res = new double[queries.size()];
+        for (int i = 0; i < queries.size(); i++) {
+            String ci = queries.get(i).get(0), di = queries.get(i).get(1);
+            res[i] = -1.0;
+            if (!graph.containsKey(ci)) {
+                continue;
+            }
+            Queue<Map.Entry<String, Double>> q = new ArrayDeque<>();
+            q.add(Map.entry(ci, 1.0));
+            Set<String> visited = new HashSet<>();
+            visited.add(ci);
+            while (!q.isEmpty()) {
+                Map.Entry<String, Double> e = q.poll();
+                String cur_name = e.getKey();
+                double cur_val = e.getValue();
+                if (cur_name.equals(di)) {
+                    res[i] = cur_val;
+                    break;
+                }
+                if (graph.containsKey(cur_name)) {
+                    for (Map.Entry<String, Double> childEntry : graph.get(cur_name).entrySet()) {
+                        String childName = childEntry.getKey();
+                        if (!visited.contains(childName)) {
+                            q.add(Map.entry(childName, cur_val * childEntry.getValue()));
+                            visited.add(childName);
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
     // union-find approach
     // tc O((M + N)log*N), sc O(N),
     // where N = equations.length, M - queries.length
     // 0 ms, faster than 100.00%; 37.8 MB, less than 90.75%
-    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+    // https://leetcode.com/problems/evaluate-division/discuss/147281/Java-Union-Find-solution-faster-than-99
+    public double[] calcEquation2(List<List<String>> equations, double[] values, List<List<String>> queries) {
         Map<String, String> root = new HashMap<>();
         Map<String, Double> dist = new HashMap<>();
         for (int i = 0; i < equations.size(); i++) {
