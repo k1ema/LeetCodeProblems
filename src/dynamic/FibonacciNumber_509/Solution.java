@@ -33,7 +33,7 @@ package dynamic.FibonacciNumber_509;
 public class Solution {
     // tc O(n), sc O(1)
     // 0 ms, faster than 100.00%; 33 MB, less than 5.51%
-    int fib(int n) {
+    public int fib(int n) {
         if (n == 0 || n == 1) return n;
         int prev = 1, nextprev = 0, cur = prev;
         for (int i = 2; i <= n; i++) {
@@ -46,7 +46,7 @@ public class Solution {
 
     // tc O(n), sc O(n)
     // 0 ms, faster than 100.00%; 32.9 MB, less than 5.51%
-    int fib1(int n) {
+    public int fib1(int n) {
         if (n == 0 || n == 1) return n;
         int[] dp = new int[n + 1];
         dp[1] = 1;
@@ -58,8 +58,21 @@ public class Solution {
 
     // recursion: 8 ms, faster than 33.64%; 32.8 MB, less than 5.51%
     // tc(2^n), sc O(n)
-    int fib2(int n) {
+    public int fib2(int n) {
         if (n == 0 || n == 1) return n;
         return fib2(n - 1) + fib2(n - 2);
+    }
+
+    // tc O(n), sc O(n)
+    // recursion with memoization
+    public int fib3(int n) {
+        return fib(n, new Integer[n + 1]);
+    }
+
+    private int fib(int n, Integer[] memo) {
+        if (n == 0 || n == 1) return n;
+        if (memo[n] != null) return memo[n];
+        memo[n] = fib(n - 1, memo) + fib(n - 2, memo);
+        return memo[n];
     }
 }
