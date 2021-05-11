@@ -6,7 +6,7 @@ import java.util.Random;
  * Quick selection problem: find Kth element in array.
  */
 public class QuickSelection {
-    int findKthLargest(int[] nums, int k) {
+    public int findKthLargest(int[] nums, int k) {
         int n;
         if (nums == null || (n = nums.length) == 0) return 0;
         k = n - k;
@@ -25,7 +25,7 @@ public class QuickSelection {
     }
 
     // recursive
-    int findKthLargest1(int[] nums, int k) {
+    public int findKthLargest1(int[] nums, int k) {
         int n;
         if (nums == null || (n = nums.length) == 0) return 0;
         k = n - k;
@@ -53,7 +53,7 @@ public class QuickSelection {
         int i = lo, j = hi;
         while (i < j) {
             while (i <= j && nums[i] <= pivot) i++;
-            while (i <= j && nums[j] > pivot) j--;
+            while (i <= j && nums[j] >= pivot) j--;
             if (i < j) {
                 swap(nums, i, j);
             }
