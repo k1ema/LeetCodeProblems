@@ -1,5 +1,8 @@
 package slidingWindow.MaximumPointsYouCanObtainFromCards_1423;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 1423. Maximum Points You Can Obtain from Cards
  * https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/
@@ -48,17 +51,37 @@ public class Solution {
     // tc O(n), sc O(n)
     // 2 ms, faster than 55.08%; 46.5 MB, less than 96.37%
     public int maxScore(int[] cardPoints, int k) {
-        int n = cardPoints.length;
+        int n = cardPoints.length, totalSum = 0;
         int[] prefixSum = new int[n + 1];
-        int sum = 0;
-        for (int i = 0; i < cardPoints.length; i++) {
-            sum += cardPoints[i];
-            prefixSum[i + 1] = sum;
+        for (int i = 0; i < n; i++) {
+            prefixSum[i + 1] = prefixSum[i] + cardPoints[i];
+            totalSum += cardPoints[i];
         }
-        int minSum = sum, x = cardPoints.length - k;
-        for (int i = x - 1; i < cardPoints.length; i++) {
-            minSum = Math.min(minSum, prefixSum[i + 1] - prefixSum[i - x + 1]);
+        int minSum = Integer.MAX_VALUE;
+        for (int i = n - k; i <= n; i++) {
+            minSum = Math.min(minSum, prefixSum[i] - prefixSum[i - n + k]);
         }
-        return sum - minSum;
+        return totalSum - minSum;
+    }
+
+    // dp, TLE
+    // tc O(n^2), sc O(n^2)
+    public int maxScore1(int[] cardPoints, int k) {
+        int n = cardPoints.length;
+        return helper(cardPoints, k, 0, n - 1, new HashMap<>());
+    }
+
+    private int helper(int[] cardPoints, int k, int i, int j, Map<Long, Integer> memo) {
+        if (k == 0 || i > j) {
+            return 0;
+        }
+        int n = cardPoints.length;
+        long key = i + (long) n * j + (long) n * n * k;
+        if (memo.containsKey(key)) {
+            return memo.get(key);
+        }
+        int res = Math.max(cardPoints[i] + helper(cardPoints, k - 1, i + 1, j, memo), cardPoints[j] + helper(cardPoints, k - 1, i, j - 1, memo));
+        memo.put(key, res);
+        return res;
     }
 }
