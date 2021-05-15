@@ -1,6 +1,7 @@
 package design.MinStack_155;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 /**
  * 155. Min Stack
@@ -24,24 +25,33 @@ import java.util.Stack;
  * minStack.getMin();   --> Returns -2.
  */
 public class MinStack {
-    private Stack<Integer> stack = new Stack<>();
-    private int min;
+    private Deque<Integer> stack;
+    private Integer min;
 
     /** initialize your data structure here. */
     public MinStack() {
-        min = Integer.MAX_VALUE;
+        stack = new ArrayDeque<>();
+        min = null;
     }
 
-    public void push(int x) {
-        if (x <= min) {
-            stack.push(min);
-            min = x;
+    public void push(int val) {
+        if (min == null) {
+            min = val;
         }
-        stack.push(x);
+        if (val <= min) {
+            stack.push(min);
+            min = val;
+        }
+        stack.push(val);
     }
 
     public void pop() {
-        if (stack.pop() == min) min = stack.pop();
+        if (stack.pop().equals(min)) {
+            min = stack.pop();
+        }
+        if (stack.isEmpty()) {
+            min = null;
+        }
     }
 
     public int top() {
@@ -49,6 +59,7 @@ public class MinStack {
     }
 
     public int getMin() {
+        if (min == null) throw new NullPointerException();
         return min;
     }
 }
