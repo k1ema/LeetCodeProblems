@@ -17,7 +17,7 @@ package trie.Maximum_XOR_OfTwoNumbersInAnArray_421;
  * Explanation: The maximum result is 5 ^ 25 = 28.
  */
 public class Solution {
-    // tc O(n), sc O(n)
+    // tc O(n), sc O(1)
     // 34 ms, faster than 85.28%; 49 MB, less than 5.05%
     public int findMaximumXOR(int[] nums) {
         TrieNode root = new TrieNode();
@@ -59,7 +59,7 @@ public class Solution {
         }
     }
 
-    // tc O(n), sc O(n)
+    // tc O(n), sc O(1)
     // 33 ms, faster than 80.00%; 49.3 MB, less than 46.72%
     public int findMaximumXOR2(int[] nums) {
         TrieNode root = new TrieNode();
@@ -97,7 +97,7 @@ public class Solution {
         private TrieNode[] children = new TrieNode[2];
     }
 
-    // brute force O(n^2)
+    // brute force tc O(n^2), sc O(1)
     public int findMaximumXOR1(int[] nums) {
         int res = 0;
         for (int num : nums) {
