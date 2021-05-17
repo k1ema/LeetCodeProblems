@@ -32,8 +32,27 @@ package dynamic.BestTimeToBuyAndSellStockWithTransactionFee_714;
  * 0 < prices[i], fee < 5 * 10^4
  */
 public class Solution {
-    // tc O(n * x), sc O(n)
+    /*
+        x0 - cur profit and you do not have stock
+        x1 - cur profit and you have stock
+
+        on the next day:
+        x0' = max(x0, x1 + p)
+        x1' = max(x1, x0 - p - fee)
+    */
+    // tc O(n), sc O(1)
     public int maxProfit(int[] prices, int fee) {
+        int x0 = 0, x1 = Integer.MIN_VALUE;
+        for (int p : prices) {
+            int x0_ = x0;
+            x0 = Math.max(x0, x1 + p);
+            x1 = Math.max(x1, x0_ - p - fee);
+        }
+        return Math.max(x0, x1);
+    }
+
+    // tc O(n * x), sc O(n)
+    public int maxProfit1(int[] prices, int fee) {
         return f(prices, fee, 0, 0, new Integer[prices.length][2]);
     }
 

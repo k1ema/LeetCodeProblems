@@ -1,4 +1,4 @@
-package array.BestTimeToBuyAndSellStock_II_122;
+package dynamic.BestTimeToBuyAndSellStock_II_122;
 
 /**
  * 122. Best Time to Buy and Sell Stock II
@@ -31,9 +31,28 @@ package array.BestTimeToBuyAndSellStock_II_122;
  * Explanation: In this case, no transaction is done, i.e. max profit = 0.
  */
 public class Solution {
+    /*
+        x0 - cur profit and you do not have stock
+        x1 - cur profit and you have stock
+
+        on the next day:
+        x0' = max(x0, x1 + p)
+        x1' = max(x1, x0 - p)
+    */
+    // tc O(n), sc O(1)
+    public int maxProfit(int[] prices) {
+        int x0 = 0, x1 = Integer.MIN_VALUE;
+        for (int p : prices) {
+            int x0_ = x0;
+            x0 = Math.max(x0, x1 + p);
+            x1 = Math.max(x1, x0_ - p);
+        }
+        return Math.max(x0, x1);
+    }
+
     // tc O(n), sc O(1)
     // 1 ms, faster than 91.85%; 42.5 MB, less than 5.71%
-    public int maxProfit(int[] prices) {
+    public int maxProfit1(int[] prices) {
         if (prices == null || prices.length < 2) return 0;
         int profit = 0;
         for (int i = 1; i < prices.length; i++) {

@@ -45,6 +45,27 @@ public class Solution {
         return s0;
     }
 
+    // 2 ms, faster than 16.04%; 39.7 MB, less than 5.35%
+    public int maxProfit1(int[] prices) {
+        return helper(prices, 0, 0, 0, new Integer[prices.length][2][2]);
+    }
+
+    private int helper(int[] prices, int i, int cooldown, int state, Integer[][][] memo) {
+        if (i == prices.length) return 0;
+        if (memo[i][cooldown][state] != null) {
+            return memo[i][cooldown][state];
+        }
+        int res = helper(prices, i + 1, Math.max(0, cooldown - 1), state, memo);
+        if (state == 0) {
+            if (cooldown == 0) {
+                res = Math.max(res, -prices[i] + helper(prices, i + 1, cooldown, 1, memo));
+            }
+        } else {
+            res = Math.max(res, prices[i] + helper(prices, i + 1, 1, 0, memo));
+        }
+        return memo[i][cooldown][state] = res;
+    }
+
     /*
         https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/discuss/75928/Share-my-DP-solution-(By-State-Machine-Thinking)
 
@@ -64,7 +85,7 @@ public class Solution {
      */
     // tc O(n), sc O(1)
     // 0 ms, faster than 100.00%; 37.8 MB, less than 13.69%
-    public int maxProfit1(int[] prices) {
+    public int maxProfit2(int[] prices) {
         int sold = Integer.MIN_VALUE, held = Integer.MIN_VALUE, reset = 0;
         for (int price : prices) {
             int preSold = sold;
@@ -73,28 +94,5 @@ public class Solution {
             reset = Math.max(reset, preSold);
         }
         return Math.max(sold, reset);
-    }
-
-    // my solution: recursion with memo
-    // tc O(?), sc O(?)
-    // 79 ms, 39.8 MB
-    public int maxProfit2(int[] prices) {
-        Integer[] memo = new Integer[prices.length];
-        return bt(prices, 0, memo);
-    }
-
-    private int bt(int[] prices, int cur, Integer[] memo) {
-        if (cur >= prices.length) return 0;
-        if (memo[cur] != null) return memo[cur];
-        int res = 0;
-        for (int i = cur + 1; i < prices.length; i++) {
-            if (prices[i] > prices[cur]) {
-                res = Math.max(res, bt(prices, i + 2, memo) + prices[i] - prices[cur]);
-            } else {
-                res = Math.max(res, bt(prices, i, memo));
-            }
-        }
-        memo[cur] = res;
-        return res;
     }
 }

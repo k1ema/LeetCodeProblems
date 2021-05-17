@@ -32,20 +32,42 @@ public class Solution {
     // 2 ms, faster than 92.01%; 39.2 MB, less than 87.56%
     public int maxProfit(int[] prices) {
         if (prices == null || prices.length == 0) return 0;
-        int t1Cost = Integer.MAX_VALUE, t2Cost = Integer.MAX_VALUE;
-        int t1Profit = 0, t2Profit = 0;
+        int buy1 = Integer.MAX_VALUE, buy2 = Integer.MAX_VALUE;
+        int sell1 = 0, sell2 = 0;
         for (int price : prices) {
-            t1Cost = Math.min(t1Cost, price);
-            t1Profit = Math.max(t1Profit, price - t1Cost);
-            t2Cost = Math.min(t2Cost, price - t1Profit);
-            t2Profit = Math.max(t2Profit, price - t2Cost);
+            buy1 = Math.min(buy1, price);
+            sell1 = Math.max(sell1, price - buy1);
+            buy2 = Math.min(buy2, price - sell1);
+            sell2 = Math.max(sell2, price - buy2);
         }
-        return t2Profit;
+        return sell2;
+    }
+
+    // special case of '188. Best Time to Buy and Sell Stock IV' problem
+    // tc O(n), sc O(n)
+    // 201 ms, faster than 5.00%; 602.1 MB, less than 5.00%
+    public int maxProfit1(int[] prices) {
+        int k = 2;
+        return helper(prices, 0, k, 0, new Integer[prices.length][k + 1][2]);
+    }
+
+    private int helper(int[] prices, int i, int k, int state, Integer[][][] memo) {
+        if (k < 0 || i == prices.length) return 0;
+        if (memo[i][k][state] != null) {
+            return memo[i][k][state];
+        }
+        int res = helper(prices, i + 1, k, state, memo);
+        if (state == 0) {
+            res = Math.max(res, -prices[i] + helper(prices, i + 1, k - 1, 1, memo));
+        } else {
+            res = Math.max(res, prices[i] + helper(prices, i + 1, k, 0, memo));
+        }
+        return memo[i][k][state] = res;
     }
 
     // tc O(n), sc O(n)
     // 2 ms, faster than 92.01%; 39.4 MB, less than 73.05%
-    public int maxProfit1(int[] prices) {
+    public int maxProfit2(int[] prices) {
         if (prices == null || prices.length == 0) return 0;
         int n = prices.length;
         int[] leftProfits = new int[n];
@@ -73,7 +95,7 @@ public class Solution {
     // 515 ms, 39.2 MB
     // the idea is the same as in 121. Best Time to Buy and Sell Stock: divide array into two parts
     // and then enumerate each of the subsequences
-    public int maxProfit2(int[] prices) {
+    public int maxProfit3(int[] prices) {
         if (prices == null || prices.length == 0) return 0;
         int n = prices.length;
         int res = 0;
@@ -101,7 +123,7 @@ public class Solution {
     }
 
     // tc O(n^4), sc O(1), TLE
-    public int maxProfit3(int[] prices) {
+    public int maxProfit4(int[] prices) {
         if (prices == null || prices.length == 0) return 0;
         int n = prices.length;
         int res = 0;
@@ -116,31 +138,6 @@ public class Solution {
                         }
                     }
                     res = Math.max(res, prices[j] - prices[i]);
-                }
-            }
-        }
-        return res;
-    }
-
-    // tc O(n^4), sc O(1), TLE
-    // same idea but recursive approach
-    public int maxProfit4(int[] prices) {
-        if (prices == null || prices.length == 0) return 0;
-        return bt(prices, 0, false);
-    }
-
-    private int bt(int[] prices, int start, boolean firstTransExist) {
-        if (start == prices.length) return 0;
-        int res = 0;
-        for (int i = start; i < prices.length; i++) {
-            for (int j = i + 1; j < prices.length; j++) {
-                if (prices[j] > prices[i]) {
-                    int dif = prices[j] - prices[i];
-                    if (firstTransExist) {
-                        res = Math.max(res, dif);
-                    } else {
-                        res = Math.max(res, Math.max(dif, dif + bt(prices, j + 1, true)));
-                    }
                 }
             }
         }

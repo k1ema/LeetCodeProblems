@@ -1,4 +1,4 @@
-package array.BestTimeToBuyAndSellStock_II_122;
+package dynamic.BestTimeToBuyAndSellStock_II_122;
 
 import org.junit.jupiter.api.Test;
 
