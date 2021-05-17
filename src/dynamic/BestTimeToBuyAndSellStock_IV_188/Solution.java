@@ -25,8 +25,8 @@ import java.util.Arrays;
  * Then buy on day 5 (price = 0) and sell on day 6 (price = 3), profit = 3-0 = 3.
  *
  * Constraints:
- * 0 <= k <= 109
- * 0 <= prices.length <= 104
+ * 0 <= k <= 10^9
+ * 0 <= prices.length <= 10^4
  * 0 <= prices[i] <= 1000
  */
 public class Solution {
