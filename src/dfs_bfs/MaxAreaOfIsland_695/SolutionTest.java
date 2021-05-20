@@ -1,4 +1,4 @@
-package array.MaxAreaOfIsland_695;
+package dfs_bfs.MaxAreaOfIsland_695;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package array.MaxAreaOfIsland_695;
+package dfs_bfs.MaxAreaOfIsland_695;
 
 /**
  * 695. Max Area of Island
@@ -33,29 +33,31 @@ package array.MaxAreaOfIsland_695;
  */
 public class Solution {
     // tc O(n*m), sc O(n*m)
-    // 2 ms, faster than 100.00%; 43.8 MB, less than 55.56%
-    int maxAreaOfIsland(int[][] grid) {
-        int n;
-        if (grid == null || (n = grid.length) == 0) return 0;
-        int m = grid[0].length;
-        int max = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (grid[i][j] == 0) continue;
-                max = Math.max(max, removeIsland(grid, i, j, n, m));
+    // 4 ms, faster than 23.46%; 38.9 MB, less than 99.30%
+    public int maxAreaOfIsland(int[][] grid) {
+        int res = 0;
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] == 1 && !visited[i][j]) {
+                    res = Math.max(res, dfs(grid, i, j, visited));
+                }
             }
         }
-        return max;
+        return res;
     }
 
-    private int removeIsland(int[][] grid, int i, int j, int n, int m) {
-        if (i < 0 || j < 0 || i >= n || j >= m || grid[i][j] == 0) return 0;
-        grid[i][j] = 0;
-        int count = 1;
-        count += removeIsland(grid, i - 1, j, n, m);
-        count += removeIsland(grid, i, j - 1, n, m);
-        count += removeIsland(grid, i + 1, j, n, m);
-        count += removeIsland(grid, i, j + 1, n, m);
-        return count;
+    private int dfs(int[][] grid, int i, int j, boolean[][] visited) {
+        visited[i][j] = true;
+        int res = 1;
+        int[][] dirs = new int[][] {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+        int m = grid.length, n = grid[0].length;
+        for (int[] dir : dirs) {
+            int newI = i + dir[0], newJ = j + dir[1];
+            if (newI >= 0 && newI < m && newJ >= 0 && newJ < n && grid[newI][newJ] == 1 && !visited[newI][newJ]) {
+                res += dfs(grid, newI, newJ, visited);
+            }
+        }
+        return res;
     }
 }
