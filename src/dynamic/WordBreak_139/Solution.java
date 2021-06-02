@@ -35,12 +35,38 @@ import java.util.Set;
  * Output: false
  */
 public class Solution {
+    // tc O(n^3), sc O(n)
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Set<String> words = new HashSet<>(wordDict);
+        return helper(s, words, 0, new Boolean[s.length()]);
+    }
+
+    private boolean helper(String s, Set<String> words, int start, Boolean[] memo) {
+        if (start == s.length()) {
+            return true;
+        }
+        if (memo[start] != null) {
+            return memo[start];
+        }
+        boolean res = false;
+        for (int i = start + 1; i <= s.length(); i++) {
+            String w = s.substring(start, i);
+            if (words.contains(w)) {
+                if (helper(s, words, i, memo)) {
+                    res = true;
+                    break;
+                }
+            }
+        }
+        return memo[start] = res;
+    }
+
     // https://thenoisychannel.com/2011/08/08/retiring-a-great-interview-problem
     // tc O(2^n), sc O(2^n) ?? without memoization; with memo: tc O(n^3), sc O(n)
     // i.e s.substring has O(n) complexity
     // https://stackoverflow.com/questions/4679746/time-complexity-of-javas-substring
     private Map<String, Boolean> memo;
-    boolean wordBreak(String s, List<String> wordDict) {
+    public boolean wordBreak1(String s, List<String> wordDict) {
         memo = new HashMap<>();
         return wordBreak(s, new HashSet<>(wordDict));
     }
@@ -65,7 +91,7 @@ public class Solution {
     // tc - O(n^3)
     // sc - O(n)
     // https://leetcode.com/problems/word-break/discuss/43814/c-dynamic-programming-simple-and-fast-solution-4ms-with-optimization
-    boolean wordBreak1(String s, List<String> wordDict) {
+    public boolean wordBreak2(String s, List<String> wordDict) {
         boolean[] dp = new boolean[s.length() + 1];
         dp[0] = true;
 
@@ -86,7 +112,7 @@ public class Solution {
     // BFS
     // https://leetcode.com/problems/word-break/discuss/43797/A-solution-using-BFS
     // tc O(n^3), sc O(n)
-    boolean wordBreak2(String s, List<String> wordDict) {
+    boolean wordBreak3(String s, List<String> wordDict) {
         Queue<Integer> queue = new LinkedList<>();
         queue.add(0);
         Set<Integer> visited = new HashSet<>();
