@@ -46,7 +46,9 @@ public class Solution {
         SegmentTree st = new SegmentTree(n);
         st.update(n - 1, 0);
         for (int i = n - 2; i >= 0; i--) {
-            int r = st.getMin(i + 1, Math.min(i + nums[i], n - 1)) + 1;
+            int L = i + 1;
+            int R = Math.min(n - 1, i + nums[i]);
+            int r = 1 + st.getMin(L, R);
             st.update(i, r);
         }
         return st.getMin(0, 0);
