@@ -1,4 +1,4 @@
-package array.JumpGame_55;
+package greedy.JumpGame_55;
 
 /**
  * 55. Jump Game
@@ -22,6 +22,19 @@ package array.JumpGame_55;
  * makes it impossible to reach the last index.
  */
 public class Solution {
+    // my solution #2
+    // tc O(n), sc O(1)
+    // 1 ms, faster than 98.20%; 41.5 MB, less than 29.06%
+    public boolean canJump2(int[] nums) {
+        int lastPos = nums.length - 1;
+        for (int i = nums.length - 1; i >= 0; i--) {
+            if (i + nums[i] >= lastPos) {
+                lastPos = i;
+            }
+        }
+        return lastPos == 0;
+    }
+
     // my solution
     // tc O(n), sc O(1)
     public boolean canJump(int[] nums) {
@@ -50,18 +63,6 @@ public class Solution {
             maxJumps = Math.max(maxJumps, nums[i]);
         }
         return true;
-    }
-
-    // tc O(n), sc O(1)
-    // 1 ms, faster than 98.20%; 41.5 MB, less than 29.06%
-    public boolean canJump2(int[] nums) {
-        int lastPos = nums.length - 1;
-        for (int i = nums.length - 1; i >= 0; i--) {
-            if (i + nums[i] >= lastPos) {
-                lastPos = i;
-            }
-        }
-        return lastPos == 0;
     }
 
     // tc O(n), sc O(1)

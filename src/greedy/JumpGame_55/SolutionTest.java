@@ -1,4 +1,4 @@
-package array.JumpGame_55;
+package greedy.JumpGame_55;
 
 import org.junit.jupiter.api.Test;
 
