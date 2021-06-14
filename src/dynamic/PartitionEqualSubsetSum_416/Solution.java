@@ -25,52 +25,26 @@ import java.util.stream.IntStream;
  */
 public class Solution {
     // top-down recursion with memoization
-    // tc O(2^n) w/o memo, O(n*s) with memo; sc O(n*s), where n - nums.length and s = total sum
+    // tc O(2^n) w/o memo, O(n*s) with memo; sc O(n*s), where n - nums.length and s = total sum / 2
     // 3 ms, faster than 88.98%; 43.1 MB, less than 22.22%
     public boolean canPartition(int[] nums) {
-        if (nums == null || nums.length < 2) return false;
-        int sum = IntStream.of(nums).sum();
-        if (sum % 2 == 1) return false;
-        Boolean[][] memo = new Boolean[nums.length][sum / 2 + 1];
-        return bt(nums, 0, sum / 2, memo);
+        int totalSum = IntStream.of(nums).sum();
+        if (totalSum % 2 == 1) return false;
+        int target = totalSum / 2;
+        return f(nums, 0, target, new Boolean[nums.length][target + 1]);
     }
 
-    private boolean bt(int[] nums, int idx, int sum, Boolean[][] memo) {
-        if (sum == 0) return true;
-        if (idx == nums.length) return false;
-        if (memo[idx][sum] != null) return memo[idx][sum];
-        if (sum - nums[idx] >= 0) {
-            if (bt(nums, idx + 1, sum - nums[idx], memo)) {
-                memo[idx][sum] = true;
-                return true;
-            }
+    private boolean f(int[] nums, int i, int target, Boolean[][] memo) {
+        if (i == nums.length) return target == 0;
+        if (memo[i][target] != null) return memo[i][target];
+        boolean res = f(nums, i + 1, target, memo);
+        if (target - nums[i] >= 0) {
+            res |= f(nums, i + 1, target - nums[i], memo);
         }
-        memo[idx][sum] = bt(nums, idx + 1, sum, memo);
-        return memo[idx][sum];
+        return memo[i][target] = res;
     }
 
     // dp bottom-up
-    // tc O(n*s), sc O(n*s)
-    // 33 ms, faster than 41.40%; 39.2 MB, less than 69.84%
-    public boolean canPartition1(int[] nums) {
-        int m = nums.length;
-        int sum = IntStream.of(nums).map(i -> i).sum();
-        if (sum % 2 == 1) return false;
-        sum /= 2;
-        boolean[][] dp = new boolean[m][sum + 1];
-        for (int i = 0; i < nums.length; i++) {
-            for (int j = 0; j < dp[i].length; j++) {
-                if (j < nums[i]) continue;
-                if (j == nums[i]) {
-                    dp[i][j] = true;
-                } else {
-                    dp[i][j] = (i != 0 && dp[i - 1][j]) || (i != 0 && dp[i - 1][j - nums[i]]);
-                }
-            }
-        }
-        return dp[m - 1][sum];
-    }
-
     // tc O(n*s), sc O(sum)
     // https://leetcode.com/problems/partition-equal-subset-sum/discuss/90592/01-knapsack-detailed-explanation
     // https://www.youtube.com/watch?v=s6FhG--P7z0
