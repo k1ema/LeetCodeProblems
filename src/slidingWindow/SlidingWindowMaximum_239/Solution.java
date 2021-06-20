@@ -1,6 +1,7 @@
 package slidingWindow.SlidingWindowMaximum_239;
 
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
 
 /**
@@ -71,4 +72,61 @@ public class Solution {
         }
         return res;
     }
+
+    // segment tree
+    // tc O(nlogn), sc O(n)
+    // 339 ms, faster than 7.33%; 60.2 MB, less than 21.15%
+    public int[] maxSlidingWindow1(int[] nums, int k) {
+        SegmentTree st = new SegmentTree(nums);
+        int[] res = new int[nums.length - k + 1];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = st.getMax(i, i + k - 1);
+        }
+        return res;
+    }
+
+    private static class SegmentTree {
+        private int[] nums;
+        private int n, offset;
+
+        private SegmentTree(int[] arr) {
+            int n = arr.length;
+            int k = 0;
+            while ((1 << k) < n) {
+                k++;
+            }
+            n = 1 << k;
+            this.n = n;
+            this.nums = new int[2 * n - 1];
+            this.offset = nums.length - n;
+            Arrays.fill(nums, Integer.MIN_VALUE);
+            for (int i = 0; i < arr.length; i++) {
+                update(i, arr[i]);
+            }
+        }
+
+        int getMax(int L, int R) {
+            return getMax(0, 0, n - 1, L, R);
+        }
+
+        private int getMax(int i, int l, int r, int L, int R) {
+            if (r < L || l > R) return Integer.MIN_VALUE;
+            if (l >= L && r <= R) return nums[i];
+            int m = l + (r - l) / 2;
+            int left = getMax(2 * i + 1, l, m, L, R);
+            int right = getMax(2 * i + 2, m + 1, r, L, R);
+            return Math.max(left, right);
+        }
+
+        void update(int i, int val) {
+            int ind = offset + i;
+            nums[ind] = val;
+            while (ind > 0) {
+                int parent = (ind - 1) / 2;
+                nums[parent] = Math.max(nums[parent * 2 + 1], nums[parent * 2 + 2]);
+                ind = parent;
+            }
+        }
+    }
+
 }
