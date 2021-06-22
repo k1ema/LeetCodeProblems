@@ -35,53 +35,43 @@ import java.util.Arrays;
  * then all the houses can be warmed.
  */
 public class Solution {
-    // tc O((m + n)*logn), sc O(1). m - houses.length, n - heaters.length
-    // 17 ms, faster than 32.55%, 43.2 MB, less than 23.08%
+    // tc O(m*logn), sc O(1). m - houses.length, n - heaters.length
+    // 18 ms, faster than 43.88%, 42.2 MB, less than 61.21%
     int findRadius(int[] houses, int[] heaters) {
         Arrays.sort(heaters);
+        int res = 0;
         for (int i = 0; i < houses.length; i++) {
-            int lo = 0;
-            int hi = heaters.length - 1;
-            int x = Integer.MAX_VALUE;
-            while (lo <= hi) {
-                int mid = lo + (hi - lo) / 2;
-                if (Math.abs(heaters[mid] - houses[i]) < x) {
-                    x = Math.abs(heaters[mid] - houses[i]);
-                }
-                if (houses[i] < heaters[mid]) {
-                    hi = mid - 1;
-                } else {
-                    lo = mid + 1;
-                }
-            }
-            houses[i] = x;
+            int radius = Integer.MAX_VALUE;
+            int ind = findNearestHeaterIndex(houses[i], heaters);
+            radius = Math.min(radius, Math.abs(houses[i] - heaters[ind]));
+            res = Math.max(res, radius);
         }
-        int max = houses[0];
-        for (int i = 1; i < houses.length; i++) {
-            if (houses[i] > max) {
-                max = houses[i];
+        return res;
+    }
+
+    private int findNearestHeaterIndex(int target, int[] heaters) {
+        int l = 0, r = heaters.length;
+        while (r - l > 1) {
+            int m = l + (r - l) / 2;
+            if (heaters[m] <= target) {
+                l = m;
+            } else {
+                r = m;
             }
         }
-        return max;
+        return (l == heaters.length - 1 || (Math.abs(heaters[l] - target) <= Math.abs(heaters[l + 1] - target))) ? l : l + 1;
     }
 
     // brute force, tc O(mn), sc O(1). 1726 ms
     int findRadius1(int[] houses, int[] heaters) {
+        int res = 0;
         for (int i = 0; i < houses.length; i++) {
-            int x = Integer.MAX_VALUE;
+            int radius = Integer.MAX_VALUE;
             for (int j = 0; j < heaters.length; j++) {
-                if (Math.abs(heaters[j] - houses[i]) < x) {
-                    x = Math.abs(heaters[j] - houses[i]);
-                }
+                radius = Math.min(radius, Math.abs(houses[i] - heaters[j]));
             }
-            houses[i] = x;
+            res = Math.max(res, radius);
         }
-        int max = houses[0];
-        for (int i = 1; i < houses.length; i++) {
-            if (houses[i] > max) {
-                max = houses[i];
-            }
-        }
-        return max;
+        return res;
     }
 }
