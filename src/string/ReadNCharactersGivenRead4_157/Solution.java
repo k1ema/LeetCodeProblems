@@ -78,17 +78,17 @@ public class Solution {
      * @return    The number of actual characters read
      */
     public int read(char[] buf, int n) {
-        int p = 0;
-        while (p < n) {
+        int ptr = 0;
+        while (ptr < n) {
             char[] buf4 = new char[4];
-            int len = read4(buf4);
-            if (len == 0) break;
-            for (int i = 0; i < len; i++) {
-                buf[p++] = buf4[i];
-                if (p == n) return n;
+            int cnt = read4(buf4);
+            if (cnt == 0) break;
+            int i = 0;
+            while (ptr < n && i < cnt) {
+                buf[ptr++] = buf4[i++];
             }
         }
-        return p;
+        return ptr;
     }
 
     private int read4(char[] buf4) {
