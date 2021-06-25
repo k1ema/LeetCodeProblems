@@ -41,7 +41,7 @@ import java.util.TreeMap;
  *
  * Constraints:
  * -10^7 <= x <= 10^7
- * At most 104 calls will be made to push, pop, top, peekMax, and popMax.
+ * At most 10^4 calls will be made to push, pop, top, peekMax, and popMax.
  * There will be at least one element in the stack when pop, top, peekMax, or popMax is called.
  *
  * Follow up: Could you come up with a solution that supports O(1) for each top call and O(logn) for each other call?
