@@ -1,8 +1,5 @@
 package dynamic.DecodeWays_91;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 91. Decode Ways
  * https://leetcode.com/problems/decode-ways/
@@ -47,23 +44,23 @@ public class Solution {
 
     // top-down approach with memoization - same as finding Fibonacci number
     // tc O(n), sc O(n)
-    // 1 ms, faster than 93.50%; 37.6 MB, less than 45.70%
+    // 0 ms, faster than 100.00%; 37.2 MB, less than 83.10%
     public int numDecodings1(String s) {
-        return helper(s, 0, new HashMap<>());
+        return decodeWays(s, 0, new Integer[s.length()]);
     }
 
-    private int helper(String s, int idx, Map<Integer, Integer> memo) {
-        if (memo.containsKey(idx)) return memo.get(idx);
-        if (idx == s.length()) return 1;
-        if (s.charAt(idx) == '0') return 0;
-        int res = helper(s, idx + 1, memo);
-        if (idx < s.length() - 1) {
-            int num = Integer.parseInt(s.substring(idx, idx + 2));
-            if (num >= 10 && num <= 26) {
-                res += helper(s, idx + 2, memo);
+    private int decodeWays(String s, int i, Integer[] memo) {
+        if (i == s.length()) return 1;
+        if (memo[i] != null) return memo[i];
+        int one_digit = s.charAt(i) - '0';
+        if (one_digit == 0) return 0;
+        int res = decodeWays(s, i + 1, memo);
+        if (i < s.length() - 1) {
+            int two_digits = one_digit * 10 + (s.charAt(i + 1) - '0');
+            if (two_digits <= 26) {
+                res += decodeWays(s, i + 2, memo);
             }
         }
-        memo.put(idx, res);
-        return res;
+        return memo[i] = res;
     }
 }
