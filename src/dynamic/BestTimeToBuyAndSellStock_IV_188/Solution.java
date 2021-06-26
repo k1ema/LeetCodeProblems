@@ -43,7 +43,7 @@ public class Solution {
         if (k > 0 && hasStock) {
             res = Math.max(res, f(i + 1, k - 1, false, prices, memo) + prices[i]);
         }
-        if (k > 0 && !hasStock) {
+        if (!hasStock) {
             res = Math.max(res, f(i + 1, k, true, prices, memo) - prices[i]);
         }
         memo[i][k][has_stock] = res;
