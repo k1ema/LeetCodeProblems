@@ -31,6 +31,41 @@ import java.util.Set;
  * 4. The returned elements order does not matter.
  */
 public class Solution {
+    // 48 ms, faster than 81.15%; 44.3 MB, less than 69.43%
+    public List<String> findAllConcatenatedWordsInADict(String[] words) {
+        Set<String> dict = new HashSet<>();
+        for (String word : words) {
+            dict.add(word);
+        }
+        List<String> res = new ArrayList<>();
+        for (String word : words) {
+            if (canForm(word, 0, false, dict, new Boolean[word.length()])) {
+                res.add(word);
+            }
+        }
+        return res;
+    }
+
+    private boolean canForm(String word, int start, boolean splitted, Set<String> dict, Boolean[] memo) {
+        if (start == word.length()) {
+            return splitted;
+        }
+        if (memo[start] != null) {
+            return memo[start];
+        }
+        boolean res = false;
+        for (int i = start + 1; i <= word.length(); i++) {
+            String substr = word.substring(start, i);
+            if (dict.contains(substr)) {
+                if (canForm(word, i, splitted || i != word.length(), dict, memo)) {
+                    res = true;
+                    break;
+                }
+            }
+        }
+        return memo[start] = res;
+    }
+
     // tc O(n * k^3), sc O(n)
     // 358 ms, faster than 16.30%; 45.5 MB, less than 95.24%
     public List<String> findAllConcatenatedWordsInADict1(String[] words) {
@@ -69,7 +104,7 @@ public class Solution {
     // Trie
     // tc O(n * k) ?, sc O(n * k), where n - number of words, k - max word's length
     // 50 ms, faster than 84.34%; 50.2 MB, less than 26.81%
-    public List<String> findAllConcatenatedWordsInADict(String[] words) {
+    public List<String> findAllConcatenatedWordsInADict2(String[] words) {
         List<String> res = new ArrayList<>();
         if (words == null || words.length < 2) return res;
 
