@@ -50,10 +50,70 @@ import java.util.Set;
  * []
  */
 public class Solution {
+    // https://leetcode.com/problems/word-break-ii/discuss/44167/My-concise-JAVA-solution-based-on-memorized-DFS
+    // 1 ms, faster than 93.66%; 37.5 MB, less than 50.51%
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        return bt(s, 0, new HashSet<>(wordDict), new HashMap<>());
+    }
+
+    private List<String> bt(String s, int start, Set<String> wordDict, Map<Integer, List<String>> memo) {
+        if (memo.containsKey(start)) return memo.get(start);
+
+        List<String> res = new ArrayList<>();
+
+        if (start == s.length()) {
+            res.add("");
+            return res;
+        }
+
+        for (int end = start + 1; end <= s.length(); end++) {
+            String word = s.substring(start, end);
+            if (wordDict.contains(word)) {
+                List<String> list = bt(s, end, wordDict, memo);
+                for (String str : list) {
+                    res.add(word + (str.isEmpty() ? "" : " ") + str);
+                }
+            }
+        }
+
+        memo.put(start, res);
+        return res;
+    }
+
+    // 0 ms, faster than 100.00%, 37.2 MB, less than 84.17%
+    // TLE for aaaaaa...
+    public List<String> wordBreak1(String s, List<String> wordDict) {
+        List<String> res = new ArrayList<>();
+        Set<String> dict = new HashSet<>(wordDict);
+        f(s, 0, new StringBuilder(), dict, res);
+        return res;
+    }
+
+    private void f(String s, int start, StringBuilder sb, Set<String> dict, List<String> res) {
+        if (start == s.length()) {
+            if (sb.length() != 0) {
+                res.add(sb.toString());
+            }
+            return;
+        }
+        for (int i = start + 1; i <= s.length(); i++) {
+            String substr = s.substring(start, i);
+            if (dict.contains(substr)) {
+                int size = sb.length();
+                sb.append(substr);
+                if (i != s.length()) {
+                    sb.append(" ");
+                }
+                f(s, i, sb, dict, res);
+                sb.delete(size, sb.length());
+            }
+        }
+    }
+
     // tc O(n^2 + 2^n + w), sc O(n * 2^n + w), see https://leetcode.com/articles/word-break-ii/
     // sc O(n * 2^n + w)
     // 5 ms, faster than 93.63%; 40.2 MB, less than 14.49%
-    public List<String> wordBreak(String s, List<String> wordDict) {
+    public List<String> wordBreak2(String s, List<String> wordDict) {
         List<List<String>> solutions = bt(s, new HashSet<>(wordDict), new HashMap<>());
 
         List<String> res = new ArrayList<>();
@@ -96,34 +156,5 @@ public class Solution {
         }
 
         return memo.get(s);
-    }
-
-    // https://leetcode.com/problems/word-break-ii/discuss/44167/My-concise-JAVA-solution-based-on-memorized-DFS
-    public List<String> wordBreak1(String s, List<String> wordDict) {
-        return bt(s, 0, new HashSet<>(wordDict), new HashMap<>());
-    }
-
-    private List<String> bt(String s, int i, Set<String> wordDict, Map<Integer, List<String>> memo) {
-        if (memo.containsKey(i)) return memo.get(i);
-
-        List<String> res = new ArrayList<>();
-
-        if (i == s.length()) {
-            res.add("");
-            return res;
-        }
-
-        for (int j = i + 1; j <= s.length(); j++) {
-            String word = s.substring(i, j);
-            if (wordDict.contains(word)) {
-                List<String> list = bt(s, j, wordDict, memo);
-                for (String str : list) {
-                    res.add(word + (str.isEmpty() ? "" : " " + str));
-                }
-            }
-        }
-
-        memo.put(i, res);
-        return res;
     }
 }
