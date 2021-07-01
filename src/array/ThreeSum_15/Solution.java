@@ -43,8 +43,9 @@ public class Solution {
             } else if (sum > 0 || r < nums.length - 1 && nums[r] == nums[r + 1]) {
                 r--;
             } else {
-                res.add(Arrays.asList(nums[i], nums[l], nums[r]));
-                l++; r--;
+                res.add(List.of(nums[i], nums[l], nums[r]));
+                l++;
+                r--;
             }
         }
     }
