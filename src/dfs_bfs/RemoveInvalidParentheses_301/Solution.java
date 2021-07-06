@@ -1,6 +1,7 @@
 package dfs_bfs.RemoveInvalidParentheses_301;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -77,6 +78,50 @@ public class Solution {
         return bal == 0;
     }
 
+    // my solution
+    public List<String> removeInvalidParentheses3(String s) {
+        List<String> list = new ArrayList<>();
+        helper(s, 0, 0, new StringBuilder(), list);
+        if (list.isEmpty()) {
+            return new ArrayList<>();
+        }
+        Collections.sort(list, (a, b) -> b.length() - a.length());
+        Set<String> res = new HashSet<>();
+        res.add(list.get(0));
+        int len = list.get(0).length();
+        for (int i = 1; i < list.size(); i++) {
+            if (list.get(i).length() < len) {
+                break;
+            }
+            res.add(list.get(i));
+        }
+        return new ArrayList<>(res);
+    }
+
+    private void helper(String s, int i, int balance, StringBuilder sb, List<String> list) {
+        if (balance < 0) {
+            return;
+        }
+        if (i == s.length()) {
+            if (balance == 0) {
+                list.add(sb.toString());
+            }
+            return;
+        }
+        char c = s.charAt(i);
+        if (c == '(' || c == ')') {
+            int size = sb.length();
+            sb.append("" + c);
+            helper(s, i + 1, c == '(' ? balance + 1 : balance - 1, sb, list);
+            sb.delete(size, sb.length());
+
+            helper(s, i + 1, balance, sb, list);
+        } else {
+            sb.append("" + c);
+            helper(s, i + 1, balance, sb, list);
+        }
+    }
+
     // DFS
     // tc O(n*2^n) - n for converting sb to string, sc O(n)
     // 1 ms, faster than 99.96%; 38.1 MB, less than 96.72%
@@ -128,7 +173,7 @@ public class Solution {
         sb.setLength(len);
     }
 
-    // solution can be simpler but should be set insead of list
+    // solution can be simpler but should be set instead of list
     public List<String> removeInvalidParentheses2(String s) {
         int openRem = 0, closeRem = 0;
         for (char c : s.toCharArray()) {
