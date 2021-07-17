@@ -68,6 +68,33 @@ public class Solution {
         return dfs(cur.right, left);
     }
 
+    // my solution #2
+    public void flatten3(TreeNode root) {
+        if (root == null) return;
+        dfs(root);
+    }
+
+    private TreeNode dfs(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        if (root.left == null && root.right == null) {
+            return root;
+        }
+        if (root.left != null) {
+            TreeNode rightCopy = root.right;
+            root.right = root.left;
+            root.left = null;
+            TreeNode flattenRight = dfs(root.right);
+            if (flattenRight != null) {
+                flattenRight.right = rightCopy;
+            }
+            return rightCopy != null ? dfs(rightCopy) : flattenRight;
+        } else {
+            return dfs(root.right);
+        }
+    }
+
     // tc O(n), sc O(n) (because of recursion)
     // 0 ms, faster than 100.00%; 37.9 MB, less than 58.18%
     // https://leetcode.com/problems/flatten-binary-tree-to-linked-list/discuss/36977/My-short-post-order-traversal-Java-solution-for-share
