@@ -1,4 +1,4 @@
-package bitManipulation.DivideTwoIntegers_29;
+package binarySearch.DivideTwoIntegers_29;
 
 /**
  * 29. Divide Two Integers
@@ -36,9 +36,38 @@ package bitManipulation.DivideTwoIntegers_29;
  * divisor != 0
  */
 public class Solution {
+    // 1 ms, faster than 99.98%; 36.5 MB, less than 24.75%
+    public int divide(int dividend, int divisor) {
+        long ldividend = dividend, ldivisor = divisor;
+        int sign = 1;
+        if (ldividend < 0) {
+            ldividend = -ldividend;
+            sign = -1 * sign;
+        }
+        if (ldivisor < 0) {
+            ldivisor = -ldivisor;
+            sign = -1 * sign;
+        }
+        long res = sign * divide(ldividend, ldivisor);
+        res = Math.max(Integer.MIN_VALUE, res);
+        res = Math.min(Integer.MAX_VALUE, res);
+        return (int) res;
+    }
+
+    private long divide(long ldividend, long ldivisor) {
+        if (ldividend < ldivisor) return 0L;
+        int quotient = 1;
+        long sum = ldivisor;
+        while (sum + sum < ldividend) {
+            sum += sum;
+            quotient += quotient;
+        }
+        return quotient + divide(ldividend - sum, ldivisor);
+    }
+
     // tc O(logn), sc O(1)
     // 1 ms, faster than 99.98%; 35.9 MB, less than 92.13%
-    public int divide(int dividend, int divisor) {
+    public int divide1(int dividend, int divisor) {
         boolean negative = (dividend < 0) ^ (divisor < 0);
         long a = Math.abs((long) dividend);
         long b = Math.abs((long) divisor);

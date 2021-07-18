@@ -1,4 +1,4 @@
-package bitManipulation.DivideTwoIntegers_29;
+package binarySearch.DivideTwoIntegers_29;
 
 import org.junit.jupiter.api.Test;
 
